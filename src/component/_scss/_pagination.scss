@@ -1,0 +1,40 @@
+.pg-pagination {
+  color: #888;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.pg-pagination__state strong {
+  font-weight: 400;
+  margin: 0 3px;
+}
+
+.pg-pagination__operate {
+  display: flex;
+  align-items: center;
+}
+
+.pg-pagination .pg-pagination__text {
+  font-size: $font-size-sm;
+  margin-right: 10px;
+  line-height: 24px;
+  display: inline-block;
+}
+
+.pg-pagination__totalpage {
+  display: inline-block;
+  width: auto;
+  height: 24px;
+  line-height: 22px;
+  font-size: $font-size-sm;
+  color: #000;
+  padding: 0 10px;
+  border: 1px solid #ddd;
+  border-left: none;
+  text-decoration: initial;
+  background-color: #FFF;
+  vertical-align: middle;
+}

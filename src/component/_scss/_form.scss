@@ -1,0 +1,249 @@
+@mixin form-control-size($font-size, $item-height) {
+  font-size: $font-size;
+  height: $item-height;
+  line-height: $item-height - $border-width * 2;
+}
+
+.pg-form-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: $border-width solid #ddd;
+  color: $dark;
+  transition: border 0.3s ease-in-out;
+  background-color: $white;
+  width: $form-item-width-base;
+  overflow: hidden;
+
+  @include form-control-size($font-size-base, $form-item-height-base);
+
+  &.sm {
+    @include form-control-size($font-size-sm, $form-item-height-sm);
+  }
+
+  &.lg {
+    @include form-control-size($font-size-lg, $form-item-height-lg);
+  }
+
+  &:hover {
+    border-color: #bbb;
+    z-index: 1;
+  }
+
+  &:focus-within:not(.pg-select) {
+    border-color: $primary;
+    z-index: 1;
+  }
+
+  &.disabled,
+  :disabled {
+    border-color: #ddd;
+    background-color: #eee;
+    cursor: not-allowed;
+    &:active {
+      pointer-events: none;
+    }
+  }
+
+  .placeholder,
+  ::placeholder {
+    color: #888;
+    user-select: none;
+    font-size: $font-size-sm;
+  }
+
+  .prefix,
+  .suffix {
+    &:empty {
+      display: none;
+    }
+  }
+
+  .prefix .pg-select {
+    margin-left: 1px;
+    background-color: #f9f9f9;
+    &.disabled {
+      border-color: #ddd;
+      background-color: #eee;
+    }
+    input {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+
+  .suffix .pg-select {
+    margin-right: 1px;
+    background-color: #f9f9f9;
+    &.disabled {
+      border-color: #ddd;
+      background-color: #eee;
+    }
+    input {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
+
+.pg-form-control.material,
+.pg-form-control.material:focus-within {
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+  border-radius: 0 !important;
+}
+
+.pg-form-control.flat {
+  border-color: transparent !important;
+  background-color: $white;
+}
+
+.pg-form {
+  display: block;
+}
+
+// form-item没有校验功能，底部的边距为10px
+.pg-form.query-type {
+  .pg-form-item {
+    padding-bottom: 10px;
+    &.vertical {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+//  form-item没有校验功能，form-control 为 disabled 状态
+.pg-form.detail-type {
+}
+
+// form-item带有校验功能，底部的边距为30px
+.pg-form.edit-type {
+}
+
+//.pg-form-group {
+//
+//}
+//
+//.pg-form-group .title {
+//  font-size: $font-size-lg;
+//  font-weight: $font-weight-bold;
+//}
+//
+//.pg-form-group .desc {
+//  font-size: $font-size-base;
+//  color: $secondary;
+//}
+
+.pg-form-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: row;
+  // overflow: hidden;
+
+  padding-bottom: 30px; // 默认底边距，与 下一个 form-item 保持底部间隙，该属性可以在最外层 form-item 控制，以隐藏 反馈消息显示
+
+  &.has-help-text {
+    padding-bottom: 50px;
+  }
+
+  &.vertical {
+    flex-direction: column;
+
+    padding-bottom: 20px;
+
+    &.has-help-text {
+      padding-bottom: 40px;
+    }
+  }
+
+  .form-item-label {
+    display: inline-block;
+    text-align: right;
+    margin-bottom: 0;
+    margin-right: 10px;
+    @include form-control-size($font-size-base, $form-item-height-base);
+  }
+
+  .form-item-content {
+    position: relative;
+  }
+
+  .form-item-feedback {
+    position: absolute;
+    height: 33px;
+    line-height: 1.5;
+    width: 100%;
+    font-size: $font-size-sm;
+
+    .help-text {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      color: #999;
+      white-space: nowrap;
+    }
+  }
+
+  &.sm {
+    .form-item-label {
+      @include form-control-size($font-size-sm, $form-item-height-sm);
+    }
+  }
+
+  &.lg {
+    .form-item-label {
+      @include form-control-size($font-size-lg, $form-item-height-lg);
+    }
+  }
+
+  .required {
+    &:before {
+      content: '*';
+      font-size: $font-size-lg;
+      line-height: 1;
+      color: $danger;
+      margin-right: 2px;
+    }
+  }
+
+  .pg-textarea,
+  .pg-form-control,
+  .pg-popper,
+  .pg-search,
+  .pg-button-group,
+  .pg-transfer {
+    min-width: 100%;
+    width: 100%;
+  }
+
+  &.has-warning {
+
+    .pg-uploader,
+    .pg-table-wrapper.borderfull,
+    .pg-form-control,
+    .pg-form-control:focus-within {
+      border-color: $warning;
+    }
+
+    .validate-text {
+      color: $warning;
+    }
+  }
+
+  &.has-error {
+    .cke_chrome,
+    .pg-uploader,
+    .pg-table-wrapper.borderfull,
+    .pg-form-control,
+    .pg-form-control:focus-within {
+      border-color: $danger;
+    }
+
+    .validate-text {
+      color: $danger;
+      white-space: nowrap;
+    }
+  }
+}

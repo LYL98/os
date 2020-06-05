@@ -1,0 +1,39 @@
+.pg-textarea {
+  display: block;
+  position: relative;
+  margin-bottom: 0;
+  height: $form-item-height-base * 2;
+}
+
+.pg-textarea .pg-form-control {
+  width: 100%;
+  height: 100%;
+  line-height: 1.5;
+  padding: 5px 10px 20px;
+  resize: none;
+  overflow-y: auto;
+}
+
+.pg-textarea-counter {
+  font-size: $font-size-sm;
+  color: #bbb;
+  display: block;
+  position: absolute;
+  right: 10px;
+  left: 2px;
+  bottom: 1px;
+  text-align: right;
+  background-color: $white;
+  transition: all .3s ease-in-out;
+  user-select: none;
+  z-index: 2;
+
+  & > .count {
+    color: #bbb;
+  }
+}
+
+.pg-textarea.disabled .pg-textarea-counter {
+  background-color: #eee;
+  cursor: not-allowed;
+}

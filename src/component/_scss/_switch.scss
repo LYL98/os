@@ -1,0 +1,49 @@
+
+.pg-switch {
+  display: inline-flex;
+  font-size: 0;
+  height: 30px;
+  align-items: center;
+}
+
+.pg-switch--inner {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+
+  cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed !important;
+  }
+
+  .switchery {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    display: block;
+    line-height: 1;
+    width: 35px;
+    height: 20px;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 100px;
+    transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;
+  }
+
+  .switchery > small {
+    background-color: #fff;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    top: 1px;
+    pointer-events: none;
+    box-shadow: 0 3px 6px rgba(0,0,0,.3);
+    border-radius: 100px;
+  }
+
+  &.default .switchery {
+    background-color: $primary;
+    border-color: $primary;
+    box-shadow: $primary 0px 0px 0px 12px inset;
+  }
+}

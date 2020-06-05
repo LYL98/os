@@ -1,0 +1,1322 @@
+{
+  "code": 0,
+  "data": [
+    {
+      "child": [],
+      "code": "Home",
+      "created": "2019-07-27 14:55:21",
+      "rank": 0,
+      "remark": "",
+      "title": "地图派单",
+      "updated": "2019-07-27 14:55:21",
+      "upper_code": "",
+      "urls": [
+        "/api/waybill/assign",
+        "/api/waybill/assign/auto"
+      ]
+    },
+    {
+      "child": [],
+      "code": "SendOrder",
+      "created": "2019-10-08 17:47:21",
+      "rank": 1,
+      "remark": "",
+      "title": "列表派单",
+      "updated": "2019-10-08 17:47:21",
+      "upper_code": "",
+      "urls": [
+        "/api/waybill/detail",
+        "/api/common/worker/list",
+        "/api/waybill/list_by_worker",
+        "/api/waybill/assign",
+        "/api/waybill/list_by_worker",
+        "/api//worker/work_status/change"
+      ]
+    },
+    {
+      "child": [],
+      "code": "Watch",
+      "created": "2019-07-27 14:56:38",
+      "rank": 2,
+      "remark": "",
+      "title": "运单监控台",
+      "updated": "2019-07-27 14:56:38",
+      "upper_code": "",
+      "urls": [
+        "/api/waybill/fault/assign",
+        "/api/waybill/driver/statistics/day"
+      ]
+    },
+    {
+      "child": [
+        {
+          "child": [],
+          "code": "ObserveMapWares",
+          "created": "2019-10-17 17:15:04",
+          "rank": 0,
+          "remark": "",
+          "title": "汽配商分布图",
+          "updated": "2019-10-17 17:15:04",
+          "upper_code": "Observe",
+          "urls": []
+        },
+        {
+          "child": [],
+          "code": "ObserveBase",
+          "created": "2019-09-11 18:02:22",
+          "rank": 1,
+          "remark": "",
+          "title": "基础指标",
+          "updated": "2019-09-11 18:02:22",
+          "upper_code": "Observe",
+          "urls": [
+            "/api/waybill/basic/indicator",
+            "/api/waybill/basic/indicator/graph"
+          ]
+        },
+        {
+          "child": [],
+          "code": "ObserveMapShop",
+          "created": "2019-10-17 17:16:42",
+          "rank": 1,
+          "remark": "",
+          "title": "维修厂分配图",
+          "updated": "2019-10-17 17:16:42",
+          "upper_code": "Observe",
+          "urls": []
+        },
+        {
+          "child": [],
+          "code": "ObserveMap",
+          "created": "2019-09-12 15:26:54",
+          "rank": 2,
+          "remark": "",
+          "title": "热力图",
+          "updated": "2019-09-12 15:26:54",
+          "upper_code": "Observe",
+          "urls": []
+        }
+      ],
+      "code": "Observe",
+      "created": "2019-09-11 18:01:53",
+      "rank": 3,
+      "remark": "",
+      "title": "数据监控台",
+      "updated": "2019-09-11 18:01:53",
+      "upper_code": "",
+      "urls": [
+        "/api/waybill/basic/indicator",
+        "/api/waybill/basic/indicator/graph",
+        "/api/waybill/num/day/graph",
+        "/api/waybill/warehouse/list",
+        "/api/waybill/repair_shop/list"
+      ]
+    },
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "OperationWaybillDetail",
+              "created": "2019-07-22 09:56:10",
+              "rank": 1,
+              "remark": "",
+              "title": "查看详情",
+              "updated": "2019-07-22 09:56:10",
+              "upper_code": "OperationWaybill",
+              "urls": [
+                "/api/waybill/detail"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationWaybillQueryExport",
+              "created": "2019-07-22 09:56:10",
+              "rank": 2,
+              "remark": "",
+              "title": "导出",
+              "updated": "2019-07-22 09:56:10",
+              "upper_code": "OperationWaybill",
+              "urls": [
+                "/api/waybill/query_export"
+              ]
+            }
+          ],
+          "code": "OperationWaybill",
+          "created": "2019-07-18 17:11:25",
+          "rank": 0,
+          "remark": "",
+          "title": "运单管理",
+          "updated": "2019-07-18 17:11:25",
+          "upper_code": "Operation",
+          "urls": [
+            "/api/waybill/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "OperationDistributionAdd",
+              "created": "2019-07-18 17:53:22",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-18 17:53:22",
+              "upper_code": "OperationDistribution",
+              "urls": [
+                "/api/self_warehouse/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationDistributionEdit",
+              "created": "2019-07-18 17:54:05",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-18 17:54:05",
+              "upper_code": "OperationDistribution",
+              "urls": [
+                "/api/self_warehouse/detail",
+                "/api/self_warehouse/edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationDistributionFreeze",
+              "created": "2019-07-18 17:55:40",
+              "rank": 5,
+              "remark": "",
+              "title": "冻结",
+              "updated": "2019-07-18 17:55:40",
+              "upper_code": "OperationDistribution",
+              "urls": [
+                "/api/self_warehouse/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationDistributionUnfreeze",
+              "created": "2019-07-18 17:56:31",
+              "rank": 6,
+              "remark": "",
+              "title": "解冻",
+              "updated": "2019-07-18 17:56:31",
+              "upper_code": "OperationDistribution",
+              "urls": [
+                "/api/self_warehouse/unfreeze"
+              ]
+            }
+          ],
+          "code": "OperationDistribution",
+          "created": "2019-07-18 17:12:07",
+          "rank": 1,
+          "remark": "",
+          "title": "营业部管理",
+          "updated": "2019-07-18 17:12:07",
+          "upper_code": "Operation",
+          "urls": [
+            "/api/self_warehouse/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "OperationRepairAdd",
+              "created": "2019-08-13 09:45:57",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-08-13 09:45:57",
+              "upper_code": "OperationRepair",
+              "urls": [
+                "/api/lib/repair_shop/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationRepairEdit",
+              "created": "2019-08-13 09:46:16",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-08-13 09:46:16",
+              "upper_code": "OperationRepair",
+              "urls": [
+                "/api/lib/repair_shop/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationRepairDelete",
+              "created": "2019-08-13 09:46:35",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-08-13 09:46:35",
+              "upper_code": "OperationRepair",
+              "urls": [
+                "/api/lib/repair_shop/delete"
+              ]
+            }
+          ],
+          "code": "OperationRepair",
+          "created": "2019-08-13 09:44:29",
+          "rank": 2,
+          "remark": "",
+          "title": "维修厂管理",
+          "updated": "2019-08-13 09:44:29",
+          "upper_code": "Operation",
+          "urls": [
+            "/api/lib/repair_shop/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "OperationCouponDetail",
+              "created": "2019-08-29 16:47:58",
+              "rank": 1,
+              "remark": "",
+              "title": "查看",
+              "updated": "2019-08-29 16:47:58",
+              "upper_code": "OperationCoupon",
+              "urls": [
+                "/api/coupon/detail"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationCouponAdd",
+              "created": "2019-08-29 16:11:24",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-08-29 16:11:24",
+              "upper_code": "OperationCoupon",
+              "urls": [
+                "/api/coupon/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationCouponSend",
+              "created": "2019-08-29 16:51:20",
+              "rank": 8,
+              "remark": "",
+              "title": "发券",
+              "updated": "2019-08-29 16:51:20",
+              "upper_code": "OperationCoupon",
+              "urls": [
+                "/api/coupon/send"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationCouponRecord",
+              "created": "2019-08-29 16:54:34",
+              "rank": 9,
+              "remark": "",
+              "title": "发放记录",
+              "updated": "2019-08-29 16:54:34",
+              "upper_code": "OperationCoupon",
+              "urls": [
+                "/api/coupon/detail/query"
+              ]
+            },
+            {
+              "child": [],
+              "code": "OperationCouponStop",
+              "created": "2019-08-29 16:56:37",
+              "rank": 10,
+              "remark": "",
+              "title": "作废",
+              "updated": "2019-08-29 16:56:37",
+              "upper_code": "OperationCoupon",
+              "urls": [
+                "/api/coupon/stop"
+              ]
+            }
+          ],
+          "code": "OperationCoupon",
+          "created": "2019-08-29 16:05:16",
+          "rank": 3,
+          "remark": "",
+          "title": "优惠券管理",
+          "updated": "2019-08-29 16:05:16",
+          "upper_code": "Operation",
+          "urls": [
+            "/api/coupon/query"
+          ]
+        }
+      ],
+      "code": "Operation",
+      "created": "2019-07-18 15:54:50",
+      "rank": 4,
+      "remark": "",
+      "title": "运营管理",
+      "updated": "2019-07-18 15:54:50",
+      "upper_code": "",
+      "urls": []
+    },
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinanceSupplierFinanceDetail",
+              "created": "2019-07-19 14:18:51",
+              "rank": 1,
+              "remark": "",
+              "title": "账户流水",
+              "updated": "2019-07-19 14:18:51",
+              "upper_code": "FinanceSupplierFinance",
+              "urls": [
+                "/api/mer_account/detail/query"
+              ]
+            },
+            {
+              "child": [],
+              "code": "FinanceSupplierFinanceAdd",
+              "created": "2019-07-19 14:12:30",
+              "rank": 2,
+              "remark": "",
+              "title": "充值",
+              "updated": "2019-07-19 14:12:30",
+              "upper_code": "FinanceSupplierFinance",
+              "urls": [
+                "/api/merchant/charge/apply"
+              ]
+            }
+          ],
+          "code": "FinanceSupplierFinance",
+          "created": "2019-07-19 13:56:38",
+          "rank": 0,
+          "remark": "",
+          "title": "汽配商财务",
+          "updated": "2019-07-19 13:56:38",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/merchant/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinanceSupplierApproveReview",
+              "created": "2019-07-19 14:22:54",
+              "rank": 8,
+              "remark": "",
+              "title": "审核",
+              "updated": "2019-07-19 14:22:54",
+              "upper_code": "FinanceSupplierApprove",
+              "urls": [
+                "/api/merchant/charge/review"
+              ]
+            }
+          ],
+          "code": "FinanceSupplierApprove",
+          "created": "2019-07-19 14:09:46",
+          "rank": 1,
+          "remark": "",
+          "title": "汽配商财务审核",
+          "updated": "2019-07-19 14:09:46",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/merchant/charge/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinanceServiceFinanceDetail",
+              "created": "2019-07-19 14:33:45",
+              "rank": 1,
+              "remark": "",
+              "title": "账户流水",
+              "updated": "2019-07-19 14:33:45",
+              "upper_code": "FinanceServiceFinance",
+              "urls": [
+                "/api/worker/account/query"
+              ]
+            },
+            {
+              "child": [],
+              "code": "FinanceServiceFinanceAdd",
+              "created": "2019-07-19 14:31:27",
+              "rank": 2,
+              "remark": "",
+              "title": "充值/扣款",
+              "updated": "2019-07-19 14:31:27",
+              "upper_code": "FinanceServiceFinance",
+              "urls": [
+                "/api/worker/account/operate/add"
+              ]
+            }
+          ],
+          "code": "FinanceServiceFinance",
+          "created": "2019-07-19 14:29:56",
+          "rank": 2,
+          "remark": "",
+          "title": "小狮哥财务",
+          "updated": "2019-07-19 14:29:56",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/worker/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinanceServiceApproveReview",
+              "created": "2019-07-19 14:37:14",
+              "rank": 8,
+              "remark": "",
+              "title": "审核",
+              "updated": "2019-07-19 14:37:14",
+              "upper_code": "FinanceServiceApprove",
+              "urls": [
+                "/api/worker/account/operate/approve"
+              ]
+            }
+          ],
+          "code": "FinanceServiceApprove",
+          "created": "2019-07-19 14:36:04",
+          "rank": 3,
+          "remark": "",
+          "title": "小狮哥财务审核",
+          "updated": "2019-07-19 14:36:04",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/worker/account/operate/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinancePlatformCollExport",
+              "created": "2019-07-19 14:40:28",
+              "rank": 8,
+              "remark": "",
+              "title": "导出",
+              "updated": "2019-07-19 14:40:28",
+              "upper_code": "FinancePlatformColl",
+              "urls": [
+                "/api/company/waybill/query"
+              ]
+            }
+          ],
+          "code": "FinancePlatformColl",
+          "created": "2019-07-19 14:38:43",
+          "rank": 4,
+          "remark": "",
+          "title": "平台代收货款",
+          "updated": "2019-07-19 14:38:43",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/company/coll_fee/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "FinancePlatformFreightExport",
+              "created": "2019-07-19 14:44:39",
+              "rank": 0,
+              "remark": "",
+              "title": "导出",
+              "updated": "2019-07-19 14:44:39",
+              "upper_code": "FinancePlatformFreight",
+              "urls": [
+                "/api/company/waybill/query"
+              ]
+            }
+          ],
+          "code": "FinancePlatformFreight",
+          "created": "2019-07-19 14:42:39",
+          "rank": 5,
+          "remark": "",
+          "title": "平台运费",
+          "updated": "2019-07-19 14:42:39",
+          "upper_code": "Finance",
+          "urls": [
+            "/api/company/deliver_fee/query"
+          ]
+        }
+      ],
+      "code": "Finance",
+      "created": "2019-07-19 13:55:58",
+      "rank": 5,
+      "remark": "",
+      "title": "财务管理",
+      "updated": "2019-07-19 13:55:58",
+      "upper_code": "",
+      "urls": []
+    },
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "UserOperatorAdd",
+              "created": "2019-07-19 14:49:22",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-19 14:49:22",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorEdit",
+              "created": "2019-07-19 14:50:16",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-19 14:50:16",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/detail",
+                "/api/operator/edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorDelete",
+              "created": "2019-10-17 10:48:10",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-10-17 10:48:10",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorFreeze",
+              "created": "2019-07-19 14:51:16",
+              "rank": 5,
+              "remark": "",
+              "title": "冻结",
+              "updated": "2019-07-19 14:51:16",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorUnfreeze",
+              "created": "2019-07-19 14:52:06",
+              "rank": 6,
+              "remark": "",
+              "title": "解冻",
+              "updated": "2019-07-19 14:52:06",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/unfreeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorReset",
+              "created": "2019-07-19 14:53:43",
+              "rank": 7,
+              "remark": "",
+              "title": "重置密码",
+              "updated": "2019-07-19 14:53:43",
+              "upper_code": "UserOperator",
+              "urls": [
+                "/api/operator/password_reset"
+              ]
+            }
+          ],
+          "code": "UserOperator",
+          "created": "2019-07-19 14:46:38",
+          "rank": 0,
+          "remark": "",
+          "title": "运营人员",
+          "updated": "2019-07-19 14:46:38",
+          "upper_code": "User",
+          "urls": [
+            "/api/operator/query",
+            "/api/role/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "UserServiceAdd",
+              "created": "2019-07-19 14:57:51",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-19 14:57:51",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserServiceEdit",
+              "created": "2019-07-19 14:58:11",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-19 14:58:11",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/detail",
+                "/api/worker/edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserServiceDelete",
+              "created": "2019-10-17 10:50:27",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-10-17 10:50:27",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserServiceFreeze",
+              "created": "2019-07-19 14:59:00",
+              "rank": 5,
+              "remark": "",
+              "title": "冻结",
+              "updated": "2019-07-19 14:59:00",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserServiceUnfreeze",
+              "created": "2019-07-19 14:59:39",
+              "rank": 6,
+              "remark": "",
+              "title": "解冻",
+              "updated": "2019-07-19 14:59:39",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/unfreeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserServiceReset",
+              "created": "2019-07-19 15:00:10",
+              "rank": 7,
+              "remark": "",
+              "title": "重置密码",
+              "updated": "2019-07-19 15:00:10",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/password_reset"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserOperatorWorkerStatus",
+              "created": "2019-09-26 14:22:37",
+              "rank": 8,
+              "remark": "",
+              "title": "上下班",
+              "updated": "2019-09-26 14:22:37",
+              "upper_code": "UserService",
+              "urls": [
+                "/api/worker/work_status/change"
+              ]
+            }
+          ],
+          "code": "UserService",
+          "created": "2019-07-19 14:56:54",
+          "rank": 1,
+          "remark": "",
+          "title": "小狮哥",
+          "updated": "2019-07-19 14:56:54",
+          "upper_code": "User",
+          "urls": [
+            "/api/worker/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "UserSupplierAdd",
+              "created": "2019-07-19 15:13:14",
+              "rank": 0,
+              "remark": "",
+              "title": "汽配商新增",
+              "updated": "2019-07-19 15:13:14",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/merchant/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierDetail",
+              "created": "2019-07-19 15:05:49",
+              "rank": 1,
+              "remark": "",
+              "title": "汽配商详情",
+              "updated": "2019-07-19 15:05:49",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/merchant/detail"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierDelete",
+              "created": "2019-10-17 10:52:51",
+              "rank": 2,
+              "remark": "",
+              "title": "汽配商删除",
+              "updated": "2019-10-17 10:52:51",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/merchant/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierFreeze",
+              "created": "2019-07-19 15:02:58",
+              "rank": 3,
+              "remark": "",
+              "title": "汽配商冻结",
+              "updated": "2019-07-19 15:02:58",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/merchant/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierUnfreeze",
+              "created": "2019-07-19 15:03:24",
+              "rank": 3,
+              "remark": "",
+              "title": "汽配商解冻",
+              "updated": "2019-07-19 15:03:24",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/merchant/unfreeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierEdit",
+              "created": "2019-07-19 15:09:32",
+              "rank": 4,
+              "remark": "",
+              "title": "汽配商修改",
+              "updated": "2019-07-19 15:09:32",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api//merchant/detail",
+                "/api/merchant/edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStore",
+              "created": "2019-07-19 15:26:04",
+              "rank": 5,
+              "remark": "",
+              "title": "门店信息",
+              "updated": "2019-07-19 15:26:04",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/warehouse/list"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStoreAdd",
+              "created": "2019-07-19 15:28:08",
+              "rank": 6,
+              "remark": "",
+              "title": "门店添加",
+              "updated": "2019-07-19 15:28:08",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api//warehouse/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStoreEdit",
+              "created": "2019-07-19 15:29:49",
+              "rank": 7,
+              "remark": "",
+              "title": "门店修改",
+              "updated": "2019-07-19 15:29:49",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/warehouse/detail",
+                "/api/warehouse/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStoreDelete",
+              "created": "2019-10-17 10:55:52",
+              "rank": 8,
+              "remark": "",
+              "title": "门店删除",
+              "updated": "2019-10-17 10:55:52",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/warehouse/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStoreFreeze",
+              "created": "2019-07-19 15:30:46",
+              "rank": 9,
+              "remark": "",
+              "title": "门店冻结",
+              "updated": "2019-07-19 15:30:46",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/warehouse/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierStoreUnfreeze",
+              "created": "2019-07-19 15:31:07",
+              "rank": 10,
+              "remark": "",
+              "title": "门店解冻",
+              "updated": "2019-07-19 15:31:07",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/warehouse/unfreeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccount",
+              "created": "2019-07-19 15:32:40",
+              "rank": 11,
+              "remark": "",
+              "title": "用户信息",
+              "updated": "2019-07-19 15:32:40",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/list"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountAdd",
+              "created": "2019-07-19 15:34:09",
+              "rank": 12,
+              "remark": "",
+              "title": "用户添加",
+              "updated": "2019-07-19 15:34:09",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/add"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountEdit",
+              "created": "2019-07-19 15:34:52",
+              "rank": 13,
+              "remark": "",
+              "title": "用户修改",
+              "updated": "2019-07-19 15:34:52",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/detail",
+                "/api/supplier/edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountDelete",
+              "created": "2019-10-17 10:59:27",
+              "rank": 14,
+              "remark": "",
+              "title": "用户删除",
+              "updated": "2019-10-17 10:59:27",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountIsMain",
+              "created": "2019-10-17 10:59:27",
+              "rank": 15,
+              "remark": "",
+              "title": "用户设为主账号",
+              "updated": "2019-10-17 10:59:27",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/is_main"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountFreeze",
+              "created": "2019-07-19 15:36:03",
+              "rank": 16,
+              "remark": "",
+              "title": "用户冻结",
+              "updated": "2019-07-19 15:36:03",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/freeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountUnfreeze",
+              "created": "2019-07-19 15:36:50",
+              "rank": 17,
+              "remark": "",
+              "title": "用户解冻",
+              "updated": "2019-07-19 15:36:50",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/unFreeze"
+              ]
+            },
+            {
+              "child": [],
+              "code": "UserSupplierAccountReset",
+              "created": "2019-07-19 15:37:39",
+              "rank": 18,
+              "remark": "",
+              "title": "用户重置密码",
+              "updated": "2019-07-19 15:37:39",
+              "upper_code": "UserSupplier",
+              "urls": [
+                "/api/supplier/password_reset"
+              ]
+            }
+          ],
+          "code": "UserSupplier",
+          "created": "2019-07-19 15:01:44",
+          "rank": 2,
+          "remark": "",
+          "title": "汽配商",
+          "updated": "2019-07-19 15:01:44",
+          "upper_code": "User",
+          "urls": [
+            "/api/merchant/query"
+          ]
+        }
+      ],
+      "code": "User",
+      "created": "2019-07-19 14:45:56",
+      "rank": 6,
+      "remark": "",
+      "title": "用户管理",
+      "updated": "2019-07-19 14:45:56",
+      "upper_code": "",
+      "urls": []
+    },
+    {
+      "child": [
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "SystemRoleAdd",
+              "created": "2019-07-19 15:42:24",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-19 15:42:24",
+              "upper_code": "SystemRole",
+              "urls": [
+                "/api/role/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemRoleEdit",
+              "created": "2019-07-19 15:42:59",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-19 15:42:59",
+              "upper_code": "SystemRole",
+              "urls": [
+                "/api/role/detail",
+                "/api/role/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemRoleDelete",
+              "created": "2019-07-19 15:44:03",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-07-19 15:44:03",
+              "upper_code": "SystemRole",
+              "urls": [
+                "/api/role/delete"
+              ]
+            }
+          ],
+          "code": "SystemRole",
+          "created": "2019-07-19 15:40:56",
+          "rank": 0,
+          "remark": "",
+          "title": "角色设置",
+          "updated": "2019-07-19 15:40:56",
+          "upper_code": "System",
+          "urls": [
+            "/api/role/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "SystemConstantEdit",
+              "created": "2019-07-19 15:47:04",
+              "rank": 3,
+              "remark": "",
+              "title": "常量修改",
+              "updated": "2019-07-19 15:47:04",
+              "upper_code": "SystemConstant",
+              "urls": [
+                "/api/constant/update"
+              ]
+            }
+          ],
+          "code": "SystemConstant",
+          "created": "2019-07-19 15:45:15",
+          "rank": 1,
+          "remark": "",
+          "title": "基础信息",
+          "updated": "2019-07-19 15:45:15",
+          "upper_code": "System",
+          "urls": [
+            "/api/constant/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "SystemOperateTimeEdit",
+              "created": "2019-07-23 15:11:08",
+              "rank": 0,
+              "remark": "",
+              "title": "运营时间设置",
+              "updated": "2019-07-23 15:11:08",
+              "upper_code": "SystemOperate",
+              "urls": [
+                "/api/constant/update"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemOperateAdd",
+              "created": "2019-07-23 11:51:34",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-23 11:51:34",
+              "upper_code": "SystemOperate",
+              "urls": [
+                "/api/common/customer_service/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemOperateEdit",
+              "created": "2019-07-23 13:47:26",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-23 13:47:26",
+              "upper_code": "SystemOperate",
+              "urls": [
+                "/api/common/customer_service/query",
+                "/api/common/customer_service/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemOperateDelete",
+              "created": "2019-07-23 13:47:59",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-07-23 13:47:59",
+              "upper_code": "SystemOperate",
+              "urls": [
+                "/api/common/customer_service/delete"
+              ]
+            }
+          ],
+          "code": "SystemOperate",
+          "created": "2019-07-23 11:45:09",
+          "rank": 2,
+          "remark": "",
+          "title": "运营设置",
+          "updated": "2019-07-23 11:45:09",
+          "upper_code": "System",
+          "urls": [
+            "/api/constant/list",
+            "/api/common/customer_service/query"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "SystemAuthEdit",
+              "created": "2019-07-19 15:50:05",
+              "rank": 3,
+              "remark": "",
+              "title": "权限修改",
+              "updated": "2019-07-19 15:50:05",
+              "upper_code": "SystemAuth",
+              "urls": [
+                "/api/role/add_edit"
+              ]
+            }
+          ],
+          "code": "SystemAuth",
+          "created": "2019-07-19 15:48:44",
+          "rank": 3,
+          "remark": "",
+          "title": "权限设置",
+          "updated": "2019-07-19 15:48:44",
+          "upper_code": "System",
+          "urls": [
+            "/api/permission/tree"
+          ]
+        },
+        {
+          "child": [
+            {
+              "child": [],
+              "code": "SystemAppAdd",
+              "created": "2019-07-22 17:42:00",
+              "rank": 2,
+              "remark": "",
+              "title": "新增",
+              "updated": "2019-07-22 17:42:00",
+              "upper_code": "SystemApp",
+              "urls": [
+                "/api/version/detail",
+                "/api/version/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemAppEdit",
+              "created": "2019-07-22 17:44:35",
+              "rank": 3,
+              "remark": "",
+              "title": "修改",
+              "updated": "2019-07-22 17:44:35",
+              "upper_code": "SystemApp",
+              "urls": [
+                "/api/version/add_edit"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemAppDelete",
+              "created": "2019-07-22 17:45:10",
+              "rank": 4,
+              "remark": "",
+              "title": "删除",
+              "updated": "2019-07-22 17:45:10",
+              "upper_code": "SystemApp",
+              "urls": [
+                "/api/version/delete"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemAppPublish",
+              "created": "2019-07-22 17:48:38",
+              "rank": 9,
+              "remark": "",
+              "title": "发布",
+              "updated": "2019-07-22 17:48:38",
+              "upper_code": "SystemApp",
+              "urls": [
+                "/api/version/publish"
+              ]
+            },
+            {
+              "child": [],
+              "code": "SystemAppDownload",
+              "created": "2019-07-22 17:49:49",
+              "rank": 10,
+              "remark": "",
+              "title": "下载",
+              "updated": "2019-07-22 17:49:49",
+              "upper_code": "SystemApp",
+              "urls": []
+            }
+          ],
+          "code": "SystemApp",
+          "created": "2019-07-22 17:40:04",
+          "rank": 4,
+          "remark": "",
+          "title": "app版本管理",
+          "updated": "2019-07-22 17:40:04",
+          "upper_code": "System",
+          "urls": [
+            "/api/version/list"
+          ]
+        }
+      ],
+      "code": "System",
+      "created": "2019-07-19 15:40:09",
+      "rank": 7,
+      "remark": "",
+      "title": "系统管理",
+      "updated": "2019-07-19 15:40:09",
+      "upper_code": "",
+      "urls": []
+    }
+  ]
+}

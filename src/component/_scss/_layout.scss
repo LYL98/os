@@ -1,0 +1,54 @@
+.pg-app {
+  background-color: #f2f2f2 !important;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.main {
+  display: flex;
+  min-height: calc(100vh - 50px);
+  background-color: #f2f2f2;
+}
+
+.pg-page {
+
+}
+
+.pg-page-header {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: #FFF;
+  border-bottom: 1px solid #ddd;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.pg-page-content {
+  padding: 20px;
+}
+
+.pg-page-footer {
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: #FFF;
+  box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.1);
+
+  &.fixed {
+    position: fixed;
+    bottom: 0;
+    left: 200px;
+    right: 0;
+  }
+
+  &.fixed::before {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    height: 50px;
+  }
+
+}

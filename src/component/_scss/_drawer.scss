@@ -1,0 +1,62 @@
+.pg-drawer-wrapper {
+  position: fixed;
+  z-index: $z-index-modal;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgba($black, .5);
+
+  padding-right: 18px;
+  margin-right: -18px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.pg-drawer {
+  margin: auto;
+  background-color: $white;
+  box-shadow: 1px 1.73px 20px 0 rgba(0,0,0,.2);
+  min-width: 400px;
+  height: auto;
+
+  .header {
+    position: relative;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+
+    .title {
+      padding-top: 10px;
+      color: $dark;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bolder;
+    }
+
+  }
+
+  .body {
+    margin: 10px 20px 20px;
+  }
+
+}
+
+.pg-drawer.right {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  min-width: 100px;
+  border-radius: 0;
+  transition: right .25s ease-in-out;
+
+  .header {
+    text-align: left;
+  }
+}

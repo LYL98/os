@@ -1,0 +1,77 @@
+.timer-popper-wrapper {
+
+  background: $white;
+  box-shadow: 0 0 3px 0 rgba(0,0,0,0.20);
+
+  .enter-button {
+    display: block;
+    line-height: 34px;
+    font-size: $font-size-sm;
+    text-align: center;
+    background-color: #f9f9f9;
+    width: 100%;
+    color: $secondary;
+    cursor: pointer;
+    user-select: none;
+
+    transition: background-color .2s ease-in-out;
+
+    &:hover {
+      background-color: #f6f6f6;
+    }
+  }
+}
+
+.pg-time-picker {
+  .icon-alarm {
+    padding-right: 8px;
+    padding-left: 3px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bolder;
+  }
+}
+
+.pg-timer {
+
+  display: flex;
+  align-items: flex-start;
+  //min-width: 220px;
+
+  ul {
+    max-height: 210px;
+    padding-bottom: 180px;
+    flex-grow: 1;
+    font-size: $font-size-sm;
+    min-width: 50px;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    cursor: pointer;
+    overflow-y: auto;
+
+    //overflow-y: hidden;
+    //&:hover {
+    //  overflow-y: auto;
+    //}
+
+    li {
+      line-height: 30px;
+      padding-left: 10px;
+      transition: color .2s ease-in-out, background-color .2s ease-in-out;
+
+      &.active {
+        color: $white;
+        background-color: $primary;
+      }
+
+      &:hover:not(.active) {
+        background-color: #f2f2f2;
+      }
+    }
+
+  }
+
+  ul + ul {
+    border-left: 1px solid #f2f2f2;
+  }
+}

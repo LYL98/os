@@ -1,0 +1,147 @@
+.pg-checkbox, .wo-radio {
+  display: flex;
+  align-items: center;
+
+  & > .toggle {
+    cursor: pointer;
+    background-color: $white;
+    transition: border-color .15s ease, background-color .15s ease;
+  }
+
+  & > label {
+
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 0 5px 0 10px;
+    margin-bottom: 0;
+    user-select: none;
+  }
+
+  &.checked {
+    & > .toggle {
+      background-color: $primary;
+      border-color: $primary;
+      position: relative;
+
+      &:before {
+        content: '\e372';
+        font-family: "icomoon", serif !important;
+        font-style: normal;
+        font-size: 16px;
+        left: -0.5px;
+        top: -5px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #FFF;
+        position: absolute;
+      }
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+
+    & > .toggle {
+      border-color: $secondary;
+      background-color: $secondary;
+      cursor: not-allowed;
+    }
+
+    & > label {
+      cursor: not-allowed;
+      color: $secondary;
+    }
+  }
+
+  &.disabled:active {
+    pointer-events: none;
+  }
+}
+
+.pg-checkbox > .icon-indeterminate {
+  color: $primary !important;
+}
+
+.pg-checkbox > .toggle {
+  padding: 7px;
+  border: $border-width solid $secondary;
+  &:before {
+    top: -2px;
+    left: 0;
+  }
+}
+
+.pg-radio > .toggle {
+  border-radius: $rounded-round;
+  padding: 6px;
+  border: $border-width * 2 solid $primary;
+  &:before {
+    top: -3px;
+    left: -1px;
+  }
+}
+
+.pg-checkbox + .pg-checkbox {
+  margin-top: 12px;
+}
+.pg-radio + .pg-radio {
+  margin-top: 12px;
+}
+
+ul.pg-checkbox,
+ul.pg-checkbox-group,
+ul.pg-radio,
+ul.pg-radio-group {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.pg-checkbox-group.inline,
+.pg-radio-group.inline {
+  display: flex;
+  .pg-checkbox + .pg-checkbox {
+    margin-left: 20px;
+    margin-top: 0;
+  }
+  .pg-radio + .pg-radio {
+    margin-left: 20px;
+    margin-top: 0;
+  }
+}
+
+// border 样式 只在 radio-group 且 inline 模式下有效，组件内部会做判断
+
+.pg-radio.border {
+  cursor: pointer;
+  border: $border-width solid $secondary;
+  border-radius: $border-radius-base;
+  padding: 6px;
+  transition: border-color .2s ease, background-color .2s ease;
+
+  &:hover {
+    background-color: darken($white, 2%);
+  }
+
+  & > .toggle {
+    border-color: $secondary;
+  }
+
+  &.checked {
+    border-color: $primary;
+    & > .toggle {
+      border-color: $primary;
+    }
+  }
+
+  &.disabled {
+    border-color: $secondary;
+  }
+
+}
+
+.pg-radio-group.inline {
+  .pg-radio.border + .pg-radio.border {
+    margin-left: 30px;
+  }
+}

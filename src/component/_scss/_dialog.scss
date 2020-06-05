@@ -1,0 +1,79 @@
+@keyframes zoomIn {
+  from {
+    transform: scale(0.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+.pg-dialog-wrapper {
+  position: fixed;
+  z-index: $z-index-modal;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: rgba($black, .5);
+
+  padding-right: 18px;
+  margin-right: -18px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.pg-dialog {
+  margin: auto;
+  background-color: $white;
+  box-shadow: 1px 1.73px 20px 0 rgba(0,0,0,.2);
+  min-width: 400px;
+  height: auto;
+
+  .header {
+    position: relative;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+      padding-top: 10px;
+      color: $dark;
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bolder;
+    }
+
+
+  }
+
+  .body {
+    margin: 10px 20px 20px;
+  }
+
+
+}
+
+
+.pg-dialog.center {
+  animation: zoomIn .2s forwards;
+  &.closing {
+    animation: zoomOut .5s forwards;
+  }
+}

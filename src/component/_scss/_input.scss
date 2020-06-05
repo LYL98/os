@@ -1,0 +1,11 @@
+label {
+  margin-bottom: 0;
+}
+
+.pg-form-control input {
+  border: none !important;
+  background-color: transparent;
+  flex-grow: 1;
+  min-width: 10px;
+  padding: 0 10px;
+}

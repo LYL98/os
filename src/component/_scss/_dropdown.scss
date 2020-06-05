@@ -1,0 +1,73 @@
+.dropdown-box {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  min-width: 30px;
+  max-height: 260px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.dropdown-box .filter {
+  padding: 5px 0;
+
+  .pg-form-control {
+    input {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    &:focus-within {
+      border-bottom-color: #bbb;
+    }
+  }
+
+  .pg-search {
+    .icon-cancel-circle2 {
+      margin-right: 5px;
+    }
+  }
+}
+
+.dropdown-box .filter-feedback {
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: $font-size-sm;
+  color: #999;
+}
+
+.dropdown-list {
+  padding: 0;
+  list-style: none;
+  max-height: 165px;
+  overflow-y: auto;
+  margin-bottom: 0;
+}
+
+.dropdown-list > li {
+  margin-bottom: 0;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  padding: 6px 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000;
+  display: block;
+  cursor: pointer;
+
+  transition: background-color .3s ease-in-out;
+
+  &.active {
+    background-color: $primary;
+    color: $white;
+  }
+}
+
+.dropdown-list > li:hover:not(.active) {
+  background-color: #f2f2f2;
+}
+
+.dropdown-list > li > .dropdown-list {
+  padding: 10px 0;
+}

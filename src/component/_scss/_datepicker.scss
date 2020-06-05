@@ -1,0 +1,215 @@
+
+.pg-table-calendar {
+  width: 100%;
+  min-width: 212px;
+  margin: 0;
+
+  font-size: $font-size-sm;
+
+  tr > th,
+  tr > td {
+    padding: 5px;
+    min-width: 30px;
+    font-weight: $font-weight-base;
+    transition: all ease-in-out 0.15s;
+    user-select: none;
+  }
+
+  tbody th,
+  tbody td {
+    cursor: pointer;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+    text-align: center;
+
+    .week {
+      font-size: 80%;
+      color: #999;
+    }
+
+  }
+
+  th {
+    color: $dark;
+    font-size: $font-size-md;
+
+    &.month {
+      font-weight: $font-weight-bolder;
+    }
+
+    &.prev,
+    &.next {
+      cursor: pointer;
+      i {
+        transition: color .35s ease;
+      }
+    }
+
+    &.available {
+      border-radius: $border-radius-base;
+
+      &:hover,
+      &:focus {
+        background-color: darken($white, 4%);
+      }
+    }
+  }
+
+
+  td {
+
+    &.available {
+      border-radius: $border-radius-base;
+
+      &:not(.disabled):not(.range):hover,
+      &:not(.disabled):not(.range):focus {
+        background-color: darken($white, 4%);
+      }
+    }
+
+    &.off,
+    &.disabled {
+      color: $secondary;
+      background-color: #FFF !important;
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+
+      &:active {
+        pointer-events: none;
+      }
+    }
+
+    &.range {
+      background-color: #d5e7ff;
+      border-radius: 0;
+    }
+
+    &.active {
+      color: $white;
+      background-color: $primary;
+
+      &:hover,
+      &:focus {
+        color: $white!important;
+        background-color: lighten($primary, 10%)!important;
+      }
+    }
+  }
+
+}
+
+.pg-datepicker-wrapper {
+
+  .quick-range {
+    display: inline-flex;
+  }
+
+  .pg-button {
+    min-width: 60px;
+    margin-right: -1px;
+  }
+
+  .pg-picker,
+  .pg-picker :read-only {
+    cursor: pointer;
+
+  }
+}
+
+.pg-daterangepicker {
+  display: inline-flex;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+
+  .pg-calendar:first-child .pg-table-calendar .next,
+  .pg-calendar:last-child .pg-table-calendar .prev {
+    visibility: hidden;
+  }
+
+  .calendars {
+    display: flex;
+    padding: 10px 15px;
+
+    .pg-calendar + .pg-calendar {
+      margin-left: 35px;
+    }
+  }
+
+  .panel {
+    flex-grow: 1;
+
+    .timers {
+      display: flex;
+      min-width: 489px;
+      height: 246px;
+    }
+  }
+
+}
+
+.pg-datepicker {
+  width: 100%;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+
+  .calendars,
+  .pg-calendar,
+  .pg-table-calendar {
+    width: 100%;
+  }
+
+  .calendars {
+    display: flex;
+    padding: 10px 15px;
+
+    .pg-calendar + .pg-calendar {
+      margin-left: 35px;
+    }
+  }
+
+  .panel {
+    flex-grow: 1;
+  }
+
+}
+
+.pg-daterangepicker,
+.pg-datepicker {
+  .timer {
+    flex-grow: 1;
+
+    .day {
+      text-align: center;
+      height: 35px;
+      line-height: 35px;
+      margin-bottom: 0;
+      font-size: $font-size-md;
+      font-weight: $font-weight-bolder;
+      border-bottom: $border-width solid #f2f2f2;
+    }
+  }
+
+  .timer + .timer {
+    border-left: $border-width * 2 solid #f2f2f2;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    min-width: 100%;
+    border-top: $border-width solid $secondary;
+    padding: 15px 20px;
+
+    button + button {
+      margin-left: 20px;
+    }
+  }
+}
+

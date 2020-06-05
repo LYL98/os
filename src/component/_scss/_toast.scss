@@ -1,0 +1,66 @@
+.pg-toast-wrapper {
+  position: fixed;
+  z-index: $z-index-toast;
+  left: 50%;
+  top: 0;
+  bottom: auto;
+  transform: translate(-50%);
+
+  display: flex !important;
+  align-items: center;
+  flex-direction: column;
+
+  overflow: hidden;
+  padding: 0 20px 20px;
+  pointer-events: none;
+
+}
+
+.pg-toast {
+  display: flex;
+  align-items: center;
+  position: relative !important;
+  margin: 10px 0 0;
+  padding: 0 5px 0 15px;
+  pointer-events: all;
+  outline: none;
+  min-width: 77px;
+
+  background-color: $white;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+  font-size: $font-size-base;
+  height: 35px;
+  line-height: 35px;
+  overflow: hidden;
+  word-break: break-all;
+  word-wrap: break-word;
+  font-weight: 500;
+
+  .content {
+    flex: 1 1 auto;
+    padding: 11px;
+    word-break: break-word;
+  }
+
+  [class*=" icon-"],
+  [class^="icon-"] {
+    font-size: 20px;
+  }
+
+  //&.primary {
+  //  color: $primary;
+  //}
+  //
+  //&.success {
+  //  color: $success;
+  //}
+  //
+  //&.warning {
+  //  color: $warning;
+  //}
+  //
+  //&.danger {
+  //  color: $danger;
+  //}
+
+}

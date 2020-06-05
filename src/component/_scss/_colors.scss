@@ -1,0 +1,244 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Custom template mixins
+ *
+ *  All custom mixins are prefixed with "ll-" to avoid conflicts
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+// Colors (for color system)
+//
+
+// For .bg-* classes
+@mixin ll-background-variant($color) {
+  background-color: $color;
+}
+
+// For .text-* classes
+@mixin ll-text-color-variant($color) {
+  color: $color;
+
+  // Darken link color on hover
+  &[href] {
+    @include hover-focus {
+      color: darken($color, 7.5%);
+    }
+  }
+}
+
+// For .border-* classes
+@mixin ll-border-color-variant($color) {
+  border-color: $color;
+}
+
+// For .border-top-* classes
+@mixin ll-border-top-color-variant($color) {
+  border-top-color: $color;
+}
+
+// For .border-bottom-* classes
+@mixin ll-border-bottom-color-variant($color) {
+  border-bottom-color: $color;
+}
+
+// For .border-left-* classes
+@mixin ll-border-left-color-variant($color) {
+  border-left-color: $color;
+}
+
+// For .border-right-* classes
+@mixin ll-border-right-color-variant($color) {
+  border-right-color: $color;
+}
+
+
+/* ------------------------------------------------------------------------------
+ *
+ *  # Custom color system
+ *
+ *  Custom color system styles. Includes background, border and text colors
+ *
+ * ---------------------------------------------------------------------------- */
+
+
+//
+// Create color map
+//
+
+$theme-colors: (
+    primary: (
+        50: $primary,
+    ),
+    secondary: (
+        50: $secondary,
+    ),
+    dark: (
+        50: $dark,
+    ),
+    success: (
+        50: $success,
+    ),
+    warning: (
+        50: $warning,
+    ),
+    danger: (
+        50: $danger,
+    )
+);
+
+//
+// Generate class names
+//
+
+// 50 (alpha) and 500 (main) shades
+@each $color-key, $color-variants in $theme-colors {
+
+  //
+  // Access color variants and values
+  //
+
+  @each $variant-name, $variant-value in $color-variants {
+
+    @if $variant-name == 50 {
+
+      .text-#{$color-key} {
+        @include ll-text-color-variant($variant-value);
+      }
+
+      // Generate .bg-*-* classes
+      .bg-#{$color-key} {
+        @include ll-background-variant($variant-value);
+      }
+
+      // Generate .border-*-* classes
+      .border-#{$color-key} {
+        @include ll-border-color-variant($variant-value);
+      }
+
+      // Generate .border-top-*-* classes
+      .border-top-#{$color-key} {
+        @include ll-border-top-color-variant($variant-value);
+      }
+
+      // Generate .border-bottom-*-* classes
+      .border-bottom-#{$color-key} {
+        @include ll-border-bottom-color-variant($variant-value);
+      }
+
+      // Generate .border-left-*-* classes
+      .border-left-#{$color-key} {
+        @include ll-border-left-color-variant($variant-value);
+      }
+
+      // Generate .border-right-*-* classes
+      .border-right-#{$color-key} {
+        @include ll-border-right-color-variant($variant-value);
+      }
+
+    } @else {
+
+      $shade-color-value: map-get($color-variants, $variant-name);
+
+      .text-#{$color-key}-#{$variant-name} {
+        @include ll-text-color-variant($shade-color-value);
+      }
+
+      // Generate .bg-*-* classes
+      .bg-#{$color-key}-#{$variant-name} {
+        @include ll-background-variant($shade-color-value);
+      }
+
+      // Generate .border-*-* classes
+      .border-#{$color-key}-#{$variant-name} {
+        @include ll-border-color-variant($shade-color-value);
+      }
+
+      // Generate .border-top-*-* classes
+      .border-top-#{$color-key}-#{$variant-name} {
+        @include ll-border-top-color-variant($shade-color-value);
+      }
+
+      // Generate .border-bottom-*-* classes
+      .border-bottom-#{$color-key}-#{$variant-name} {
+        @include ll-border-bottom-color-variant($shade-color-value);
+      }
+
+      // Generate .border-left-*-* classes
+      .border-left-#{$color-key}-#{$variant-name} {
+        @include ll-border-left-color-variant($shade-color-value);
+      }
+
+      // Generate .border-right-*-* classes
+      .border-right-#{$color-key}-#{$variant-name} {
+        @include ll-border-right-color-variant($shade-color-value);
+      }
+
+    }
+
+  }
+}
+
+
+//
+// Other color classes
+//
+
+// Transparent border
+.border-transparent {
+  border-color: transparent !important;
+}
+.border-top-transparent {
+  border-top-color: transparent !important;
+}
+.border-bottom-transparent {
+  border-bottom-color: transparent !important;
+}
+.border-left-transparent {
+  border-left-color: transparent !important;
+}
+.border-right-transparent {
+  border-right-color: transparent !important;
+}
+
+// Light border color on dark background
+.border-light-alpha {
+  @include ll-border-color-variant(rgba($white, 0.1));
+}
+.border-top-light-alpha {
+  @include ll-border-top-color-variant(rgba($white, 0.1));
+}
+.border-bottom-light-alpha {
+  @include ll-border-bottom-color-variant(rgba($white, 0.1));
+}
+.border-left-light-alpha {
+  @include ll-border-left-color-variant(rgba($white, 0.1));
+}
+.border-right-light-alpha {
+  @include ll-border-right-color-variant(rgba($white, 0.1));
+}
+
+// Dark border color on light background
+.border-dark-alpha {
+  @include ll-border-color-variant(rgba($black, 0.1));
+}
+.border-top-dark-alpha {
+  @include ll-border-top-color-variant(rgba($black, 0.1));
+}
+.border-bottom-dark-alpha {
+  @include ll-border-bottom-color-variant(rgba($black, 0.1));
+}
+.border-left-dark-alpha {
+  @include ll-border-left-color-variant(rgba($black, 0.1));
+}
+.border-right-dark-alpha {
+  @include ll-border-right-color-variant(rgba($black, 0.1));
+}
+
+// Background color with transparency
+.bg-dark-alpha {
+  @include ll-background-variant(rgba($black, 0.2));
+}
+.bg-light-alpha {
+  @include ll-background-variant(rgba($white, 0.1));
+}

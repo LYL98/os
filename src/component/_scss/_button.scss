@@ -1,0 +1,223 @@
+// Button sizes
+@mixin button-size($font-size, $height, $padding-x, $min-width) {
+  font-size: $font-size;
+  height: $height;
+  line-height: $height - $border-width * 2;
+  min-width: $min-width;
+  padding: 0 $padding-x;
+}
+
+// Button colors
+@mixin button-color($font-color, $color) {
+  color: $font-color;
+  background-color: $color;
+  border: $border-width solid $color;
+
+  &:hover {
+    background-color: darken($color, 5);
+    border-color: darken($color, 5);
+  }
+
+  &:active {
+    background-color: darken($color, 10);
+    border-color: darken($color, 10);
+  }
+}
+
+@mixin button-outline-color($font-color, $color, $hover-color) {
+  color: $font-color;
+  background-color: $color;
+  border: $border-width solid $font-color;
+
+  &:hover {
+    background-color: lighten($hover-color, 45);
+  }
+
+  &:active {
+    background-color: lighten($hover-color, 40);
+  }
+}
+
+@mixin button-flat-color($font-color) {
+  color: $font-color;
+  background-color: transparent;
+  border: $border-width solid transparent;
+
+  &:hover {
+    background-color: darken($white, 5);
+  }
+
+  &:active {
+    background-color: darken($white, 8);
+  }
+
+  &[disabled] {
+    color: #bbb !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+}
+
+.pg-button,
+.pg-button.secondary.outline {
+  text-align: center;
+  box-sizing: border-box;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  transition: all .3s ease-in-out;
+
+  outline: 0 none;
+  &:focus {
+    outline: none;
+  }
+
+  // size
+  @include button-size($font-size-base, $form-item-height-base, 16px, 24px);
+
+  &.sm {
+    @include button-size($font-size-sm, $form-item-height-sm, 12px, 20px);
+  }
+
+  &.lg {
+    @include button-size($font-size-lg, $form-item-height-lg, 20px, 28px);
+  }
+
+  // color
+  color: $dark;
+  border: $border-width solid $border-color;
+  background-color: $white;
+
+  &:hover {
+    background-color: darken($white, 5);
+  }
+
+  &:active {
+    background-color: darken($white, 8);
+  }
+
+  &[disabled] {
+    border-color: #ddd !important;
+    background-color: #fff !important;
+    color: #bbb !important;
+    cursor: not-allowed;
+  }
+
+  &.loading {
+    cursor: progress;
+  }
+}
+
+.pg-button.flat {
+  @include button-flat-color($dark);
+}
+
+.pg-button.square,
+.pg-button.circle {
+  width: $form-item-height-base;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+
+  &.sm {
+    width: $form-item-height-sm;
+  }
+
+  &.lg {
+    width: $form-item-height-lg;
+  }
+}
+
+.pg-button.circle {
+  border-radius: 50%;
+}
+
+.pg-button.round {
+  border-radius: 999px;
+}
+
+.pg-button.block {
+  display: block;
+  width: 100%;
+}
+
+.pg-button.primary {
+  @include button-color($white, $primary);
+}
+.pg-button.primary.outline {
+  @include button-outline-color($primary, $white, $primary);
+}
+.pg-button.primary.flat {
+  @include button-flat-color($primary);
+}
+
+.pg-button.secondary {
+  @include button-color($dark, lighten($secondary, 10));
+}
+.pg-button.secondary.flat {
+  @include button-flat-color($dark);
+}
+
+.pg-button.warning {
+  @include button-color($white, $warning);
+}
+.pg-button.warning.outline {
+  @include button-outline-color($warning, $white, $warning);
+}
+.pg-button.warning.flat {
+  @include button-flat-color($warning);
+}
+
+.pg-button.danger {
+  @include button-color($white, $danger);
+}
+.pg-button.danger.outline {
+  @include button-outline-color($danger, $white, darken($danger, 8));
+}
+.pg-button.danger.flat {
+  @include button-flat-color($danger);
+}
+
+.pg-button.success {
+  @include button-color($white, $success);
+}
+.pg-button.success.outline {
+  @include button-outline-color($success, $white, darken($success, 5));
+}
+.pg-button.success.flat {
+  @include button-flat-color($success);
+}
+
+/**
+ * button-group component remove effect
+ */
+
+.pg-button-group {
+  min-width: $form-item-width-base;
+  display: inline-flex;
+
+  & > .pg-button {
+    flex: 1;
+
+    & {
+      font-size: $font-size-base !important;
+    }
+
+    &.sm {
+      font-size: $font-size-sm !important;
+    }
+
+    &.lg {
+      font-size: $font-size-lg !important;
+    }
+  }
+
+  &.basis-auto > .pg-button {
+    flex-basis: auto;
+  }
+
+  & > .pg-button:not(:first-child) {
+    margin-left: -1px;
+  }
+}
+

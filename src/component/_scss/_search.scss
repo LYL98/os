@@ -1,0 +1,60 @@
+.pg-search {
+  position: relative;
+}
+
+.pg-search .pg-form-control {
+  width: 100%;
+}
+
+.pg-search .icon-search4 {
+  font-size: 14px;
+  transition: color 0.3s ease-in-out;
+
+  &.lg {
+    font-size: 16px;
+  }
+
+  &.sm {
+    font-size: 13px;
+  }
+}
+
+.pg-search:focus-within {
+  //.icon-search4.immediate {
+  //  color: $primary;
+  //}
+
+  //.pg-search-result {
+  //  display: block;
+  //}
+}
+
+.pg-search-result {
+  //display: none;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  border: 1px solid #ddd;
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 10;
+  margin-top: 4px;
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 0;
+  margin-left: 0;
+  cursor: pointer;
+
+  li {
+    color: #888;
+    font-size: 12px;
+    padding-left: 10px;
+    line-height: 29px;
+    transition: color .3s ease-in-out;
+
+    &.empty,
+    &:hover {
+      background-color: #f2f2f2;
+    }
+  }
+}

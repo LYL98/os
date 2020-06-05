@@ -1,0 +1,517 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Helper classes
+ *
+ *  Custom helper classes used in the template.
+ *
+ * ---------------------------------------------------------------------------- */
+
+// $cursor-disabled
+// $border-radius-round
+
+
+// Content helpers
+// -------------------------
+
+// Font size
+
+.font-size-lg {
+  font-size: $font-size-lg;
+}
+
+.font-size-base {
+  font-size: $font-size-base;
+}
+
+.font-size-sm {
+  font-size: $font-size-sm;
+}
+
+
+// Font weight
+.font-weight-bolder {
+  font-weight: $font-weight-bolder;
+}
+
+.font-weight-bold {
+  font-weight: $font-weight-bold;
+}
+
+.font-weight-normal, .font-weight-base {
+  font-weight: $font-weight-normal;
+}
+
+.font-weight-light {
+  font-weight: $font-weight-light;
+}
+
+.font-weight-lighter {
+  font-weight: $font-weight-lighter;
+}
+
+// Line height
+
+.line-height-lg {
+  line-height: $line-height-lg;
+}
+
+.line-height-base {
+  line-height: $line-height-base;
+}
+
+.line-height-sm {
+  line-height: $line-height-sm;
+}
+
+.line-height-1 {
+  line-height: $line-height-none;
+}
+
+// Text
+.text-monospace {
+  font-family: $font-family-monospace;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.text-wrap {
+  white-space: normal !important;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+// Opacity
+.opacity-75 {
+  opacity: 0.75;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-25 {
+  opacity: 0.25;
+}
+
+.opacity-0 {
+  opacity: 0;
+}
+
+// Edges
+.top {
+  &-0 {
+    top: 0;
+  }
+
+  &-auto {
+    top: auto;
+  }
+}
+
+.bottom {
+  &-0 {
+    bottom: 0;
+  }
+
+  &-auto {
+    bottom: auto;
+  }
+}
+
+.left {
+  &-0 {
+    left: 0;
+  }
+
+  &-auto {
+    left: auto;
+  }
+}
+
+.right {
+  &-0 {
+    right: 0;
+  }
+
+  &-auto {
+    right: auto;
+  }
+}
+
+// Cursors
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-move {
+  cursor: move;
+}
+
+.cursor-default {
+  cursor: default;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+// Overflow
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-visible {
+  overflow: visible;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+// Borders
+// -------------------------
+
+// Set border width to 0
+.border-width-0 {
+  border-width: 0;
+}
+
+// Vertical borders
+.border-y-0 {
+  border-top: 0 !important;
+  border-bottom: 0 !important;
+}
+
+// Horizontal borders
+.border-x-0 {
+  border-left: 0 !important;
+  border-right: 0 !important;
+}
+
+.divider {
+  background-color: #F2F2F2;
+  height: 1px;
+  width: 100%;
+}
+
+//
+// Border widths
+//
+
+// Default border width
+.border-1 {
+  border: $border-width solid;
+}
+
+.border-top-1 {
+  border-top: $border-width solid;
+}
+
+.border-bottom-1 {
+  border-bottom: $border-width solid;
+}
+
+.border-left-1 {
+  border-left: $border-width solid;
+}
+
+.border-right-1 {
+  border-right: $border-width solid;
+}
+
+.border-y-1 {
+  border-top: $border-width solid;
+  border-bottom: $border-width solid;
+}
+
+.border-x-1 {
+  border-left: $border-width solid;
+  border-right: $border-width solid;
+}
+
+// Double border
+.border-2 {
+  border: ($border-width * 2) solid;
+}
+
+.border-top-2 {
+  border-top: ($border-width * 2) solid;
+}
+
+.border-bottom-2 {
+  border-bottom: ($border-width * 2) solid;
+}
+
+.border-left-2 {
+  border-left: ($border-width * 2) solid;
+}
+
+.border-right-2 {
+  border-right: ($border-width * 2) solid;
+}
+
+.border-y-2 {
+  border-top: ($border-width * 2) solid;
+  border-bottom: ($border-width * 2) solid;
+}
+
+.border-x-2 {
+  border-left: ($border-width * 2) solid;
+  border-right: ($border-width * 2) solid;
+}
+
+// Tripple border
+.border-3 {
+  border: ($border-width * 3) solid;
+}
+
+.border-top-3 {
+  border-top: ($border-width * 3) solid;
+}
+
+.border-bottom-3 {
+  border-bottom: ($border-width * 3) solid;
+}
+
+.border-left-3 {
+  border-left: ($border-width * 3) solid;
+}
+
+.border-right-3 {
+  border-right: ($border-width * 3) solid;
+}
+
+.border-y-3 {
+  border-top: ($border-width * 3) solid;
+  border-bottom: ($border-width * 3) solid;
+}
+
+.border-x-3 {
+  border-left: ($border-width * 3) solid;
+  border-right: ($border-width * 3) solid;
+}
+
+// Border style
+.border {
+
+  // Dashed
+  &-dashed {
+    border-style: dashed;
+  }
+
+  &-top-dashed {
+    border-top-style: dashed;
+  }
+
+  &-bottom-dashed {
+    border-bottom-style: dashed;
+  }
+
+  &-left-dashed {
+    border-left-style: dashed;
+  }
+
+  &-right-dashed {
+    border-right-style: dashed;
+  }
+
+  // Dotted
+  &-dotted {
+    border-style: dotted;
+  }
+}
+
+// Rounded corners
+// -------------------------
+
+.border-radius-base {
+  border-radius: $border-radius-base !important;
+}
+
+.border-radius-lg {
+  border-radius: $border-radius-lg !important;
+}
+
+.border-radius-sm {
+  border-radius: $border-radius-sm !important;
+}
+
+// Fully rounded borders
+.rounded-round {
+  @include border-radius($rounded-round !important);
+}
+
+.rounded-top-round {
+  @include border-top-radius($rounded-round !important);
+}
+
+.rounded-bottom-round {
+  @include border-bottom-radius($rounded-round !important);
+}
+
+.rounded-left-round {
+  @include border-left-radius($rounded-round !important);
+}
+
+.rounded-right-round {
+  @include border-right-radius($rounded-round !important);
+}
+
+
+//
+// Remove rounded corners from specific side
+//
+
+.rounded-top-0 {
+  @include border-top-radius(0 !important);
+}
+
+.rounded-bottom-0 {
+  @include border-bottom-radius(0 !important);
+}
+
+.rounded-left-0 {
+  @include border-left-radius(0 !important);
+}
+
+.rounded-right-0 {
+  @include border-right-radius(0 !important);
+}
+
+
+// Transforms
+// -------------------------
+
+//
+// Rotation
+//
+
+// Basic direction
+.rotate-45 {
+  transform: rotate(45deg);
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+// Inversed
+.rotate-45-inverse {
+  transform: rotate(-45deg);
+}
+
+.rotate-90-inverse {
+  transform: rotate(-90deg);
+}
+
+.rotate-180-inverse {
+  transform: rotate(-180deg);
+}
+
+
+//
+// Spinner animation
+//
+
+// Default
+.spinner {
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+// Reversed
+.spinner-reverse {
+  display: inline-block;
+  animation: rotation_reverse 1s linear infinite;
+}
+
+
+// Sizing
+// -------------------------
+
+// Auto height
+.h-auto {
+  height: auto;
+}
+
+// Misc
+// -------------------------
+
+// Disable all transitions
+.no-transitions * {
+  &,
+  &:before,
+  &:after {
+    transition: none;
+  }
+}
+
+// Remove caret from .dropdown-toggle element
+.caret-0 {
+  &::before,
+  &::after {
+    content: none;
+  }
+}
+
+.box-shadow {
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.2);
+}
+
+// Remove box shadow
+.shadow-0 {
+  box-shadow: none !important;
+}
+
+// Remove outline
+.outline-0 {
+  @include plain-hover-focus {
+    outline: 0;
+  }
+}
+
+.list-unstyled {
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 0;
+}
+
+// Text shadow
+.text-shadow-dark {
+  text-shadow: 0 0 3px rgba($black, 0.5);
+}
+
+.text-light {
+  color: $white;
+}
+
+.text-shadow-light {
+  text-shadow: 0 0 3px rgba($white, 0.5);
+}

@@ -1,0 +1,59 @@
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+
+/* .fade-leave-active below version 2.1.8 */
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.spinner {
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+.spinner-reverse {
+  display: inline-block;
+  animation: rotation_reverse 1s linear infinite;
+}
+
+.slide-in-down {
+  animation-duration: .5s;
+  animation-fill-mode: both;
+  animation-name: slideInDown;
+}
+
+@keyframes rotation {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotation_reverse {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes slideInDown {
+  0% {
+    opacity: 0;
+    margin-bottom: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    margin-bottom: 10px;
+    transform: translateY(0);
+  }
+}
+

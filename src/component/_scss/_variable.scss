@@ -1,0 +1,215 @@
+$white:          #ffffff !default;
+$black:          #000000 !default;
+
+$primary:        #006eff !default;
+$secondary:      #dddddd !default;
+$dark:           #212529 !default;
+$warning:        #ff7800 !default;
+$danger:         #e54545 !default;
+$success:        #3dcc91 !default;
+
+$fill-100:       #f2f2f2 !default;
+$fill-200:       #eeeeee !default;
+$fill:           #dddddd !default;
+$fill-400:       #cccccc !default;
+$fill-500:       #bbbbbb !default;
+
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-bg:                   #f2f2f2 !default;
+$body-color:                $dark !default;
+
+$font-size-lg:              14px !default;
+$font-size-md:              13px !default;
+$font-size-sm:              12px !default;
+
+$font-size-base:            $font-size-sm;
+$html-font-size:            $font-size-sm;
+
+$border-width:              1px !default;
+$border-color:              $secondary;
+
+$border-radius-sm:            1px !default;
+$border-radius-md:            2px !default;
+$border-radius-lg:            4px !default;
+$rounded-round:               9999px !default;
+
+$border-radius-base:          $border-radius-md;
+
+$box-shadow-sm:               0 2px 2px rgba($black, .075) !default;
+$box-shadow-md:               0 8px 16px rgba($black, .15) !default;
+$box-shadow-lg:               0 16px 48px rgba($black, .175) !default;
+
+$box-shadow:                  $border-radius-md;
+
+$form-item-width-base:      210px !default;
+
+$form-item-height-lg:       36px !default;
+$form-item-height-base:     30px !default;
+$form-item-height-sm:       24px !default;
+
+$line-height-lg:            1.75 !default;
+$line-height-md:            1.5 !default;
+$line-height-sm:            1.3 !default;
+$line-height-none:          1 !default;
+
+$line-height-base:          $line-height-md;
+$html-line-height:          $line-height-md;
+
+$font-weight-lighter:       300 !default;
+$font-weight-light:         400 !default;
+$font-weight-normal:        500 !default;
+$font-weight-bold:          600 !default;
+$font-weight-bolder:        700 !default;
+$font-weight-base:          $font-weight-normal !default;
+
+// config
+$enable-grid-classes:                true !default;
+$enable-container-classes:           false !default;
+$enable-responsive-flex:             false !default; // 开启 flex各属性，在不同屏幕的实现
+$enable-responsive-spacing:          false !default;
+$enable-responsive-grid:             false !default;
+$enable-transitions:                 true !default;
+$enable-rounded:                     true !default;
+
+
+// Grid columns
+//
+// Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           20px !default;
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 768px,
+    md: 992px,
+    lg: 1280px
+) !default;
+
+@include _assert-ascending($grid-breakpoints, "$grid-breakpoints");
+@include _assert-starts-at-zero($grid-breakpoints, "$grid-breakpoints");
+
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+
+$container-max-widths: (
+    sm: 720px,
+    md: 960px,
+    lg: 1220px
+) !default;
+
+@include _assert-ascending($container-max-widths, "$container-max-widths");
+
+// Spacing
+//
+// Control the default styling of most Bootstrap elements by modifying these
+// variables. Mostly focused on spacing.
+// You can add more entries to the $spacers map, should you need more variation.
+
+$spacer: 1px !default;
+$spacers: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$spacers: map-merge(
+   (
+      0: 0,
+      1: ($spacer * 1),
+      2: ($spacer * 2),
+      3: ($spacer * 3),
+      4: ($spacer * 4),
+      5: ($spacer * 5),
+      10: ($spacer * 10),
+      15: ($spacer * 15),
+      20: ($spacer * 20),
+      25: ($spacer * 25),
+      30: ($spacer * 30),
+      40: ($spacer * 40),
+      50: ($spacer * 50),
+  ),
+  $spacers
+);
+
+// This variable affects the `.h-*` and `.w-*` classes.
+$sizes: () !default;
+// stylelint-disable-next-line scss/dollar-variable-default
+$sizes: map-merge(
+   (
+      25: 25%,
+      50: 50%,
+      75: 75%,
+      100: 100%,
+      auto: auto
+   ),
+   $sizes
+);
+
+// Paragraphs
+//
+// Style p element.
+$headings-margin-bottom:      $spacer * 8 !default;
+$paragraph-margin-bottom:     $spacer * 16 !default;
+
+// Typography
+//
+// Font, line-height, and color for body text, headings, and more.
+
+$font-family-sans-serif:      Roboto,San Francisco,"Helvetica Neue",Helvetica,Arial,PingFangSC-Light,"Hiragina Sans GB","WenQuanYi Micro Hei",'microsoft yahei ui','microsoft yahei',sans-serif !default;
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:            $font-family-sans-serif !default;
+
+// Links
+//
+// Style anchor elements.
+
+$link-color:                              $primary !default;
+$link-decoration:                         none !default;
+$link-hover-color:                        darken($link-color, 15%) !default;
+$link-hover-decoration:                   underline !default;
+
+// Tables
+//
+// Customizes the `.table` component with basic values, each used across all table variations.
+
+$table-cell-padding:          12px !default;
+$table-cell-padding-sm:       5px !default;
+$table-caption-color:         $dark !default;
+
+// Tabs
+$tabs-height-base:            48px !default;
+$tabs-bottom-bg-base:         #DDDDDD !default;
+
+// Utilities
+$displays: none, inline, inline-block, block, table, table-row, table-cell, flex, inline-flex !default;
+$overflows: auto, hidden !default;
+$positions: static, relative, absolute, fixed, sticky !default;
+
+
+// z-index
+$z-index-base:                0 !default;
+$z-index-tooltip:             100 !default;
+
+$z-index-sticky:              200 !default;
+$z-index-fixed:               300 !default;
+$z-index-modal:               500 !default; // dialog、drawer、modal
+
+$z-index-popper:              610 !default;
+
+$z-index-layout:              800 !default;
+
+// 兼容多个modal窗，弹出时，notify、toast、preview、alert 能正常显示
+$z-index-notify:              1000 !default;
+$z-index-toast:               $z-index-notify !default;
+
+$z-index-preview:             2000 !default;
+
+$z-index-alert:               9999 !default;
+
+

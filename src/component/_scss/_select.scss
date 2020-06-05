@@ -1,0 +1,8 @@
+.pg-select,
+.pg-select :read-only {
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}

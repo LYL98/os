@@ -1,0 +1,78 @@
+.pg-tabs {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin-bottom: 0;
+  height: $tabs-height-base;
+  line-height: $tabs-height-base;
+  border-bottom: $border-width solid $tabs-bottom-bg-base;
+  padding: 0 20px;
+  color: $dark;
+
+  &.borderless {
+    border-bottom-width: 0;
+  }
+}
+
+.pg-tabs > .pg-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 60px;
+  height: 100%;
+  line-height: $line-height-sm;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  transition: all .3s ease-in-out;
+
+  &:hover {
+    color: lighten($dark, 30%);
+  }
+  &:active {
+    color: darken($dark, 30%);
+  }
+}
+
+.pg-tabs > .pg-tab + .pg-tab {
+  margin-left: 40px;
+}
+
+.pg-tab > .pg-tab-content {
+  &::after {
+    content: attr(data-indicator);
+    font-size: $font-size-sm;
+    color: $white;
+    padding: 2px 8px;
+    line-height: 16px;
+    border-radius: $rounded-round;
+    background-color: $primary;
+    position: absolute;
+    top: 2px;
+    transform: scale(0.8333) translate(-5px, 0);
+  }
+}
+
+.pg-tabs > .pg-tab.active {
+  color: $primary;
+  &:hover {
+    color: lighten($primary, 10%);
+  }
+  &:active {
+    color: darken($primary, 10%);
+  }
+}
+
+.pg-tabs > .pg-tab.active::before {
+  content: '';
+  display: inline-block;
+  width: 100%;
+  height: $border-width * 2;
+  border-radius: $border-radius-sm;
+  background-color: $primary;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: -$border-width;
+}

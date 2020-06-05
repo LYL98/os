@@ -1,0 +1,39 @@
+{
+  "name": "pgyos",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "build": "cross-env DEPLOY_ENV=pro vue-cli-service build --no-clean --report",
+    "lib": "vue-cli-service build --target lib --name pgyos --dest lib src/index.js --report lib",
+    "scss": "gulp build",
+    "scss:dev": "gulp dev"
+  },
+  "dependencies": {
+    "axios": "0.18.0",
+    "core-js": "^3.6.4",
+    "md5": "^2.2.1",
+    "vue-router": "^3.1.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@vue/cli-plugin-babel": "~4.3.0",
+    "@vue/cli-plugin-router": "~4.3.0",
+    "@vue/cli-service": "~4.3.0",
+    "autoprefixer": "^9.7.6",
+    "clean-webpack-plugin": "1.0.1",
+    "cross-env": "^7.0.2",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^4.1.0",
+    "html-webpack-tags-plugin": "2.0.17",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpackbar": "4.0.0"
+  }
+}

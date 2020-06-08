@@ -3,7 +3,7 @@
     <div class="card">
       <pg-form size="md" ref="form" item-width="200px" vertical class="p-20">
         <pg-form-item label="排序" rules="required|min_value:0:blur|max_value:10:blur">
-          <pg-input v-model="rank" type="number" readonly/>
+          <pg-input v-model="rank" type="decimal" />
         </pg-form-item>
         <pg-form-item>
           <pg-uploader v-model="video" type="image" multiple/>

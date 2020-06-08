@@ -59,14 +59,14 @@ module.exports = {
         // 将js文件自动添加到html文件中
         new HtmlWebpackTagsPlugin({
           useHash: false, // 是否在打包时，添加hash
-          tags: ['js/vue.esm.js', 'js/popper-core.min.js', 'ckeditor/ckeditor.js'], // 添加的资源相对html的路径
+          tags: ['js/vue.esm.js'], // 添加的资源相对html的路径
           append: false, // false 在其他资源的之前添加 true 在其他资源之后添加
         }),
 
         // sentry scripts
         new HtmlWebpackTagsPlugin({
           useHash: false,
-          tags: ['js/sentry.bundle.js'],
+          tags: ['js/popper-core.min.js', 'ckeditor/ckeditor.js', 'js/sentry.bundle.js'],
           append: true,
         }),
       ] : []),

@@ -28,6 +28,22 @@
 
   import {findUpComponent} from './../_util/assist';
 
+  const unique = (json) => {
+    let newJson = []; //盛放去重后数据的新数组
+    for (let item1 of json) {  //循环json数组对象的内容
+      let flag = true;  //建立标记，判断数据是否重复，true为不重复
+      for (let item2 of newJson){  //循环新数组的内容
+        if(item1.value == item2.value){ //让json数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
+          flag = false;
+        }
+      }
+      if (flag) { //判断是否重复
+        newJson.push(item1); //不重复的放入新数组。  新数组的内容会继续进行上边的循环。
+      }
+    }
+    return newJson;
+  }
+
   export default {
     name: 'pg-transfer',
     components: { pgTable, pgColumn },
@@ -80,7 +96,10 @@
         immediate: false,
         handler(next, prev) {
           // 1、需要同步到已经选择的列表中
-          this.$data.selectedList = this.$props.data.filter(d => next.some(item => item === d.value));
+          this.$data.selectedList = unique(
+            [...this.$data.selectedList, 
+            ...this.$props.data.filter(d => next.some(item => item === d.value))]
+          );
           this.$nextTick(() => {
             this.$props.valid && this.pgFormItem?.sync?.(next);
           });
@@ -91,7 +110,10 @@
         immediate: true,
         handler(next, prev) {
           if (!next) return;
-          this.$data.selectedList = next.filter(d => this.$props.value.some(item => item === d.value));
+          this.$data.selectedList = unique(
+            [...this.$data.selectedList, 
+            ...next.filter(d => this.$props.value.some(item => item === d.value))]
+          );
         }
       },
     },

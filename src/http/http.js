@@ -34,8 +34,6 @@ const _interce = axios.create({
 
 // 请求拦截器
 _interce.interceptors.request.use(config => {
-  osConfig().debug && console.log('【request config】: ', config);
-  
 
   const {throttle, handleError} = configuration(config);
 

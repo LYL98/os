@@ -18,7 +18,7 @@
       </div>
       <div class="pg-nav-item" style="min-width: 150px">
         <a class="nav" :href="origin_yy">系统首页</a>
-        <pg-popper trigger="hover" placement="bottom" v-if="!adminMode">
+        <pg-popper trigger="hover" placement="bottom" v-if="adminMode">
           <a class="nav">
             <span>总览</span>
             <i class="icon-arrow-down12 text-secondary"></i>
@@ -180,6 +180,7 @@ export default {
         cls: [],
       },
       origin_yy: '',
+      adminMode: false,
     };
   },
 
@@ -199,6 +200,8 @@ export default {
     const cls = authorization(routes.cls, origin_cls);
     this.$data.routes = { yy, bsc, cls };
     this.$data.origin_yy = origin_yy;
+    this.$data.adminMode = !!auth.isAdmin;
+
   },
 
   methods: {

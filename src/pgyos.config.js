@@ -161,8 +161,9 @@ const routeConfig = {
       subitem: '零售中心',
       permission_code: 'Cls',
       items: [
-        { title: '商品库', permission_code: 'ClsPitem', url: '/item/pitem' },
-        { title: '货架商品', permission_code: 'ClsSubitem', url: '/item/subitem' },
+        { title: '商品库', permission_code: 'ClsItemPitem', url: '/item/pitem' },
+        { title: '货架商品', permission_code: 'ClsItemSubitem', url: '/item/subitem' },
+        { title: '货架商品属性', permission_code: 'ClsItemProperty', url: '/item/property' },
       ],
     },
   ],

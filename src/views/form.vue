@@ -3,7 +3,7 @@
     <div class="card">
       <pg-form size="md" ref="form" item-width="200px" vertical class="p-20">
         <pg-form-item>
-          <pg-uploader v-model="video" type="video"/>
+          <pg-uploader v-model="video" type="image" multiple/>
         </pg-form-item>
         <pg-form-item
             label="原密码"
@@ -35,11 +35,11 @@
         </pg-form-item>
 
         <pg-form-item label="商品详情" rules="required" item-width="600px">
-          <pg-editor v-model="content" disabled/>
+          <pg-editor v-model="content"/>
         </pg-form-item>
 
         <pg-form-item>
-          <pg-select value="2" disabled>
+          <pg-select value="2">
                 <pg-option value="1">1</pg-option>
                 <pg-option value="2">2</pg-option>
                 <pg-option value="3">3</pg-option>
@@ -49,7 +49,7 @@
         <pg-form-item>
           <pg-input disabled>
             <template slot="suffix">
-              <pg-select value="2" disabled>
+              <pg-select value="2">
                 <pg-option value="1">1</pg-option>
                 <pg-option value="2">2</pg-option>
                 <pg-option value="3">3</pg-option>

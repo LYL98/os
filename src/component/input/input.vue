@@ -93,7 +93,7 @@
         return classnames;
       },
       inputType() {
-        if (['number', 'decimal'].includes(this.$props.type)) {
+        if (['number', 'phone', 'decimal'].includes(this.$props.type)) {
           return 'text';
         }
         return this.$props.type;
@@ -129,7 +129,8 @@
         if (!!ev) {
           switch (this.$props.type) {
             case 'number':
-              if (!/^[1-9][0-9]*$/.test(ev)) {
+            case 'phone':
+              if (!/^[0-9]*$/.test(ev)) {
                 ev = parseInt(ev) + '';
                 this.$data.ev = isNaN(ev) ? '' : ev;
                 return;

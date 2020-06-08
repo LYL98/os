@@ -34,15 +34,17 @@ export default {
     }
   },
 
+  computed: {
+    is_disabled() {
+      return this.$props.disabled || !!this.pgFormItem?.disabled;
+    },
+  },
+
   watch: {
-    disabled: {
+    is_disabled: {
       immiable: true,
       handler(v) {
-        if (v) {
-          CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.setReadOnly(true);
-        } else {
-          CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.setReadOnly(false);
-        }
+        CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.setReadOnly(v);
       }
     },
     value(v) {
@@ -59,22 +61,22 @@ export default {
   },
 
   mounted() {
-    CKEDITOR.replace('ckeditor');
-    CKEDITOR.on('instanceReady', this.instanceReady);
+    CKEDITOR && CKEDITOR.replace('ckeditor');
+    CKEDITOR && CKEDITOR.on('instanceReady', this.instanceReady);
   },
 
   beforeDestory() {
-    CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.destroy();
+    CKEDITOR && CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.destroy();
   },
 
   methods: {
 
     instanceReady(e) {
       CKEDITOR.instances.ckeditor.setData(v);
-      CKEDITOR.instances.ckeditor.setReadOnly(this.$props.disabled);
+      CKEDITOR.instances.ckeditor.setReadOnly(this.is_disabled);
 
       e.editor.widgets.on('instanceCreated', params => {
-        console.log('editor创建', params);
+        // console.log('editor创建', params);
       });
 
       e.editor.on('change', change => {

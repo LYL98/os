@@ -1,12 +1,12 @@
 <template>
-  <pg-popper :trigger="trigger" v-model="expend" :width="popperWidth" :appendToBody="appendToBody" :disabled="disabled">
+  <pg-popper :trigger="trigger" v-model="expend" :width="popperWidth" :appendToBody="appendToBody" :disabled="is_disabled">
     <pg-input
       class="pg-select"
       :size="size"
       :style="`width: ${popperWidth};`"
       :text-align="textAlign"
       :valid="false"
-      :disabled="disabled"
+      :disabled="is_disabled"
       :material="material"
       :flat="flat"
       readonly
@@ -100,6 +100,9 @@ export default {
     };
   },
   computed: {
+    is_disabled() {
+      return this.$props.disabled || !!this.pgFormItem?.disabled;
+    },
     label() {
       return this.$data.select_list.map((item) => item.title).join(' / ');
     },
@@ -203,7 +206,7 @@ export default {
       this.$emit('change', item.code);
     },
     onToggle(e) {
-      if (this.$props.disabled) {
+      if (this.is_disabled) {
         e.stopPropagation();
       }
     },

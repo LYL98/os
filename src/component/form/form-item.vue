@@ -67,6 +67,12 @@
     },
 
     computed: {
+      disabled() {
+        return this.pgForm?.$props?.disabled;
+      },
+      readonlay() {
+        return this.pgForm?.$props?.readonlay;
+      },
       // label width
       _label_width_() {
         if (this.$props.labelWidth) return this.$props.labelWidth;

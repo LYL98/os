@@ -17,6 +17,8 @@
       itemWidth: { type: String, default: '' },
       labelWidth: { type: String, default: '' },
       vertical: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
+      readonly: { type: Boolean, default: false },
       type: { type: String, default: 'edit', validator: v => !v || ['edit', 'query', 'detail'].includes(v) },
       size: {type: String, default: '', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
     },

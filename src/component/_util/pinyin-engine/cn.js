@@ -1,8 +1,8 @@
 import decode from './decode';
 import Engine from './engine';
 
-const dict = require('./dict-cn.json');
-const DICT = decode(dict);
+// const dict = require('./dict-cn.json');
+const DICT = decode(_dict_cn_);
 
 /**
  * 拼音查询引擎

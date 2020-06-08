@@ -4,7 +4,7 @@
     <!-- <video :src="src" controls autoplay/> -->
 
     <template v-if="type === 'image'">
-      <draggable class="d-flex" :sort="!disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
+      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
         <div 
           class="pg-img-box" 
           v-for="item in list" 
@@ -21,7 +21,7 @@
           />
           <transition name="fade">
             <div class="pg-hover-mask" v-if="hover_item === item">
-              <pg-button flat circle size="sm" @click="onRemoveItem(item)" v-if="!disabled"><i class="icon-bin"></i></pg-button>
+              <pg-button flat circle size="sm" @click="onRemoveItem(item)" v-if="!is_disabled"><i class="icon-bin"></i></pg-button>
               <pg-button flat circle size="sm" @click="onPreviewItem(item)"><i class="icon-search4"></i></pg-button>
             </div>
           </transition>
@@ -30,7 +30,7 @@
       
     </template>
     <template v-if="type === 'video'">
-      <draggable class="d-flex" :sort="!disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
+      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
         <div
           class="pg-img-box" 
           v-for="item in list" 
@@ -46,7 +46,7 @@
           >
           <transition name="fade">
             <div class="pg-hover-mask" v-if="hover_item === item">
-              <pg-button flat circle size="sm" @click="onRemoveItem(item)" v-if="!disabled"><i class="icon-bin"></i></pg-button>
+              <pg-button flat circle size="sm" @click="onRemoveItem(item)" v-if="!is_disabled"><i class="icon-bin"></i></pg-button>
               <pg-button flat circle size="sm" @click="onPreviewItem(item)"><i class="icon-search4"></i></pg-button>
             </div>
           </transition>
@@ -54,7 +54,7 @@
         </div>
       </draggable>
     </template>
-    <div class="pg-uploader" :class="{loading}" @click="onSelect" v-if="!disabled && (multiple ? list.length < limit : list.length < 1)">
+    <div class="pg-uploader" :class="{loading, disabled: is_disabled}" @click="onSelect" v-if="(multiple ? list.length < limit : list.length < 1)">
       <input type="file" :accept="accept" class="file-input" hidden @change="onChange" ref="file-input" :multiple="multiple">
       <i v-if="loading" class="icon-spinner3 spinner"></i>
       <i class="icon-plus2" v-else></i>
@@ -63,8 +63,6 @@
 </template>
 
 <script>
-
-  import vuedraggable from 'vuedraggable';
 
   import {findUpComponent} from './../_util/assist';
   import Http from './../../http/http';
@@ -76,7 +74,7 @@
   export default {
     name: "pg-uploader",
     components: {
-      'draggable': vuedraggable,
+      'draggable': window['vuedraggable'],
       'pg-button': pgButton,
     },
     props: {
@@ -93,6 +91,9 @@
     },
 
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
       accept() {
         switch (this.$props.type) {
           case 'video':
@@ -141,11 +142,14 @@
     methods: {
 
       onSelect(e) {
+        if (this.is_disabled) return;
+
         if (this.$data.loading) return;
         this.$refs['file-input']?.click?.();
       },
 
       onChange(event) {
+        
         let files = event.target.files;
 
         const { multiple, value, limit } = this.$props;

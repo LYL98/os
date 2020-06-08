@@ -53,7 +53,7 @@ module.exports = {
 
         new HtmlWebpackTagsPlugin({
           useHash: isProd,
-          links: ['css/icomoon/styles.css', 'css/pg-ui.min.css']
+          links: ['css/pg-ui.min.css']
         }),
 
         // 将js文件自动添加到html文件中

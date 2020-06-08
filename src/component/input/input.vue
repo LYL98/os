@@ -8,7 +8,7 @@
         v-focus="autoFocus"
         :type="inputType"
         :readonly="readonly"
-        :disabled="disabled"
+        :disabled="is_disabled"
         :placeholder="placeholder"
         :maxlength="maxlength"
         v-model.trim="ev"
@@ -97,7 +97,10 @@
           return 'text';
         }
         return this.$props.type;
-      }
+      },
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
     },
     watch: {
       value: {

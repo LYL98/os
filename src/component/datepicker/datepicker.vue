@@ -3,17 +3,17 @@
       class="pg-datepicker-wrapper"
       :placement="quickable ? 'bottom-end' : placement"
       trigger="click"
-      :disabled="disabled"
+      :disabled="is_disabled"
       v-model="visiblePopper"
       @created="popperCreated"
       :width="popperWidth"
       :appendToBody="appendToBody"
   >
     <div v-if="quickable" class="quick-range">
-      <pg-button :size="size" @click.stop="setFixDateRange(1)">今天</pg-button>
-      <pg-button :size="size" @click.stop="setFixDateRange(2)">昨天</pg-button>
-      <pg-button :size="size" @click.stop="setFixDateRange(6)">本月</pg-button>
-      <pg-button :size="size" @click.stop="setFixDateRange(7)">上月</pg-button>
+      <pg-button :size="size" @click.stop="setFixDateRange(1)" :disabled="is_disabled">今天</pg-button>
+      <pg-button :size="size" @click.stop="setFixDateRange(2)" :disabled="is_disabled">昨天</pg-button>
+      <pg-button :size="size" @click.stop="setFixDateRange(6)" :disabled="is_disabled">本月</pg-button>
+      <pg-button :size="size" @click.stop="setFixDateRange(7)" :disabled="is_disabled">上月</pg-button>
     </div>
     <pg-input
         class="pg-picker flex-grow-1"
@@ -21,7 +21,7 @@
         :style="`width: ${popperWidth}; min-width: ${popperWidth}`"
         :text-align="textAlign"
         :valid="false"
-        :disabled="disabled"
+        :disabled="is_disabled"
         :material="material"
         :flat="flat"
         readonly
@@ -179,6 +179,9 @@
       }
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
 
       label() {
         const { range, value, beginDateKey, endDateKey } = this.$props;
@@ -244,7 +247,7 @@
     methods: {
 
       onToggle(e) {
-        if (this.$props.disabled) {
+        if (this.is_disabled) {
           e.stopPropagation();
         }
       },

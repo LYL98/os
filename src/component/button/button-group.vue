@@ -5,6 +5,7 @@
           v-for="(value, key) of options"
           :key="key"
           :value="value"
+          :disabled="is_disabled"
           @click="update(value)"
       >{{key}}</pg-button>
     </slot>
@@ -31,6 +32,9 @@
       event: 'change'
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
       editValue: {
         get() {
           return this.$props.value;

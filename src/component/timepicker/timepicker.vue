@@ -1,6 +1,6 @@
 <template>
 
-  <pg-popper class="pg-time-picker" :trigger="trigger" v-model="expend" :width="popperWidth">
+  <pg-popper class="pg-time-picker" :trigger="trigger" v-model="expend" :width="popperWidth" :disabled="is_disabled">
 
     <pg-input
         class="pg-select"
@@ -8,7 +8,7 @@
         :style="`width: ${popperWidth};`"
         :text-align="textAlign"
         :valid="false"
-        :disabled="disabled"
+        :disabled="is_disabled"
         :material="material"
         :flat="flat"
         readonly
@@ -78,6 +78,11 @@
         popperWidth: 'auto',
       };
     },
+    computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
+    },
     watch: {
       value(val) {
         this.pgFormItem?.sync?.(val);
@@ -95,7 +100,7 @@
 
     methods: {
       onToggle(e) {
-        if (this.$props.disabled) {
+        if (this.is_disabled) {
           e.stopPropagation();
         }
       },

@@ -1,13 +1,13 @@
 <template>
-  <label class="pg-textarea" :class="disabled ? 'disabled' : ''">
+  <label class="pg-textarea" :class="is_disabled ? 'disabled' : ''">
     <textarea
         class="pg-form-control"
-        :class="disabled ? 'disabled' : ''"
+        :class="is_disabled ? 'disabled' : ''"
         v-model="ev"
         :cols="cols"
         :rows="rows"
         :placeholder="placeholder"
-        :disabled="disabled"
+        :disabled="is_disabled"
         :maxlength="maxlength"
         :data-count="count"
         :data-limit="limit"
@@ -39,6 +39,9 @@
       event: 'change',
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
       ev: {
         get() {
           return this.$props.value;

@@ -1,5 +1,5 @@
 <template>
-  <pg-popper :trigger="trigger" v-model="expend" :width="popperWidth" :appendToBody="appendToBody" :disabled="disabled">
+  <pg-popper :trigger="trigger" v-model="expend" :width="popperWidth" :appendToBody="appendToBody" :disabled="is_disabled">
 
     <pg-input
         class="pg-select"
@@ -7,7 +7,7 @@
         :style="`width: ${popperWidth};`"
         :text-align="textAlign"
         :valid="false"
-        :disabled="disabled"
+        :disabled="is_disabled"
         :material="material"
         :flat="flat"
         readonly
@@ -109,6 +109,9 @@
       }
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
 
       label() {
         if (!this.$props.multiple) {
@@ -157,7 +160,7 @@
     },
     methods: {
       onToggle(e) {
-        if (this.$props.disabled) {
+        if (this.is_disabled) {
           e.stopPropagation();
         }
       },

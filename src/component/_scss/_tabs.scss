@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 60px;
+  padding: 10px;
   height: 100%;
   line-height: $line-height-sm;
   position: relative;
@@ -36,7 +36,7 @@
 }
 
 .pg-tabs > .pg-tab + .pg-tab {
-  margin-left: 40px;
+  margin-left: 20px;
 }
 
 .pg-tab > .pg-tab-content {

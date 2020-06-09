@@ -1,19 +1,19 @@
 <template>
   <div :style="fixed && 'padding-top: 50px;'" class="pg-table-wrapper" :class="{borderless}">
 
-    <div ref="fixed-header-root" :class="fixed && 'fixed-header'">
+    <div ref="fixed-header-root" :class="{'fixed-header': fixed}">
       <table class="pg-table">
         <thead>
         <tr>
-          <th v-if="checkable" width="30px" class="px-5 text-center">
+          <th v-if="checkable" width="38px" class="px-5 text-center">
             <pg-checkbox class="mr-0 ml-10" :value="checkedAll" @change="onCheckAllToggle"
                          :indeterminate="indeterminate"></pg-checkbox>
           </th>
           <th
-              v-if="serialable && !checkable"
+              v-if="serialable"
               :width="indexWidth"
               :style="'min-width: ' + indexWidth"
-              class="px-5 text-center"
+              class="font-weight-bolder px-5 text-center"
           >#
           </th>
           <th v-for="option in options" :width="option.width" :key="option.title">
@@ -46,13 +46,13 @@
               @click.native="onSelectRow(item)"
               :class="highlightRow && selectedRow[primaryKey] === item[primaryKey] ? 'selected' : ''"
           >
-            <td v-if="checkable" width="30px" class="px-5 text-center">
+            <td v-if="checkable" width="38px" class="px-5 text-center">
               <pg-checkbox class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
             </td>
             <td
-                v-if="serialable && !checkable"
+                v-if="serialable"
                 :width="indexWidth"
-                :style="'min-width: ' + indexWidth"
+                :style="'color: #666; min-width: ' + indexWidth"
                 class="font-weight-bold font-size-sm px-5 text-center"
             >
               {{ (page - 1) * pageSize + index + 1 }}

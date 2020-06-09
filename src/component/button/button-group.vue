@@ -1,11 +1,12 @@
 <template>
-  <div class="pg-button-group" :class="autoGrow && 'basis-auto'">
+  <div class="pg-button-group" :class="{ 'basis-auto': basisAuto, borderless: borderless }">
     <slot>
       <pg-button
           v-for="(value, key) of options"
           :key="key"
           :value="value"
           :disabled="is_disabled"
+          :flat="borderless"
           @click="update(value)"
       >{{key}}</pg-button>
     </slot>
@@ -23,8 +24,9 @@
     props: {
       value: { type: String | Number | Boolean, default: '' },
       disabled: {type: Boolean, default: false},
+      borderless: {type: Boolean, default: false},
       size: { type: String, default: '', validator: v => !v || ['lg', 'sm', 'base'].includes(v), },
-      autoGrow: { type: Boolean, default: false }, // 指定内部的 子元素 是否自适应宽度，默认是等宽设置。
+      basisAuto: { type: Boolean, default: false }, // 指定内部的 子元素 是否自适应宽度，默认是等宽设置。
       options: { type: Object | undefined, default() { return {} } }
     },
     model: {

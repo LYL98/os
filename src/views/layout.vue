@@ -43,16 +43,10 @@
 
           <div class="card mt-20">
 
-            <div class="p-20">
-              <pg-editor/>
-            </div>
-
-            <pg-timepicker class="m-20" v-model="time" />
-            <pg-datepicker class="m-20" v-model="date" :limit="limit" range :quickable="true" timeable />
-
-            <div class="row">
-              <pg-cascader value="110204"/>
-            </div>
+            <pg-table :data="tableData" fixed-header checkable>
+              <pg-column prop="name" title="门店名称"></pg-column>
+              <pg-column prop="remark" title="备注"></pg-column>
+            </pg-table>
             
             <pg-pagination class="m-20"/>
           </div>

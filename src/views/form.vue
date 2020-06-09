@@ -1,9 +1,16 @@
 <template>
   <div class="pg-page d-flex flex-column justify-content-center">
     <div class="card">
+
+      <pg-button-group :value="0">
+        <pg-button :value="0" outline color="primary">less</pg-button>
+        <pg-button :value="1" flat>less</pg-button>
+        <pg-button :value="2" flat>less</pg-button>
+      </pg-button-group>
+
       <pg-form size="md" ref="form" item-width="200px" vertical class="p-20">
         <pg-form-item label="排序" rules="required|min_value:0:blur|max_value:10:blur">
-          <pg-input v-model="rank" type="decimal" />
+          <pg-input type="decimal" v-model="rank" />
         </pg-form-item>
         <pg-form-item>
           <pg-uploader v-model="video" type="image" multiple/>
@@ -67,10 +74,6 @@
         </div>
 
       </pg-form>
-    </div>
-
-    <div class="pg-page-footer fixed mt-20">
-      123
     </div>
   </div>
 </template>

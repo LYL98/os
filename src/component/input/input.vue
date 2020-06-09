@@ -67,8 +67,9 @@
     },
     data() {
       let ev = this.$props.value;
-      if (ev && this.$props.valid) {
-        this.pgFormItem?.sync?.(ev);
+      // ev + '' 转换为字符串 去除空格后 ，如果不为空，则表示该数据存在
+      if ((ev + '').trim()) {
+        this.$props.valid && this.pgFormItem?.sync?.(ev);
       }
       return {
         ev: ev

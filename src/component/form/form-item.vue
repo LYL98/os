@@ -187,12 +187,15 @@
       },
 
       onBlur() {
+        let v = this.$data.v;
+        if(!(v + '').trim()) return;
+        // 触发一次后，设置为已经失去过焦点
         this.$data.isBlured = true;
 
-        let errors = this.$data.errors;
-        let errored = this.$data.errored;
 
-        let v = this.$data.v;
+        let errors = this.$data.errors; // 当前的错误列表
+        let errored = this.$data.errored; // 已经出现过的错误列表
+
         this.blured.forEach(item => {
           let error = item.validate(v);
           if (error) {

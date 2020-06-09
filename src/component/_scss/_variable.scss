@@ -58,9 +58,9 @@ $line-height-none:          1 !default;
 $line-height-base:          $line-height-md;
 $html-line-height:          $line-height-md;
 
-$font-weight-lighter:       300 !default;
-$font-weight-light:         400 !default;
-$font-weight-normal:        500 !default;
+$font-weight-lighter:       200 !default;
+$font-weight-light:         300 !default;
+$font-weight-normal:        400 !default;
 $font-weight-bold:          600 !default;
 $font-weight-bolder:        700 !default;
 $font-weight-base:          $font-weight-normal !default;
@@ -183,7 +183,7 @@ $table-cell-padding-sm:       5px !default;
 $table-caption-color:         $dark !default;
 
 // Tabs
-$tabs-height-base:            48px !default;
+$tabs-height-base:            50px !default;
 $tabs-bottom-bg-base:         #DDDDDD !default;
 
 // Utilities

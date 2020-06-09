@@ -29,7 +29,7 @@
     }
 
     th {
-      padding: 6px 10px;
+      padding: 20px 10px 10px;
     }
   }
 
@@ -52,7 +52,7 @@
 
     td {
       font-size: $font-size-base;
-      padding: 14px 10px;
+      padding: 12px 10px;
       word-break: break-all;
       border-bottom: 1px solid #ddd;
     }
@@ -82,10 +82,10 @@
 
 .fixed-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: calc(100% - 0px);
-  min-width: 1146px;
+  top: 50px;
+  left: 220px;
+  width: calc(100% - 240px);
+  min-width: 1040px;
   z-index: 99;
   background: #fcfcfc;
   box-shadow: 0 0 2px 0 rgba(0,0,0,0.1);

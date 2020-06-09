@@ -78,7 +78,7 @@ const rules = {
       n = isNaN(n[0]) ? 0 : Number(n[0]);
       let s = '^(([1-9][0-9]*)|(([0]\\.\\d{1,2}|[1-9][0-9]*\\.\\d{0,' + n +
         '})))$';
-      return new RegExp(s).test(v);
+      return  new RegExp(s).test(v) || (v + '') === '0';
     },
     getMsg: function (l, n) {
       return l + '必须是数字，且最多只能保留' + n[0] + '位小数';

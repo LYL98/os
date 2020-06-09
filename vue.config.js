@@ -63,7 +63,7 @@ module.exports = {
         // sentry scripts
         new HtmlWebpackTagsPlugin({
           useHash: false,
-          tags: ['js/popper-core.min.js', 'ckeditor/ckeditor.js', 'js/sentry.bundle.js'],
+          tags: ['js/popper-core.min.js', 'js/lodop-func.js', 'ckeditor/ckeditor.js', 'js/sentry.bundle.js'],
           append: true,
         }),
       ] : []),

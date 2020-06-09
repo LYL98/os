@@ -6,9 +6,6 @@ const isProd = process.env.NODE_ENV === 'production';
 const deploy_env = process.env.DEPLOY_ENV;
 const isLib = process.argv[process.argv.length - 1] === 'lib';
 
-
-console.log('process.env.DEPLOY_ENV: ', deploy_env);
-
 module.exports = {
   outputDir: '../dist',
   productionSourceMap: false,

@@ -123,32 +123,24 @@
     methods: {
       // 此处根据 type 类型，控制 输入内容的转换。
 
-      // 1、如果是number 类型，则只允许输入 0 和 整数
-      // 2、如果是decimal 类型，则只允许输入 0 和 小数，可以在外部校验输入的位数
-
-      // 由于存在转换过程，如果输入不合规，则直接同步 this.$data.ev，不向外部 emit event。
-
       onChange() {
-        let ev = this.$data.ev;
-        if (!!ev) {
+        let ev = this.$data.ev + '';
+        if (!!ev.trim()) {
           switch (this.$props.type) {
             case 'number':
             case 'phone':
-              if (!/^[0-9]*$/.test(ev)) {
-                ev = parseInt(ev) + '';
-                this.$data.ev = isNaN(ev) ? '' : ev;
-                return;
+              if (!/^[0-9]*$/.test(ev)) {ev = parseInt(ev) + '';
+                ev = ev.replace(/[^\d.]/g,"");
               }
               break;
             case 'decimal':
               if (!/^(([1-9][0-9]*)|([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2}))$/.test(ev)) {
-                ev = parseFloat(ev) + '';
-                this.$data.ev = isNaN(ev) ? '' : ev;
-                return;
+                ev = ev.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
               }
               break;
           }
         }
+        this.$data.ev = ev;
         this.$emit('change', ev);
       },
 

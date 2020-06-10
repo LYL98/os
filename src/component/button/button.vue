@@ -26,7 +26,7 @@
         type: String,
         default: '',
         validator: v =>
-          !v || ['primary', 'secondary', 'success', 'warning', 'danger'].includes(v),
+          !v || ['primary', 'light', 'success', 'warning', 'danger'].includes(v),
       },
 
       // 支持 button-group 模式

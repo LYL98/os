@@ -59,7 +59,7 @@
 }
 
 .pg-button,
-.pg-button.secondary.outline {
+.pg-button.light.outline {
   text-align: center;
   box-sizing: border-box;
   text-decoration: none;
@@ -151,10 +151,10 @@
   @include button-flat-color($primary);
 }
 
-.pg-button.secondary {
-  @include button-color($dark, lighten($secondary, 10));
+.pg-button.light {
+  @include button-color($dark, lighten($light, 10));
 }
-.pg-button.secondary.flat {
+.pg-button.light.flat {
   @include button-flat-color($dark);
 }
 

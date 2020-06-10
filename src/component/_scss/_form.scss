@@ -221,7 +221,7 @@
   &.has-warning {
 
     .pg-uploader,
-    .pg-table-wrapper.borderfull,
+    .pg-transfer-table-wrapper,
     .pg-form-control,
     .pg-form-control:focus-within {
       border-color: $warning;
@@ -235,7 +235,7 @@
   &.has-error {
     .cke_chrome,
     .pg-uploader,
-    .pg-table-wrapper.borderfull,
+    .pg-transfer-table-wrapper,
     .pg-form-control,
     .pg-form-control:focus-within {
       border-color: $danger;

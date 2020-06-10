@@ -33,7 +33,7 @@
                   <pg-button
                       size="sm"
                       block
-                      color="secondary"
+                      color="light"
                       class="text-left"
                       @click="app.handleRouteRecords(item)"
                   >{{ item.label }}</pg-button>

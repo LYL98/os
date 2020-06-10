@@ -42,14 +42,14 @@
     cursor: not-allowed;
 
     & > .toggle {
-      border-color: $secondary;
-      background-color: $secondary;
+      border-color: $light;
+      background-color: $light;
       cursor: not-allowed;
     }
 
     & > label {
       cursor: not-allowed;
-      color: $secondary;
+      color: $light;
     }
   }
 
@@ -64,7 +64,7 @@
 
 .pg-checkbox > .toggle {
   padding: 7px;
-  border: $border-width solid $secondary;
+  border: $border-width solid $border-color;
   &:before {
     top: -2px;
     left: 0;
@@ -114,7 +114,7 @@ ul.pg-radio-group {
 
 .pg-radio.border {
   cursor: pointer;
-  border: $border-width solid $secondary;
+  border: $border-width solid $border-color;
   border-radius: $border-radius-base;
   padding: 6px;
   transition: border-color .2s ease, background-color .2s ease;
@@ -124,7 +124,7 @@ ul.pg-radio-group {
   }
 
   & > .toggle {
-    border-color: $secondary;
+    border-color: $border-color;
   }
 
   &.checked {
@@ -135,7 +135,7 @@ ul.pg-radio-group {
   }
 
   &.disabled {
-    border-color: $secondary;
+    border-color: $border-color;
   }
 
 }

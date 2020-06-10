@@ -24,7 +24,7 @@
             square
             flat
             :size="size"
-            color="secondary"
+            color="light"
             @click.stop="onSubmit"
             :disabled="disabled"
         >

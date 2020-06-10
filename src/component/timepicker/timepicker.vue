@@ -29,7 +29,7 @@
 
     <div class="dropdown-box" slot="content" :style="`width: ${popperWidth};`">
       <pg-timer v-model="ev" :type="type" :visible="expend"/>
-      <pg-button block color="secondary" @click="onSubmit">确定</pg-button>
+      <pg-button block color="light" @click="onSubmit">确定</pg-button>
     </div>
 
   </pg-popper>

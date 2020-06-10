@@ -70,11 +70,17 @@ $theme-colors: (
     primary: (
         50: $primary,
     ),
+    dark: (
+        50: $dark,
+    ),
     secondary: (
         50: $secondary,
     ),
-    dark: (
-        50: $dark,
+    light: (
+        50: $light,
+    ),
+    white: (
+        50: $white,
     ),
     success: (
         50: $success,

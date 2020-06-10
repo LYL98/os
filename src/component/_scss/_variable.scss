@@ -2,8 +2,9 @@ $white:          #ffffff !default;
 $black:          #000000 !default;
 
 $primary:        #006eff !default;
-$secondary:      #dddddd !default;
 $dark:           #212529 !default;
+$secondary:      #666666 !default;
+$light:          #dddddd !default;
 $warning:        #ff7800 !default;
 $danger:         #e54545 !default;
 $success:        #3dcc91 !default;
@@ -29,7 +30,7 @@ $font-size-base:            $font-size-sm;
 $html-font-size:            $font-size-sm;
 
 $border-width:              1px !default;
-$border-color:              $secondary;
+$border-color:              $light;
 
 $border-radius-sm:            1px !default;
 $border-radius-md:            2px !default;
@@ -170,7 +171,7 @@ $font-family-base:            $font-family-sans-serif !default;
 // Style anchor elements.
 
 $link-color:                              $primary !default;
-$link-decoration:                         none !default;
+$link-decoration:                         underline !default;
 $link-hover-color:                        darken($link-color, 15%) !default;
 $link-hover-decoration:                   underline !default;
 

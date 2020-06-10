@@ -72,7 +72,7 @@
 
     &.off,
     &.disabled {
-      color: $secondary;
+      color: $light;
       background-color: #FFF !important;
     }
 
@@ -114,9 +114,13 @@
     margin-right: -1px;
   }
 
-  .pg-picker {
+  .pg-picker,
+  .pg-picker :read-only {
     cursor: pointer;
 
+    &:disabled {
+      cursor: not-allowed;
+    }
   }
 }
 
@@ -203,7 +207,7 @@
     display: flex;
     justify-content: space-between;
     min-width: 100%;
-    border-top: $border-width solid $secondary;
+    border-top: $border-width solid $border-color;
     padding: 15px 20px;
 
     button + button {

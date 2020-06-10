@@ -43,6 +43,7 @@
   line-height: $font-size-base;
   transition: color .3s ease-in-out;
   user-select: none;
+  text-decoration: none;
 
   &.nav {
     line-height: 50px;

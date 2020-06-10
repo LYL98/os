@@ -7,10 +7,10 @@
     </div>
     <div class="selector">
       <pg-button color="primary" circle size="sm" @click="doSelect" :disabled="addList.length <= 0">
-        <i class="icon-arrow-right22" style="font-size: 20px" :class="{ 'text-secondary': addList.length <= 0, 'text-light': addList.length > 0 }"></i>
+        <i class="icon-arrow-right22" style="font-size: 20px" :class="{ 'text-light': addList.length <= 0, 'text-white': addList.length > 0 }"></i>
       </pg-button>
       <pg-button color="primary" circle size="sm" class="mt-20" @click="doRemove" :disabled="removeList.length <= 0">
-        <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-secondary': removeList.length <= 0, 'text-light': removeList.length > 0 }"></i>
+        <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-light': removeList.length <= 0, 'text-white': removeList.length > 0 }"></i>
       </pg-button>
     </div>
     <div class="pg-transfer-table-wrapper">

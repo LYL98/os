@@ -21,7 +21,7 @@
         <pg-popper trigger="hover" placement="bottom" v-if="adminMode">
           <a class="nav">
             <span>总览</span>
-            <i class="icon-arrow-down12 text-secondary"></i>
+            <i class="icon-arrow-down12 text-light"></i>
           </a>
           <div class="pg-nav-service-panel" slot="content">
             <div class="pg-nav-service-panel--inner pg-panel-animation">
@@ -80,7 +80,7 @@
           <pg-popper trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
-              <i class="icon-arrow-down12 text-secondary"></i>
+              <i class="icon-arrow-down12 text-light"></i>
             </a>
             <div class="pg-nav-subitem-panel" slot="content">
               <div class="pg-nav-subitem-panel--inner">
@@ -93,7 +93,7 @@
           <pg-popper trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
-              <i class="icon-arrow-down12 text-secondary"></i>
+              <i class="icon-arrow-down12 text-light"></i>
             </a>
             <div class="pg-nav-subitem-panel" slot="content">
               <div class="pg-nav-subitem-panel--inner">
@@ -135,14 +135,14 @@
             </svg>
             <a class="nav">
               <span>{{ username }}</span>
-              <i class="icon-arrow-down12 ml-5 text-secondary"></i>
+              <i class="icon-arrow-down12 ml-5 text-white"></i>
             </a>
           </div>
           <div class="pg-nav-subitem-panel" slot="content">
             <div class="pg-nav-subitem-panel--inner pg-panel-animation">
-              <a @click="dialog.visible = true"> <i class="icon-lock text-secondary mr-5"></i> 修改密码</a>
+              <a @click="dialog.visible = true"> <i class="icon-lock text-light mr-5"></i> 修改密码</a>
               <span class="divider-line"></span>
-              <a @click="handleLogout"> <i class="icon-switch2 text-secondary mr-5"></i> 退出登录</a>
+              <a @click="handleLogout"> <i class="icon-switch2 text-light mr-5"></i> 退出登录</a>
             </div>
           </div>
         </pg-popper>

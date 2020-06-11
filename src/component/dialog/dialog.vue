@@ -4,7 +4,7 @@
       <div class="pg-dialog-wrapper" @click.self="onMaskClick" v-if="isShow">
         <div class="pg-dialog center" :class="`${closing ? 'closing' : ''}`" :style="`width: ${width || 'auto'};`">
           <div class="header">
-            <h3 class="title">{{title}}</h3>
+            <slot name="header"><h3 class="title">{{title}}</h3></slot>
             <pg-button class="icon" square flat @click="onClose"><i class="icon-cross2"></i></pg-button>
           </div>
           <div class="body">

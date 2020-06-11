@@ -45,7 +45,22 @@
   [class*=" icon-"],
   [class^="icon-"] {
     font-size: 20px;
+
+    &.icon-cancel-circle2 {
+      font-size: 14px;
+      cursor: pointer;
+      margin-left: 5px;
+      margin-right: 5px;
+      margin-top: 2px;
+      color: $secondary;
+      transition: color .3s ease-in-out;
+
+      &:hover {
+        color: #666;
+      }
+    }
   }
+
 
   //&.primary {
   //  color: $primary;

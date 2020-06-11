@@ -31,9 +31,9 @@
 
 .dropdown-box .filter-feedback {
   text-align: center;
-  padding-bottom: 10px;
+  padding: 10px;
   font-size: $font-size-sm;
-  color: #999;
+  color: $secondary;
 }
 
 .dropdown-list {
@@ -62,9 +62,14 @@
     background-color: $primary;
     color: $white;
   }
+
+  &.disabled {
+    color: $secondary;
+    cursor: not-allowed;
+  }
 }
 
-.dropdown-list > li:hover:not(.active) {
+.dropdown-list > li:hover:not(.active):not(.disabled) {
   background-color: #f2f2f2;
 }
 

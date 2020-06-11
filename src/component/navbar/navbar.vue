@@ -14,7 +14,7 @@
             </g>
           </svg>
           <span class="brand">蒲公英</span>
-        </div>
+          </div>
       </div>
       <div class="pg-nav-item" style="min-width: 150px">
         <a class="nav" :href="origin_yy">系统首页</a>

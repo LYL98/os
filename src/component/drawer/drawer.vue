@@ -4,7 +4,7 @@
       <div class="pg-drawer-wrapper" @click.self="onMaskClick" v-if="isShow">
         <div class="pg-drawer right" :class="{drawing}" :style="`width: ${width || 'auto'}; right: -${drawing ? width : 0}`">
           <div class="header">
-            <h3 class="title">{{title}}</h3>
+            <slot name="header"><h3 class="title">{{title}}</h3></slot>
             <pg-button class="icon" square flat @click="onClose"><i class="icon-cross2"></i></pg-button>
           </div>
           <div class="body">

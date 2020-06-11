@@ -119,7 +119,7 @@
               this.debounceEmit = debounce(v => {
                 this.$emit('sync', v);
                 this.$emit('change', v);
-              }, 350);
+              }, 300);
               return;
             }
             this.debounceEmit(v);

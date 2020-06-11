@@ -2,6 +2,7 @@
   <pg-popper :trigger="trigger" v-model="expend" :width="popperWidth" :appendToBody="appendToBody" :disabled="is_disabled">
 
     <pg-input
+        ref="input"
         class="pg-select"
         :size="size"
         :style="`width: ${popperWidth};`"
@@ -10,14 +11,17 @@
         :disabled="is_disabled"
         :material="material"
         :flat="flat"
-        readonly
+        :readonly="!searchable"
         :clearable="clearable"
-        :placeholder="placeholder"
-        :value="label"
+        :placeholder="!searchable ? placeholder : isFocus ? (label || placeholder) : placeholder"
+        :value="!searchable ? label : isFocus ? '' : label"
         @click.stop="onToggle"
+        @focus="onFocus"
+        @blur="onBlur"
         @clear="onClear"
         @mouseenter="isHover=true"
         @mouseleave="isHover=false"
+        @change="changeKeywords"
     >
       <template slot="suffix">
         <span @click.stop="onToggle">
@@ -27,12 +31,7 @@
     </pg-input>
 
     <div class="dropdown-box" slot="content" :style="`width: ${popperWidth};`">
-
-      <div class="filter" v-if="searchable">
-        <pg-search v-if="expend" material size="sm" auto-focus immediate :valid="false" v-model="keywords" />
-      </div>
-
-      <div class="filter-feedback" v-if="noResults">没有符合条件的结果..</div>
+      <div class="filter-feedback" v-if="list.length <= 0 || noResults">没有符合条件的结果..</div>
 
       <ul class="dropdown-list">
         <slot></slot>
@@ -46,13 +45,12 @@
   import PinyinEngine from '../_util/pinyin';
   import pgPopper from './../popper/popper';
   import pgInput from './../input/input';
-  import pgSearch from './../search/search';
 
-  import {findUpComponent} from './../_util/assist';
+  import {findUpComponent, debounce} from './../_util/assist';
 
   export default {
     name: "pg-select",
-    components: {pgPopper, pgInput, pgSearch},
+    components: {pgPopper, pgInput},
     directives: {
       focus: {
         inserted(el) {
@@ -105,6 +103,7 @@
         slotOptions: [],
         popperWidth: 'auto',
         isHover: false,
+        isFocus: false,
         keywords: '',
       }
     },
@@ -172,7 +171,38 @@
           this.$data.keywords = '';
         }, 500);
       },
+      // 如果不是搜索模式，则对keywords变化 不做处理
+      changeKeywords(v) {
+        if (!this.$props.searchable) return;
+        if (!this.debounceEmit) {
+          this.debounceEmit = debounce(v => {
+            this.$data.keywords = v;
+            this.$emit('search', v);
+          }, 300);
+          return;
+        }
+        this.debounceEmit(v);
+      },
+      // 当获取焦点时，输入框的值 label 设置为 placeholder
+      // 当失去焦点时，输入框的 label 为选中的值
+      onFocus() {
+        this.$data.isFocus = true;
+      },
+
+      onBlur() {
+        this.$data.isFocus = false;
+        // 如果在失去焦点时，监测到select的值为空，则清除 input 中用户输入过的值。以防止 input watch 监听不到 value 变化的场景。
+        if (!this.$props.value) {
+          this.$refs['input'] && (this.$refs['input'].$data.ev = '');
+        }
+        let timer = setTimeout(() => {
+          clearTimeout(timer);
+          this.$data.keywords = '';
+        }, 500);
+      },
+
       onClear() {
+        this.$data.keywords = '';
         this.$emit('change', this.$props.multiple ? [] : '');
       }
     }

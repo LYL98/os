@@ -1,0 +1,76 @@
+.badge {
+  display: inline-block;
+  padding: 4px;
+  font-size: 12px;
+  line-height: $line-height-base;
+  border: 1px solid transparent;
+}
+
+.badge-sm {
+  line-height: 14px;
+}
+
+.badge-lg {
+  line-height: 24px;
+}
+
+.badge-primary {
+  background-color: lighten($primary, 40);
+  color: $primary;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: $primary;
+  }
+}
+
+.badge-dark {
+  background-color: lighten($dark, 40);
+  color: $white;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: lighten($dark, 20);
+    color: lighten($dark, 20);
+  }
+}
+
+.badge-secondary {
+  background-color: lighten($secondary, 40);
+  color: $secondary;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: $secondary;
+  }
+}
+
+.badge-success {
+  background-color: lighten($success, 40);
+  color: $success;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: $success;
+  }
+}
+
+.badge-warning {
+  background-color: lighten($warning, 40);
+  color: $warning;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: $warning;
+  }
+}
+
+.badge-danger {
+  background-color: lighten($danger, 40);
+  color: $danger;
+
+  &.badge-outline {
+    background-color: transparent;
+    border-color: $danger;
+  }
+}

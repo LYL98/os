@@ -1,5 +1,5 @@
 <template>
-  <li class="pg-option" :class="active ? 'active' : ''" @click.stop="onClick" v-if="isShow">
+  <li class="pg-option" :class="{active, disabled}" @click.stop="onClick" v-show="isShow">
     <slot></slot>
   </li>
 </template>
@@ -23,7 +23,6 @@
 
     computed: {
       isShow() {
-        if (this.$props.disabled) return false;
         if (!this.pgSelect?.searchable) return true;
         return this.pgSelect?.pinyinEngine.query(this.pgSelect?.keywords || '').find(item => item.label === this.label);
       },
@@ -38,6 +37,9 @@
     mounted() {
       this.updateOptions();
     },
+    beforeDestory() {
+      this.destoryOptions();
+    },
 
     methods: {
       updateOptions() {
@@ -49,7 +51,13 @@
         }
         this.pgSelect.$data.slotOptions = options;
       },
+      destoryOptions() {
+        let options = this.pgSelect?.$data?.slotOptions;
+        if (!Array.isArray(options)) return;
+        this.pgSelect.$data.slotOptions = options.filter(item => item.value !== this.$props.value);
+      },
       onClick() {
+        if (this.$props.disabled) return;
         this.pgSelect?.onSelect?.(this.$props.value);
         this.$emit('click', this.$props.item);
       }

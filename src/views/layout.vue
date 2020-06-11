@@ -23,9 +23,9 @@
             <pg-button color="primary">创建商户</pg-button>
             <pg-button @click="drawer=true">打开</pg-button>
 
-            <pg-select v-model="selected" searchable>
+            <pg-select v-model="selected" searchable clearable>
               <pg-option value="1">第1项</pg-option>
-              <pg-option value="2">第2项</pg-option>
+              <pg-option value="2" disabled>第2项</pg-option>
               <pg-option value="3">第3项</pg-option>
               <pg-option value="4">第4项</pg-option>
               <pg-option value="5">第5项</pg-option>
@@ -60,6 +60,9 @@
 <script>
   export default {
     name: "layout",
+    created() {
+      this.$toast({ type: 'success', message: '<div>缺少打印插件，请<a href="CLodop_Setup_for_Win32NT.exe" target="_self" style="color: #E6A23C; padding: 0 5px; text-decoration: underline">下载</a>并执行安装</div>', closeable: true })
+    },
     data() {
       return {
         drawer: false,

@@ -13,6 +13,7 @@
         :maxlength="maxlength"
         v-model.trim="ev"
         @input="onChange"
+        @focus="onFocus"
         @blur="onBlur"
         @keyup.enter="onEnter"
     />
@@ -144,9 +145,12 @@
         this.$emit('change', ev);
       },
 
-
+      onFocus(e) {
+        this.$emit('focus', e);
+      },
       onBlur(e) {
         this.pgFormItem?.onBlur?.(e.target.value);
+        this.$emit('blur', e);
       },
       onClear() {
         this.$emit('change', '');

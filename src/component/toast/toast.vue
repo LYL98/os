@@ -5,7 +5,8 @@
       <i class="icon-checkmark-circle text-success" v-if="toast.type === 'success'"></i>
       <i class="icon-spam text-warning" v-if="toast.type === 'warning'"></i>
       <i class="icon-spam text-danger" v-if="toast.type === 'danger'"></i>
-      <span class="content">{{ toast.message }}</span>
+      <span class="content" v-html="toast.message"></span>
+      <i class="icon-cancel-circle2" v-if="toast.closeable" @click="remove"></i>
     </div>
   </div>
 </template>
@@ -21,6 +22,8 @@
     methods: {
       add(toast) {
         this.$data.toast = toast;
+
+        if (toast.closeable) return; // 如果设置 closeable，则需要手动关闭
 
         // remove timer. if not? set 2000;
         const duration = toast.duration || 3000;

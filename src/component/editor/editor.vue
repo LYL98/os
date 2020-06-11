@@ -52,8 +52,8 @@ export default {
       this.$nextTick(() => {
         this.$props.valid && this.pgFormItem?.sync?.(v);
       });
-      if (v === this.$data.ev) return;
-      this.$data.ev = v;
+      if (v === CKEDITOR.instances.ckeditor.getData()) return;
+      CKEDITOR.instances.ckeditor.setData(v);
     }
   },
 

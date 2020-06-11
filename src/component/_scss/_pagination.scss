@@ -15,6 +15,15 @@
 .pg-pagination__operate {
   display: flex;
   align-items: center;
+
+  .pg-button:disabled {
+    background-color: #eee !important;
+    
+    [class*=" icon-"],
+    [class^="icon-"] {
+      color: #bbb;
+    }
+  }
 }
 
 .pg-pagination .pg-pagination__text {

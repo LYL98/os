@@ -46,6 +46,11 @@
             <pg-table :data="tableData" fixed-header checkable>
               <pg-column prop="name" title="门店名称"></pg-column>
               <pg-column prop="remark" title="备注"></pg-column>
+              <pg-column title="备注">
+                <template v-slot="{row}">
+                  <pg-switch :value="true"></pg-switch>
+                </template>
+              </pg-column>
             </pg-table>
             
             <pg-pagination class="m-20"/>

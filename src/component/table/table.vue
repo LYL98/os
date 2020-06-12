@@ -36,8 +36,10 @@
         :style="`height: ${height}; overflow-y: auto; overflow: overlay;`"
         @scroll="$emit('scroll')"
     >
-      <div class="pg-table-empty" v-if="empty && !!placeholder">{{ placeholder }}</div>
-      <table class="pg-table" :class="{borderless}" v-if="!empty">
+      <div class="pg-table-empty" v-if="Array.isArray(data) && data.length <= 0 && !!placeholder">
+        {{ placeholder }}
+      </div>
+      <table class="pg-table" :class="{borderless}">
         <tbody>
           <pg-row
               v-for="(item, index) in (data || [])"
@@ -86,7 +88,7 @@
       }
     },
     props: {
-      data: {type: Array, default: []},
+      data: {type: Array, default: null},
       primaryKey: {type: String, default: 'id'},
       page: {type: Number, default: 1},
       pageSize: {type: Number, default: 30},
@@ -103,7 +105,6 @@
       return {
         options: [],
         fixed: false,
-        empty: false,
         selectedRow: {},
         checkedList: [],
       }
@@ -130,7 +131,7 @@
 
       indeterminate() {
         let length = this.$data.checkedList.filter(item => !!item).length;
-        if (length > 0 && length < this.$props.data.length) return true;
+        if (length > 0 && this.$props.data && length < this.$props.data.length) return true;
         return false;
       },
     },
@@ -140,7 +141,6 @@
         immediate: true,
         handler(next, prev) {
           this.$data.checkedList = [];
-          this.$data.empty = !!(prev && next && next.length === 0);
         }
       },
     },
@@ -188,7 +188,7 @@
         if (this.checkedAll) {
           this.$data.checkedList = [];
         } else {
-          this.$data.checkedList = this.$props.data;
+          this.$data.checkedList = this.$props.data || [];
         }
 
         this.$emit('selection', [...this.$data.checkedList]);

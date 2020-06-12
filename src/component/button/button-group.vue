@@ -48,7 +48,7 @@
     },
     data() {
       let ev = this.$props.value;
-      if (!!ev) {
+      if (!!ev || ev === false) { // 兼容boolean的情况
         this.pgFormItem?.sync?.(ev);
       }
       return {

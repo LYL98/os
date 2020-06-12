@@ -1,5 +1,5 @@
 <template>
-  <pg-popper v-model="expend" :width="popperWidth" :placement="placement" :append-arrow="true">
+  <pg-popper v-model="expend" :width="popperWidth" :placement="placement" :append-arrow="false">
     <slot></slot>
     <div class="dropdown-box p-15 text-center" slot="content">
       <div class="font-weight-bold font-size-lg d-flex align-items-center justify-content-center">

@@ -45,13 +45,14 @@ export default {
     is_disabled: {
       immiable: true,
       handler(v) {
-        CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.setReadOnly(v);
+        CKEDITOR && CKEDITOR.instances && CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.setReadOnly(v);
       }
     },
     value(v) {
       this.$nextTick(() => {
         this.$props.valid && this.pgFormItem?.sync?.(v);
       });
+      if (!CKEDITOR || !CKEDITOR.instances || !CKEDITOR.instances.ckeditor) return;
       if (v === CKEDITOR.instances.ckeditor.getData()) return;
       CKEDITOR.instances.ckeditor.setData(v);
     }
@@ -73,11 +74,10 @@ export default {
   methods: {
 
     instanceReady(e) {
-      CKEDITOR.instances.ckeditor.setData(v);
+      this.$emit('created')
       CKEDITOR.instances.ckeditor.setReadOnly(this.is_disabled);
 
       e.editor.widgets.on('instanceCreated', params => {
-        // console.log('editor创建', params);
       });
 
       e.editor.on('change', change => {

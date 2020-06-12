@@ -6951,10 +6951,12 @@ label {
     font-size: 12px;
     color: #797292; }
 
+.form-item-content .pg-switch {
+  height: 30px; }
+
 .pg-switch {
   display: inline-flex;
   font-size: 0;
-  height: 30px;
   align-items: center; }
 
 .pg-switch--inner {

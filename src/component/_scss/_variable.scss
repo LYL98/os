@@ -205,6 +205,8 @@ $z-index-popper:              610 !default;
 
 $z-index-layout:              800 !default;
 
+$z-index-loading:             900 !default;
+
 // 兼容多个modal窗，弹出时，notify、toast、preview、alert 能正常显示
 $z-index-notify:              1000 !default;
 $z-index-toast:               $z-index-notify !default;

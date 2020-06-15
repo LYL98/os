@@ -24,6 +24,7 @@ import Option from './component/select/option';
 import Table from './component/table/table';
 import TableRow from './component/table/row';
 import TableColumn from './component/table/column';
+import TableColumnSort from './component/table/column-sort';
 import Tabs from './component/tabs/tabs';
 import Tab from './component/tabs/tab';
 import Textarea from './component/textarea/textarea';
@@ -32,6 +33,7 @@ import Transfer from './component/transfer/transfer';
 import Tree from './component/tree/tree';
 import Uploader from './component/uploader/uploader';
 
+import Loading from './component/loading';
 import Toast from './component/toast';
 import Preview from './component/preview';
 import Http from './http/http';
@@ -63,6 +65,7 @@ const components = [
   Table,
   TableRow,
   TableColumn,
+  TableColumnSort,
   Tabs,
   Tab,
   Textarea,
@@ -78,6 +81,7 @@ const install = function (Vue) {
 
   // 遍历注册全局组件
   components.forEach(component => Vue.component(component.name, component));
+  Vue.prototype.$loading = Loading;
   Vue.prototype.$toast = Toast;
   Vue.prototype.$preview = Preview;
 
@@ -124,6 +128,7 @@ export {
   Table,
   TableRow,
   TableColumn,
+  TableColumnSort,
   Tabs,
   Tab,
   Textarea,
@@ -132,7 +137,7 @@ export {
   Tree,
   Uploader,
 
-
+  Loading,
   Toast,
   Preview,
   Http,

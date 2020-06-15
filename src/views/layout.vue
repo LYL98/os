@@ -20,7 +20,7 @@
         <div class="pg-page-content">
 
           <div class="query" style="display: flex; justify-content: flex-start">
-            <pg-button color="primary">创建商户</pg-button>
+            <pg-button color="primary" @click="drawer = true">创建商户</pg-button>
             <pg-button @click="drawer=true">打开</pg-button>
 
             <pg-select v-model="selected" searchable clearable>
@@ -43,8 +43,22 @@
 
           <div class="card mt-20">
 
-            <pg-table :data="tableData" fixed-header checkable>
-              <pg-column prop="name" title="门店名称"></pg-column>
+            <pg-table :data="tableData" expand-all fixed-header checkable :highlight-row="false">
+
+              <template v-slot:name>
+                <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
+                <pg-select flat width="60px">
+                  <pg-option>全部</pg-option>
+                  <pg-option>未冻结</pg-option>
+                  <pg-option>已冻结</pg-option>
+                </pg-select>
+              </template>
+
+              <template v-slot:expand-row="{row}">
+                <div>{{row.name}}</div>
+              </template>
+
+              <pg-column prop="name" title="门店名称" sort-key="name"></pg-column>
               <pg-column prop="remark" title="备注"></pg-column>
               <pg-column title="备注">
                 <template v-slot="{row}">
@@ -57,6 +71,8 @@
           </div>
         </div>
 
+<!--        <pg-drawer v-model="drawer"></pg-drawer>-->
+
       </div>
     </div>
   </div>
@@ -66,10 +82,16 @@
   export default {
     name: "layout",
     created() {
-      this.$toast({ type: 'success', message: '<div>缺少打印插件，请<a href="CLodop_Setup_for_Win32NT.exe" target="_self" style="color: #E6A23C; padding: 0 5px; text-decoration: underline">下载</a>并执行安装</div>', closeable: true })
+      this.$loading.show();
+      let timer = setTimeout(() => {
+        this.$loading.hidden();
+      }, 3000);
     },
     data() {
       return {
+        query: {
+          order: '1'
+        },
         drawer: false,
         qrcodePopper: false,
         toggle: false,

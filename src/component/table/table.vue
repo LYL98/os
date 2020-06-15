@@ -5,6 +5,9 @@
       <table class="pg-table">
         <thead>
         <tr>
+          <th width="20px" v-if="expandable">
+<!--            <i class="icon-arrow-right22"></i>-->
+          </th>
           <th v-if="checkable" width="38px" class="px-5 text-center">
             <pg-checkbox class="mr-0 ml-10" :value="checkedAll" @change="onCheckAllToggle"
                          :indeterminate="indeterminate"></pg-checkbox>
@@ -18,6 +21,7 @@
           </th>
           <th v-for="option in options" :width="option.width" :key="option.title">
             {{option.title}}
+            <slot :name="option.prop"></slot>
             <span v-html="option.children[0]" v-if="option.children && option.children[0]"></span>
           </th>
         </tr>
@@ -41,26 +45,36 @@
       </div>
       <table class="pg-table" :class="{borderless}">
         <tbody>
-          <pg-row
-              v-for="(item, index) in (data || [])"
-              :item="item"
-              :key="item[primaryKey]"
-              @click.native="onSelectRow(item)"
-              :class="highlightRow && selectedRow[primaryKey] === item[primaryKey] ? 'selected' : ''"
-          >
-            <td v-if="checkable" width="38px" class="px-5 text-center">
-              <pg-checkbox class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
-            </td>
-            <td
-                v-if="serialable"
-                :width="indexWidth"
-                :style="'color: #666; min-width: ' + indexWidth"
-                class="font-weight-bold font-size-sm px-5 text-center"
+          <template v-for="(item, index) in (data || [])">
+            <pg-row
+                :item="item"
+                :key="item[primaryKey]"
+                @click.native="onSelectRow(item)"
+                :class="highlightRow && selectedRow[primaryKey] === item[primaryKey] ? 'selected' : ''"
             >
-              {{ (page - 1) * pageSize + index + 1 }}
-            </td>
-            <slot></slot>
-          </pg-row>
+              <td width="20px" v-if="expandable">
+                <i class="icon-arrow-right22 cursor-pointer pg-expand-icon" :class="{active: expandable && expand_indexs.includes(index)}" @click="onExpandRow(index)"></i>
+              </td>
+              <td v-if="checkable" width="38px" class="px-5 text-center">
+                <pg-checkbox class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
+              </td>
+              <td
+                  v-if="serialable"
+                  :width="indexWidth"
+                  :style="'color: #666; min-width: ' + indexWidth"
+                  class="font-weight-bold font-size-sm px-5 text-center"
+              >
+                {{ (page - 1) * pageSize + index + 1 }}
+              </td>
+              <slot></slot>
+            </pg-row>
+            <tr class="expand-row" v-if="expandable && expand_indexs.includes(index)">
+              <td :colspan="colspan">
+                <slot name="expand-row" :row="item"></slot>
+              </td>
+            </tr>
+          </template>
+
         </tbody>
       </table>
     </pg-checkbox-group>
@@ -71,7 +85,7 @@
 
   import pgCheckbox from './../checkbox/checkbox';
   import pgCheckboxGroup from './../checkbox/checkbox-group';
-  import {debounce} from '../_util/assist';
+  import {debounce, findDownComponentList} from '../_util/assist';
 
   import Row from './row';
 
@@ -99,12 +113,16 @@
       checkable: {type: Boolean, default: false},
       highlightRow: {type: Boolean, default: true},
       loading: {type: Boolean, default: false},
+      expandAll: {type: Boolean, default: false},
       placeholder: {type: String, default: '查询结果为空...'}
     },
     data() {
       return {
         options: [],
+        collapses: [],
         fixed: false,
+        expandable: false,
+        expand_indexs: [], // 展开行的index all | array. all 表示全部展开、array.length === 0 表示全部折叠 ｜ 包含展开的行索引
         selectedRow: {},
         checkedList: [],
       }
@@ -134,6 +152,17 @@
         if (length > 0 && this.$props.data && length < this.$props.data.length) return true;
         return false;
       },
+
+      colspan() {
+        let l = this.$data.options.length;
+        if (this.$props.serialable) {
+          l += 1;
+        }
+        if (this.$props.checkable) {
+          l += 1;
+        }
+        return l + 1;
+      }
     },
 
     watch: {
@@ -143,6 +172,16 @@
           this.$data.checkedList = [];
         }
       },
+      expandAll: {
+        immediate: true,
+        handler(val) {
+          if (val) {
+            this.$data.expand_indexs = [...new Array(this.$props.data && this.$props.data.length || 0).keys()];
+          } else {
+            this.$data.expand_indexs = [];
+          }
+        }
+      }
     },
 
     created() {
@@ -163,6 +202,8 @@
         this.offsetTop = this.$refs['fixed-header-root'] ? this.$refs['fixed-header-root'].offsetTop : 0;
       }
       this.$data.options = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
+      this.$data.collapses = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
+      this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row']; // 是否存在可折叠面板
     },
     methods: {
       onScroll() {
@@ -196,7 +237,20 @@
 
       onCheckChange() {
         this.$emit('selection', this.$data.checkedList.filter(item => !!item));
-      }
+      },
+
+      onExpandRow(index) {
+        if (index === null || index === undefined) {
+          this.$data.expand_indexs = [];
+          return;
+        }
+        if (this.$data.expand_indexs.includes(index)) {
+          this.$data.expand_indexs = this.$data.expand_indexs.filter(d => d !== index);
+        } else {
+          this.$data.expand_indexs = [...this.$data.expand_indexs, index];
+        }
+
+      },
     }
   };
 </script>

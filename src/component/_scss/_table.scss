@@ -10,6 +10,17 @@
     line-height: 30px;
     text-align: center;
   }
+
+  .fixed-header {
+    position: fixed;
+    top: 50px;
+    left: 220px;
+    width: calc(100% - 240px);
+    min-width: 1040px;
+    z-index: 99;
+    background: #fcfcfc;
+    box-shadow: 0 0 2px 0 rgba(0,0,0,0.1);
+  }
 }
 
 .pg-table {
@@ -39,7 +50,7 @@
       line-height: $line-height-base;
       border-bottom: 1px solid #DDDDDD;
 
-      &:hover:not(.selected) {
+      &:hover:not(.selected):not(.expand-row) {
         background-color: #f2f2f2 !important;
       }
 
@@ -48,6 +59,17 @@
       }
 
       transition: background-color .15s ease-in-out;
+
+      &.expand-row {
+        background-color: #f9f9f9;
+      }
+
+      .pg-expand-icon {
+
+        &.active {
+          transform: rotate(90deg);
+        }
+      }
     }
 
     td {
@@ -57,6 +79,7 @@
       border-bottom: 1px solid #ddd;
     }
   }
+
 }
 
 .pg-table.borderless {
@@ -80,23 +103,36 @@
   }
 }
 
-.fixed-header {
-  position: fixed;
-  top: 50px;
-  left: 220px;
-  width: calc(100% - 240px);
-  min-width: 1040px;
-  z-index: 99;
-  background: #fcfcfc;
-  box-shadow: 0 0 2px 0 rgba(0,0,0,0.1);
-}
 
 .pg-table-empty {
   width: 100%;
   display: flex;
   justify-content: center;
   font-size: $font-size-base;
-  height: 50px;
-  line-height: 50px;
+  height: 42px;
+  line-height: 42px;
   background-color: #F9F9F9;
+}
+
+.pg-column-sort {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  margin-top: -1px;
+  cursor: pointer;
+
+  .icon-arrow-up5,
+  .icon-arrow-down5 {
+    color: $secondary;
+    transition: color .2s ease-in-out;
+  }
+
+  .active {
+    color: $primary !important;
+  }
+
+  .icon-arrow-down5 {
+    margin-top: -10px;
+  }
 }

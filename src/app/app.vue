@@ -21,7 +21,7 @@
 
     data() {
       return {
-        complete: false,
+        complete: true,
         userInfo: {},
 
         current_client: 'acc', // 当前客户端
@@ -94,7 +94,7 @@
     },
 
     created() {
-      this.initData();
+      // this.initData();
     },
 
     methods: {

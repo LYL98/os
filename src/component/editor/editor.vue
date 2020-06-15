@@ -1,5 +1,5 @@
 <template>
-  <textarea name="ckeditor" id="ckeditor" rows="10" cols="80">
+  <textarea name="ckeditor" id="ckeditor" rows="20" cols="80">
     {{ ev }}
   </textarea>
 </template>

@@ -37,7 +37,7 @@
             size="lg"
             label="确认密码"
             help-text="两次密码必须保持一致两次密码必须保持一致两次密码必须保持一致两次密码必须保持一致两次密码必须保持一致"
-            :rules="{ required: true, 'logic:blur': confirmPass }"
+            :rules="{ required: true, [`logic:${rank}:blur`]: confirmPass }"
         >
           <pg-input type="password" placeholder="请确认新密码" v-model="formData.confirm_password"></pg-input>
         </pg-form-item>
@@ -86,7 +86,7 @@
     name: "modify-pwd",
     data() {
       return {
-        rank: '',
+        rank: '1',
         video: '',
         content: '123',
         date: { begin_date: '2020-04-13', end_date: '2020-05-16' },
@@ -101,7 +101,8 @@
     },
     created() {
       this.confirmPass = {
-        validate: (v) => {
+        validate: (v, n) => {
+          console.log('n: ', n[0]);
           return this.$data.formData.password === v
         },
         getMsg: '两次密码输入不一致'

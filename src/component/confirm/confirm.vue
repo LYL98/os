@@ -1,5 +1,5 @@
 <template>
-  <pg-popper v-model="expend" :width="popperWidth" :placement="placement" :append-arrow="false">
+  <pg-popper v-model="expend" :width="popperWidth" :placement="placement" :append-arrow="true">
     <slot></slot>
     <div class="dropdown-box p-15 text-center" slot="content">
       <div class="font-weight-bold font-size-lg d-flex align-items-center justify-content-center">
@@ -15,29 +15,29 @@
 </template>
 
 <script>
-import pgPopper from './../popper/popper';
-export default {
-  name: 'pg-confirm',
-  components: { pgPopper },
-  props: { 
-    popperWidth: { type: String, default: '180px' },
-    placement: { type: String, default: 'top' },
-    helpText: { type: String, default: '确认继续进行操作' },
-  },
-  data() {
-    return {
-      expend: false,
-    }
-  },
-  methods: {
-    onCancel() {
-      this.$data.expend = false;
-      this.$emit('cancel');
+  import pgPopper from './../popper/popper';
+  export default {
+    name: 'pg-confirm',
+    components: { pgPopper },
+    props: {
+      popperWidth: { type: String, default: '180px' },
+      placement: { type: String, default: 'top' },
+      helpText: { type: String, default: '确认继续进行操作' },
     },
-    onConfirm() {
-      this.$data.expend = false;
-      this.$emit('confirm');
+    data() {
+      return {
+        expend: false,
+      }
+    },
+    methods: {
+      onCancel() {
+        this.$data.expend = false;
+        this.$emit('cancel');
+      },
+      onConfirm() {
+        this.$data.expend = false;
+        this.$emit('confirm');
+      }
     }
   }
-}
 </script>

@@ -43,7 +43,7 @@
 
           <div class="card mt-20">
 
-            <pg-table :data="tableData" expand-all fixed-header checkable :highlight-row="false">
+            <pg-table :data="tableData" expand-all fixed-header checkable :highlight-row="true">
 
               <template v-slot:name>
                 <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
@@ -82,10 +82,10 @@
   export default {
     name: "layout",
     created() {
-      this.$loading.show();
-      let timer = setTimeout(() => {
-        this.$loading.hidden();
-      }, 3000);
+      // this.$loading.show();
+      // let timer = setTimeout(() => {
+      //   this.$loading.hidden();
+      // }, 3000);
     },
     data() {
       return {
@@ -145,7 +145,7 @@
           }
         ],
         tableData: [
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { name: '华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
           { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
           { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
           { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },

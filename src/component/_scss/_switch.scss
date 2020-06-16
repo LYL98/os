@@ -1,13 +1,14 @@
 .form-item-content {
   .pg-switch {
+    display: inline-flex;
     height: 30px;
+    align-items: center;
   }
 }
 
 .pg-switch {
-  display: inline-flex;
   font-size: 0;
-  align-items: center;
+  height: 20px;
 }
 
 .pg-switch--inner {

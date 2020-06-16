@@ -13,7 +13,7 @@
       }
     },
     props: {
-      item: { type: Object, default() { return {}; } }
+      item: { type: Object, default() { return {}; } },
     }
   };
 </script>

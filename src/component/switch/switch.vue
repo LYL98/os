@@ -1,6 +1,6 @@
 <template>
   <component :is="tag" class="pg-switch" :class="{ checked: checked, disabled, 'flex-row-reverse': reverse }">
-    <input type="checkbox" :checked="checked" :disabled="disabled" hidden />
+    <input type="checkbox" :checked="checked" :disabled="disabled" hidden style="position: absolute; left: -9999px; top: -9999px;"/>
 
     <label class="pg-switch--inner" @click="doToggle" v-if="!disabled">
       <span v-if="checked" class="switchery" style="background-color: #006eff; border-color: #006eff; box-shadow: #006eff 0px 0px 0px 10px inset; transition: border 0.4s ease 0s, box-shadow 0.4s ease 0s, background-color 1.2s ease 0s;">

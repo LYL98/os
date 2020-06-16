@@ -166,7 +166,6 @@ export default {
     modifyPwd,
   },
   props: {
-    adminMode: { type: Boolean, default: false },
     username: { type: String, default: '' },
   },
   data() {

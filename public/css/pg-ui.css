@@ -6398,6 +6398,9 @@ ul.pg-radio-group {
   color: #fff;
   border-radius: 2px; }
 
+.pg-confirm {
+  font-size: 0; }
+
 .pg-table-calendar {
   width: 100%;
   min-width: 212px;
@@ -6964,11 +6967,11 @@ label {
     color: #797292; }
 
 .form-item-content .pg-switch {
-  display: inline-flex;
-  height: 30px;
-  align-items: center; }
+  height: 30px; }
 
 .pg-switch {
+  display: inline-flex;
+  align-items: center;
   font-size: 0;
   height: 20px; }
 

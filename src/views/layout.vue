@@ -41,7 +41,7 @@
             <pg-search style="width: 300px" clearable></pg-search>
           </div>
 
-          <div class="card mt-20">
+          <div class="card">
 
             <pg-table :data="tableData" expand-all fixed-header checkable :highlight-row="true">
 
@@ -62,7 +62,9 @@
               <pg-column prop="remark" title="备注"></pg-column>
               <pg-column title="备注">
                 <template v-slot="{row}">
-                  <pg-switch :value="true"></pg-switch>
+                  <pg-confirm help-text="确认删除">
+                    <pg-switch :value="true"></pg-switch>
+                  </pg-confirm>
                 </template>
               </pg-column>
             </pg-table>

@@ -6,10 +6,9 @@
   >
     <div class="pg-popper-toggle" ref="toggle" @click="onToggle">
       <slot></slot>
-    </div>
-
-    <!--  popper 层的最小宽度 通过外部传递进来，如果指定了该宽度，则使用，如果没有指定，则自适应于 slot: content 的宽度  -->
-    <transition name="fade">
+    </div><!--
+   popper 层的最小宽度 通过外部传递进来，如果指定了该宽度，则使用，如果没有指定，则自适应于 slot: content 的宽度
+     --><transition name="fade">
       <div
           v-transfer-dom 
           :data-transfer="appendToBody"

@@ -4,7 +4,7 @@
     <!-- <video :src="src" controls autoplay/> -->
 
     <template v-if="type === 'image'">
-      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
+      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag">
         <div 
           class="pg-img-box" 
           v-for="item in list" 
@@ -30,7 +30,7 @@
       
     </template>
     <template v-if="type === 'video'">
-      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag" :options="{group: 'people'}">
+      <draggable class="d-flex" :sort="!is_disabled && multiple" v-model="list" @end="onEndDrag">
         <div
           class="pg-img-box" 
           v-for="item in list" 

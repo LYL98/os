@@ -13,9 +13,9 @@ const loading = {
     let instance = getInstance();
     instance.show();
   },
-  hidden: function () {
+  hide: function () {
     let instance = getInstance();
-    instance.hidden();
+    instance.hide();
   },
 };
 

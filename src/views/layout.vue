@@ -21,7 +21,7 @@
 
           <div class="query" style="display: flex; justify-content: flex-start">
             <pg-button color="primary" @click="drawer = true">创建商户</pg-button>
-            <pg-button @click="drawer=true">打开</pg-button>
+
 
             <pg-select v-model="selected" searchable clearable>
               <pg-option value="1">第1项</pg-option>
@@ -43,7 +43,7 @@
 
           <div class="card">
 
-            <pg-table :data="tableData" expand-all fixed-header checkable :highlight-row="true">
+            <pg-table primary-key="id" :data="tableData" expand-all fixed-header checkable>
 
               <template v-slot:name>
                 <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
@@ -85,15 +85,14 @@
     name: "layout",
     created() {
       // this.$loading.show();
-      // let timer = setTimeout(() => {
-      //   this.$loading.hidden();
-      // }, 3000);
+
     },
     data() {
       return {
         query: {
           order: '1'
         },
+        text: '',
         drawer: false,
         qrcodePopper: false,
         toggle: false,
@@ -147,39 +146,15 @@
           }
         ],
         tableData: [
-          { name: '华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
-          { name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
-          { name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 1, name: '华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 2, name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
+          { id: 3, name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 4, name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 5, name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
+          { id: 6, name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 7, name: '华南坂田汽配城', type: '提现', amount: 893700, operator: '小狮哥', remark: '提现备注', status: '已审核' },
+          { id: 8, name: '江南汽配城龙岗中心', type: '奖金', amount: 37600, operator: '', remark: '商户发起(代收款时自动)', status: '未审核' },
+          { id: 9, name: '云里智能圆', type: '提现', amount: 235435, operator: '小狮哥', remark: '提现备注', status: '已审核' },
         ]
       }
     }

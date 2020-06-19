@@ -50,7 +50,7 @@
                 :item="item"
                 :key="item[primaryKey]"
                 @click.native="onSelectRow(item)"
-                :class="highlightRow && selectedRow[primaryKey] === item[primaryKey] ? 'selected' : ''"
+                :class="{selected: highlightRow && selectedRow[primaryKey] === item[primaryKey], expandable: expandable }"
             >
               <td width="20px" v-if="expandable">
                 <i class="icon-arrow-right22 cursor-pointer pg-expand-icon" :class="{active: expandable && expand_indexs.includes(index)}" @click="onExpandRow(index)"></i>
@@ -69,7 +69,7 @@
               <slot></slot>
             </pg-row>
             <tr class="expand-row" v-if="expandable && expand_indexs.includes(index)">
-              <td :colspan="colspan">
+              <td :colspan="colspan" class="p-0">
                 <slot name="expand-row" :row="item"></slot>
               </td>
             </tr>
@@ -170,6 +170,11 @@
         immediate: true,
         handler(next, prev) {
           this.$data.checkedList = [];
+          if (Array.isArray(next)) {
+            this.$data.expand_indexs = [...new Array(next && next.length || 0).keys()];
+          } else {
+            this.$data.expand_indexs = [];
+          }
         }
       },
       expandAll: {

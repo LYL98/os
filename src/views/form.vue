@@ -10,7 +10,22 @@
 
       <pg-button color="light" outline>light button</pg-button>
 
+
+
       <pg-form size="md" ref="form" item-width="200px" vertical class="p-20">
+
+        <pg-confirm>
+          <template v-slot:help-text>
+            <div style="width: 150px">
+              {{ area }}
+            </div>
+          </template>
+          <pg-button>打开</pg-button>
+        </pg-confirm>
+
+        <pg-form-item rules="required">
+          <pg-textarea v-model="area"></pg-textarea>
+        </pg-form-item>
         <pg-form-item label="排序" rules="required|min_value:0:blur|max_value:10:blur">
           <pg-input type="number" v-model="rank" @change="changeRank"/>
         </pg-form-item>
@@ -86,6 +101,7 @@
     name: "modify-pwd",
     data() {
       return {
+        area: '',
         rank: '1',
         video: '',
         content: '123',

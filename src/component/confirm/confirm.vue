@@ -1,14 +1,16 @@
 <template>
   <pg-popper v-model="expend" :width="popperWidth" :placement="placement" :append-arrow="true">
     <slot></slot>
-    <div class="dropdown-box p-15 text-center" slot="content">
-      <div class="font-weight-bold font-size-lg d-flex align-items-center justify-content-center">
-        <i class="icon-spam text-danger" style="font-size: 20px;"></i>
-        <span class="ml-10">{{ helpText }}</span>
-      </div>
-      <div class="mt-20">
+    <div class="dropdown-box text-center pt-20 px-15 pb-10" slot="content">
+        <div class="d-flex align-items-center justify-content-center">
+          <i class="icon-spam text-warning" style="font-size: 20px;"></i>
+          <div class="ml-10">
+            <slot name="help-text">{{ helpText }}</slot>
+          </div>
+        </div>
+      <div class="mt-15">
         <pg-button size="sm" @click="onCancel">取消</pg-button>
-        <pg-button size="sm" class="ml-15" color="danger" @click="onConfirm">确定</pg-button>
+        <pg-button size="sm" class="ml-15" color="primary" @click="onConfirm">确定</pg-button>
       </div>
     </div>
   </pg-popper>

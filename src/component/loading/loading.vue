@@ -16,7 +16,7 @@
       show() {
         this.$data.visible = true;
       },
-      hidden() {
+      hide() {
         this.$data.visible = false;
       }
     }

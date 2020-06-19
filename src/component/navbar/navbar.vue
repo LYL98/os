@@ -184,7 +184,7 @@ export default {
   },
 
   created() {
-    const { env, routes, auth, origin_yy, origin_bsc, origin_cls } = osConfig();
+    const { env, routes, auth, origin_yy, origin_gyl, origin_bsc, origin_cls } = osConfig();
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
@@ -194,8 +194,12 @@ export default {
         .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
     };
 
+    const bsc = routes.bsc.map(item => {
+          let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'gyl' ? origin_gyl : origin_bsc) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
+          return { label: item.subitem, value: item.permission_code, items: items };
+        }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
+
     const yy = authorization(routes.yy, origin_yy);
-    const bsc = authorization(routes.bsc, origin_bsc);
     const cls = authorization(routes.cls, origin_cls);
     this.$data.routes = { yy, bsc, cls };
     this.$data.origin_yy = origin_yy;

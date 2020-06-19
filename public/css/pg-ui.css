@@ -7408,12 +7408,12 @@ label {
   .pg-table tbody tr {
     line-height: 1.5;
     border-bottom: 1px solid #DDDDDD;
-    transition: background-color .15s ease-in-out; }
+    transition: background-color .2s ease-in-out; }
     .pg-table tbody tr:hover:not(.selected):not(.expand-row) {
       background-color: #f2f2f2 !important; }
     .pg-table tbody tr.selected {
       background-color: #eaf5ea !important; }
-    .pg-table tbody tr.expand-row {
+    .pg-table tbody tr.expandable {
       background-color: #f9f9f9; }
     .pg-table tbody tr .pg-expand-icon.active {
       transform: rotate(90deg); }

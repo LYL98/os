@@ -35,7 +35,7 @@
         }
 
         if (value === desc) {
-          this.$emit('change', asc);
+          this.$emit('change', '');
         }
 
       }

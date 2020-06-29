@@ -1,5 +1,5 @@
 /**
- * @license Copyright (c) 2003-2019, CKSource - Frederico Knabben. All rights reserved.
+ * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see https://ckeditor.com/legal/ckeditor-oss-license
  */
 
@@ -35,4 +35,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+
+	// enable uploadimage plugin. 'filebrowserImageUploadUrl' is presentation fields, at editor component can be customized.
+	config.extraPlugins = 'uploadimage';
+	config.filebrowserImageUploadUrl = 'https://durian-dev-1258811046.cos.ap-shanghai.myqcloud.com/item/73ff20a6-b9b6-11ea-ba49-525400b3465b';
 };

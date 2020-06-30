@@ -174,6 +174,7 @@ const routeConfig = {
         { title: '消费者', permission_code: 'ClsUserMember', url: '/user/member' },
         { title: '用户订单', permission_code: 'ClsOrderUser', url: '/order/user' },
         { title: '门店订单', permission_code: 'ClsOrderStore', url: '/order/store' },
+        { title: '推广者提现', permission_code: 'ClsFinancePromoterWithdraw', url: '/finance/promoter-withdraw' },
         { title: 'Banner管理', permission_code: 'ClsSettingBanner', url: '/setting/banner' },
         { title: '区域运营设置', permission_code: 'ClsSettingOperation', url: '/setting/operation' },
       ],

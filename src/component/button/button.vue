@@ -1,5 +1,5 @@
 <template>
-  <button class="pg-button" :class="classnames" :disabled="disabled || (pgButtonGroup && pgButtonGroup.disabled) || loading" @click="onClick">
+  <button class="pg-button" :class="classnames" :disabled="is_disabled || loading" @click="onClick">
     <slot></slot>
   </button>
 </template>
@@ -34,6 +34,10 @@
     },
 
     computed: {
+
+      is_disabled() {
+        return this.$props.disabled || (this.pgButtonGroup && this.pgButtonGroup.is_disabled && this.$props.value !== this.groupValue);
+      },
 
       groupValue() {
         return this.pgButtonGroup?.$props?.value;
@@ -75,11 +79,12 @@
     },
 
     methods: {
+
       onClick(e) {
         this.$emit('click', e);
 
         // 判断 group 模式下的 按钮值 切换
-        if (this.groupValue && this.$props.value !== this.groupValue) {
+        if (this.pgButtonGroup && this.$props.value !== this.groupValue) {
           this.pgButtonGroup?.update?.(this.$props.value);
         }
 

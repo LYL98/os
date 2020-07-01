@@ -2,12 +2,11 @@
   <div class="pg-button-group" :class="{ 'basis-auto': basisAuto, borderless: borderless }">
     <slot>
       <pg-button
-          v-for="(value, key) of options"
+          v-for="(v, key) of options"
           :key="key"
-          :value="value"
-          :disabled="is_disabled"
+          :value="v"
           :flat="borderless"
-          @click="update(value)"
+          @click="update(v)"
       >{{key}}</pg-button>
     </slot>
   </div>
@@ -44,7 +43,7 @@
         set(val) {
           this.$emit('change', val);
         }
-      }
+      },
     },
     data() {
       let ev = this.$props.value;
@@ -52,7 +51,7 @@
         this.pgFormItem?.sync?.(ev);
       }
       return {
-        groupList: []
+        slotOptions: []
       }
     },
     watch: {
@@ -65,13 +64,6 @@
           });
         }
       }
-    },
-    /**
-     * 加载完成后，查找子组件的 所有的pg-button 以及值列表
-     */
-    mounted() {
-      this.childrens = findDownComponentList(this, 'pg-button');
-      this.$data.groupList = this.childrens.map(item => item.value);
     },
     beforeCreate() {
       this.pgFormItem = findUpComponent(this, 'pg-form-item');

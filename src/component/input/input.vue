@@ -78,9 +78,9 @@
     },
     computed: {
       classnames() {
-        let { size, disabled, material, flat } = this.$props;
+        let { size, material, flat } = this.$props;
 
-        let classnames = {disabled, material, flat};
+        let classnames = {disabled: this.is_disabled, material, flat};
 
         // 如果 size 不存在，则判断 form-item 的 计算属性 _size_。
         if (!size) {

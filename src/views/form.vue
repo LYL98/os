@@ -2,17 +2,14 @@
   <div class="pg-page d-flex flex-column justify-content-center">
     <div class="card">
 
-      <pg-button-group :value="0">
-        <pg-button :value="0" outline color="primary">less</pg-button>
-        <pg-button :value="1" flat>less</pg-button>
-        <pg-button :value="2" flat>less</pg-button>
+      <pg-button-group v-model="btg" disabled :options="{ 'all': 0, 'only': 1, 'none': 2 }">
       </pg-button-group>
 
       <pg-button color="light" outline>light button</pg-button>
 
 
 
-      <pg-form size="md" ref="form" item-width="200px" vertical class="p-20">
+      <pg-form size="md" ref="form" item-width="200px" vertical class="p-20" disabled>
 
         <pg-confirm>
           <template v-slot:help-text>
@@ -27,7 +24,7 @@
           <pg-textarea v-model="area"></pg-textarea>
         </pg-form-item>
         <pg-form-item label="排序" rules="required|min_value:0:blur|max_value:10:blur">
-          <pg-input type="number" v-model="rank" @change="changeRank"/>
+          <pg-input type="number" v-model="rank" @change="changeRank" suffix="元"/>
         </pg-form-item>
         <pg-form-item>
           <pg-uploader v-model="video" type="image" multiple/>

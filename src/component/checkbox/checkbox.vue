@@ -1,7 +1,7 @@
 <template>
-  <component :is="tag" class="pg-checkbox" :class="{checked: checked, disabled, 'flex-row-reverse': reverse}">
+  <component :is="tag" class="pg-checkbox" :class="{checked: is_checked, disabled, 'flex-row-reverse': reverse}">
 
-    <input type="checkbox" :checked="checked" :disabled="disabled" hidden>
+    <input type="checkbox" :checked="is_checked" :disabled="disabled" hidden>
 
     <i class="cursor-pointer icon-checkbox-partial text-primary" @click="doToggle" v-if="indeterminate"></i>
 
@@ -28,6 +28,7 @@
       disabled: { type: Boolean, default: false },
       reverse: { type: Boolean, default: false }, // 反转
       indeterminate: { type: Boolean, default: false }, // 未确定状态
+      checked: { type: Boolean, default: false }, // 可通过该参数设置为选中状态，适用于checkbox-group下 自定义 不在选中列表中的项 为选中状态
       tag: { type: String, default: 'li' },
     },
     model: {
@@ -35,7 +36,10 @@
       event: 'change'
     },
     computed: {
-      checked() {
+      is_checked() {
+
+        if (this.$props.checked) return true;
+
         if (!this.pgCheckboxGroup) {
           return this.$props.value === this.$props.trueValue;
         }
@@ -48,15 +52,15 @@
     methods: {
       doToggle() {
         let v = this.$props.value;
-        let checked = !this.checked;
+        let is_checked = !this.is_checked;
 
         // 判断是否 group 模式
         if (this.pgCheckboxGroup) {
           this.pgCheckboxGroup?.onCheck?.(v);
-          this.$emit('change', checked);
+          this.$emit('change', is_checked);
         } else {
-          // v = checked ? this.$props.falseValue : this.$props.trueValue;
-          v = checked ? this.$props.trueValue : this.$props.falseValue;
+          // v = is_checked ? this.$props.falseValue : this.$props.trueValue;
+          v = is_checked ? this.$props.trueValue : this.$props.falseValue;
           this.$emit('change', v);
         }
       }

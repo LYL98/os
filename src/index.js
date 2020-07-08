@@ -29,6 +29,7 @@ import Tabs from './component/tabs/tabs';
 import Tab from './component/tabs/tab';
 import Textarea from './component/textarea/textarea';
 import Timepicker from './component/timepicker/timepicker';
+import Tooltip from './component/tooltip/tooltip';
 import Transfer from './component/transfer/transfer';
 import Tree from './component/tree/tree';
 import Uploader from './component/uploader/uploader';
@@ -70,6 +71,7 @@ const components = [
   Tab,
   Textarea,
   Timepicker,
+  Tooltip,
   Transfer,
   Tree,
   Uploader
@@ -133,6 +135,7 @@ export {
   Tab,
   Textarea,
   Timepicker,
+  Tooltip,
   Transfer,
   Tree,
   Uploader,

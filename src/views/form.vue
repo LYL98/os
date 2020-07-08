@@ -9,7 +9,7 @@
 
 
 
-      <pg-form size="md" ref="form" item-width="200px" vertical class="p-20" disabled>
+      <pg-form size="md" ref="form" item-width="200px" class="p-20">
 
         <pg-confirm>
           <template v-slot:help-text>
@@ -20,11 +20,30 @@
           <pg-button>打开</pg-button>
         </pg-confirm>
 
+
+
+        <pg-tooltip>
+          帮助说明...
+        </pg-tooltip>
+
+        <pg-tooltip>
+          <div style="width: 200px" class="text-left">
+            帮助说明...帮助说明...帮助说明...帮助说明...帮助说明...帮助说明...
+          </div>
+        </pg-tooltip>
+
+        <pg-form-item label="排序" rules="required|decimal:2">
+          <template slot="label">
+            排序
+            <pg-tooltip>
+              帮助说明...
+            </pg-tooltip>
+          </template>
+          <pg-input type="decimal" v-model="rank" @change="changeRank" suffix="元"/>
+        </pg-form-item>
+
         <pg-form-item rules="required">
           <pg-textarea v-model="area"></pg-textarea>
-        </pg-form-item>
-        <pg-form-item label="排序" rules="required|min_value:0:blur|max_value:10:blur">
-          <pg-input type="number" v-model="rank" @change="changeRank" suffix="元"/>
         </pg-form-item>
         <pg-form-item>
           <pg-uploader v-model="video" type="image" multiple/>

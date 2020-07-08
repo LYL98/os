@@ -210,7 +210,7 @@
 
   .pg-textarea,
   .pg-form-control,
-  .pg-popper,
+  .pg-popper:not(.pg-tooltip),
   .pg-search,
   .pg-button-group,
   .pg-transfer {

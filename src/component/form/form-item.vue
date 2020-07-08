@@ -8,7 +8,11 @@
         :class="{required}"
         :style="`min-width: ${_vertical_ ? 'auto' : _label_width_}; width: ${_vertical_ ? 'auto' : _label_width_}`"
         v-if="showLabel && label"
-    >{{label}}{{pgForm && pgForm.type !== 'query' ? ':' : ''}}</label>
+    >
+      <slot name="label">
+        {{label}}{{pgForm && pgForm.type !== 'query' ? ':' : ''}}
+      </slot>
+    </label>
 
     <div class="form-item-content" :style="`min-width: ${_item_width_}; width: ${_item_width_}`">
       <slot></slot>

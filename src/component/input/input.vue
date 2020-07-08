@@ -130,12 +130,13 @@
           switch (this.$props.type) {
             case 'number':
             case 'phone':
-              if (!/^[0-9]*$/.test(ev)) {ev = parseInt(ev) + '';
+              if (!/^[0-9]*$/.test(ev)) {
                 ev = ev.replace(/[^\d.]/g,"");
               }
               break;
             case 'decimal':
               if (!/^(([1-9][0-9]*)|([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2}))$/.test(ev)) {
+                ev = ev.replace(/[^\d.]/g,"");
                 ev = ev.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
               }
               break;

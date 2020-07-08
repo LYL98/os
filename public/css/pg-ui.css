@@ -6697,7 +6697,7 @@ ul.pg-radio-group {
     margin-right: 2px; }
   .pg-form-item .pg-textarea,
   .pg-form-item .pg-form-control,
-  .pg-form-item .pg-popper,
+  .pg-form-item .pg-popper:not(.pg-tooltip),
   .pg-form-item .pg-search,
   .pg-form-item .pg-button-group,
   .pg-form-item .pg-transfer {

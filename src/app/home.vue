@@ -1,10 +1,9 @@
 <template>
   <div class="pg-page">
-    <pg-navbar 
-      :admin-mode="app.auth.isAdmin" 
-      :username="app.userInfo.realname" 
-      @logout="handleLogout"
-      @jump="handleJump"
+    <pg-navbar
+        :username="app.userInfo.realname"
+        @logout="handleLogout"
+        @jump="handleJump"
     />
     <div class="pg-body p-20">
       <div class="w-1280 row m-auto">
@@ -114,7 +113,7 @@
               <div class="wechat-relevance">
                 扫描小程序二维码，即可使用小程序版本运营助手，实时管理业务，提高工作效率。
               </div>
-              <img class="wechat-qrcode" src="@/assets/qrcode-nyx.png" v-if="app.isPro"/>
+              <img class="wechat-qrcode" src="@/assets/qrcode-nyx.png" v-if="env === 'pro'"/>
               <img class="wechat-qrcode" src="@/assets/qrcode-nyx-dev.png" v-else/>
             </div>
           </div>
@@ -160,11 +159,10 @@
 
 <script>
 
+  import pgyos from '@/index';
+  import { env } from './../env.config';
   import operator from './../views/operator/operator';
   import role from './../views/role/role';
-  import pgyos from './../index';
-
-  import { Http, Config } from '@/util';
 
   export default {
     name: 'Home',
@@ -180,7 +178,7 @@
     },
     computed: {
       route_search_options() {
-        const { env, routes, auth, origin_yy, origin_bsc, origin_cls } = pgyos.osConfig();
+        const { routes, auth, origin_yy, origin_bsc, origin_cls } = pgyos.osConfig();
         return [
           ...routes.bsc.map(d => d.items.map(item => ({ label: item.title, value: item.permission_code, url: origin_bsc + '/#' + item.url }))),
           ...routes.cls.map(d => d.items.map(item => ({ label: item.title, value: item.permission_code, url: origin_cls + '/#' + item.url }))),
@@ -193,13 +191,12 @@
 
     created() {
       document.title = '蒲公英运营管理中心';
+      this.env = env;
     },
 
     methods: {
       handleLogout() {
-        Http.get(Config.api.signLogout).then(() => {
-          this.app?.handleLogout();
-        });
+        this.app?.handleLogout();
       },
       handleJump(item) {
         this.app?.handleRouteRecords(item)
@@ -216,6 +213,7 @@
   .card {
     background-color: #fff;
     box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;

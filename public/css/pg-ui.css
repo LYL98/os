@@ -5712,7 +5712,7 @@ template {
   cursor: default;
   display: block;
   min-height: 360px;
-  min-width: 1080px;
+  min-width: 1180px;
   text-align: left; }
 
 .pg-nav-service-panel--inner {
@@ -5755,7 +5755,7 @@ template {
     padding: 29px 0 0 0;
     display: inline-block;
     vertical-align: top;
-    min-width: 130px; }
+    min-width: 125px; }
   .pg-nav-service-panel--inner .menu-area {
     margin-bottom: 15px; }
   .pg-nav-service-panel--inner .menu-area-tit {

@@ -4,15 +4,12 @@
 
 <script>
 
-  import pgyos from './../index';
-  import { Constant, Storage, Config } from '@/util';
+  import pgyos from '@/index';
+  import { env, node_env } from './../env.config';
+  import { Constant, Storage, Config, Http } from '@/util';
 
   export default {
     name: 'app',
-    props: {
-      userinfo: { type: Object, default() { return {} } },
-      logout: { type: Function, default() { return () => {}; } },
-    },
     provide() {
       return {
         app: this
@@ -21,7 +18,7 @@
 
     data() {
       return {
-        complete: true,
+        complete: false,
         userInfo: {},
 
         current_client: 'acc', // 当前客户端
@@ -48,49 +45,6 @@
         });
         return d;
       },
-      origin() {
-        return window.location.origin;
-      },
-      isLocal() {
-        return this.origin.indexOf('localhost') >= 0
-          || this.origin.indexOf('192.168') >= 0
-          || this.origin.indexOf('127.0') >= 0
-          || this.origin.indexOf('172.') >= 0
-          || this.origin.indexOf('10.') >= 0;
-      },
-      isDev() {
-        return this.origin.indexOf('dev') >= 0 || this.origin.indexOf('test') >= 0;
-      },
-      isPre() {
-        return this.origin.indexOf('pre') >= 0;
-      },
-      isPro() {
-        return !this.isLocal && !this.isDev && !this.isPre;
-      },
-      prefix() {
-        let acc_fix = this.origin;
-        let tob_fix = this.origin;
-        let toc_fix = this.origin;
-
-        if (this.isDev) {
-          acc_fix = '//yydev.pgyscm.com';
-          tob_fix = '//bscdev.pgyscm.com';
-          toc_fix = '//clsdev.pgyscm.com';
-        }
-        if (this.isPre) {
-          acc_fix = '//yypre.pgyscm.com';
-          tob_fix = '//bscpre.pgyscm.com';
-          toc_fix = '//clspre.pgyscm.com';
-        }
-        if (this.isPro) {
-          acc_fix = '//yy.pgyscm.com';
-          tob_fix = '//bsc.pgyscm.com';
-          toc_fix = '//cls.pgyscm.com';
-        }
-
-        return { tob: tob_fix, toc: toc_fix, acc: acc_fix };
-
-      },
     },
 
     created() {
@@ -108,30 +62,16 @@
 
         let userInfo = this.$data.userInfo;
 
-        if (userInfo && userInfo.jwt_token && (userInfo.id || userInfo.id === 0)) {
-          this.$data.route_records = this.authRouteRecords(userInfo.id);
-          pgyos.init({ 
-            is_main: true,
-            jwt_token: userInfo.jwt_token, 
-            auth: this.auth,
-            debug: this.isLocal,
-            env: 'dev',
-          });
+        if (userInfo && userInfo.jwt_token && userInfo.province_code && (userInfo.id || userInfo.id === 0)) {
+          this.onComplete(userInfo);
           this.$data.complete = true;
           return;
         }
 
         userInfo = Storage.get(Constant.LOCAL_USER_INFO);
-        if (userInfo && userInfo.jwt_token && (userInfo.id || userInfo.id === 0)) {
+        if (userInfo && userInfo.jwt_token && userInfo.province_code && (userInfo.id || userInfo.id === 0)) {
           this.$data.userInfo = userInfo;
-          this.$data.route_records = this.authRouteRecords(userInfo.id);
-          pgyos.init({ 
-            is_main: true,
-            jwt_token: userInfo.jwt_token, 
-            auth: this.auth,
-            debug: this.isLocal, 
-            env: 'dev',
-          });
+          this.onComplete(userInfo);
           this.$data.complete = true;
           return;
         }
@@ -151,23 +91,50 @@
         return (route_records || []).filter(route => this.auth.isAdmin || this.auth[route.value]);
       },
 
+      onComplete(userInfo) {
+        this.$data.route_records = this.authRouteRecords(userInfo.id);
+        pgyos.init({
+          is_main: true,
+          jwt_token: userInfo.jwt_token,
+          debug: node_env === 'development',
+          auth: this.auth,
+          env: env
+        });
+      },
+
       handleLogin(userInfo) {
+
         Storage.set(Constant.LOCAL_USER_INFO, userInfo);
         this.$data.userInfo = userInfo;
-        this.$data.route_records = this.authRouteRecords(userInfo.id);
-        pgyos.init({ 
-          is_main: true,
-          jwt_token: userInfo.jwt_token, 
-          auth: this.auth,
-          debug: this.isLocal, 
-          env: 'dev',
-        });
-        // 如果是开发环境，则直接跳转回开发本地客户端
-        if (this.$data.oauth_href && this.$data.oauth_href.indexOf('localhost') >= 0) {
-          window.location.href = this.$data.oauth_href;
-        } else {
-          this.$router.replace('/');
+        this.onComplete(userInfo);
+
+        if (userInfo.province_code) {
+          // 如果是开发环境，则直接跳转回开发本地客户端
+          if (this.$data.oauth_href && this.$data.oauth_href.indexOf('localhost') >= 0) {
+            window.location.href = this.$data.oauth_href;
+          } else {
+            this.$router.replace('/');
+          }
+
+        } else { // 如果不存在province_code
+          Http.get(Config.api.commonProvinceListAuth)
+            .then(res => {
+              let rd = res.data;
+              if (rd && rd.length > 0) {
+                userInfo.province_code = rd[0].code;
+              }
+              Storage.set(Constant.LOCAL_USER_INFO, userInfo);
+              this.$data.userInfo = userInfo;
+              this.onComplete(userInfo);
+              // 如果是开发环境，则直接跳转回开发本地客户端
+              if (this.$data.oauth_href && this.$data.oauth_href.indexOf('localhost') >= 0) {
+                window.location.href = this.$data.oauth_href;
+              } else {
+                this.$router.replace('/');
+              }
+            });
         }
+
       },
 
       handleLogout() {

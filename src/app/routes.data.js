@@ -31,11 +31,13 @@ export default {
     {
       subitem: '仓库',
       permission_code: 'Warehouse',
+      client: 'gyl',
       items: [
-        { title: '库存', permission_code: 'WarehouseInventory', url: '/warehouse/inventory' },
-        { title: '库存变动记录', permission_code: 'WarehouseInventoryMove', url: '/warehouse/inventory/move' },
-        { title: '出库计划', permission_code: 'OutStoragePlanMain', url: '/out/storage/play/main' },
-        { title: '库', permission_code: 'WarehouseList', url: '/warehouse/list' },
+        { title: '库存', client: 'gyl', permission_code: 'WarehouseInventory', url: '/warehouse/inventory' },
+        { title: '库存变动记录', client: 'gyl', permission_code: 'WarehouseInventoryMove', url: '/warehouse/inventory/move' },
+        { title: '库', client: 'gyl', permission_code: 'WarehouseList', url: '/warehouse/list' },
+        { title: '销售出库', client: 'gyl', permission_code: 'WarehouseOutStorage', url: '/warehouse/market/out/storage' },
+        { title: '调拨出库', client: 'gyl', permission_code: 'DistributeOutStorage', url: '/warehouse/distribute/out/storage' },
       ],
     },
     {
@@ -45,9 +47,9 @@ export default {
         { title: '品控收货', permission_code: 'OperateReceivingMain', url: '/operate/receiving/main' },
         { title: '场地商品', permission_code: 'OperateItem', url: '/operate/item' },
         { title: '配送装车', permission_code: 'OperateTruckLoadMain', url: '/operate/truck/load/main' },
-        { title: '发车', permission_code: 'OperateDepart', url: '/operate/depart' },
+        { title: '发车', permission_code: 'OperateDepartMain', url: '/operate/depart/main' },
         { title: '调拨装车', permission_code: 'OperateDisTruckLoadMain', url: '/operate/dis/truck/load/main' },
-        { title: '线路规划', permission_code: 'OperateLineList', url: '/operate/line/list' },
+        { title: '线路规划', permission_code: 'OperateLineMain', url: '/operate/line/main' },
         { title: '配送人员', permission_code: 'Deliver', url: '/operate/deliver' },
         { title: '退筐', permission_code: 'OperateRefundFrame', url: '/operate/refund/frame' },
       ],
@@ -79,9 +81,11 @@ export default {
       subitem: '设置',
       permission_code: 'System',
       items: [
+        { title: 'app管理', permission_code: 'SystemAppSettings', url: '/system/appSettings' },
         { title: '平台设置', permission_code: 'SystemSettingMain', url: '/system/setting/main' },
         { title: '区域运营配置', permission_code: 'SettingCustom', url: '/system/setting/custom' },
         { title: '区域配置', permission_code: 'SystemAreaMain', url: '/system/area/main' },
+        { title: 'app管理', permission_code: 'SystemAppSettings', url: '/system/appSettings' }
       ],
     },
   ],

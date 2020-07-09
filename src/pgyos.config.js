@@ -6,6 +6,7 @@ let config = {
   logout_api: '',
   origin_yy: '',
   origin_gyl: '',
+  origin_gylref: '',
   origin_bsc: '',
   origin_cls: '',
   auth: {},
@@ -32,6 +33,7 @@ export const init = (options) => {
     logout_api: `https://apollo${env === 'pro' ? '' : env}.pgyscm.com/m/sign/logout`,
     origin_yy: `https://yy${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_gyl: `https://gyl${env === 'pro' ? '' : env}.pgyscm.com`,
+    origin_gylref: `https://gylref${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_bsc: `https://bsc${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_cls: `https://cls${env === 'pro' ? '' : env}.pgyscm.com`,
     routes: routeConfig,
@@ -47,6 +49,7 @@ export const destory = () => {
     logout_api: '',
     origin_yy: '',
     origin_gyl: '',
+    origin_gylref: '',
     origin_bsc: '',
     origin_cls: '',
     auth: {},
@@ -72,33 +75,16 @@ const routeConfig = {
       ],
     },
   ],
-  bsc: [
+  gyl: [
     {
-      subitem: '商品',
+      subitem: '商品库',
       permission_code: 'Item',
       items: [
         { title: '商品库', permission_code: 'ItemGlobalMain', url: '/item/global/main' },
         { title: '商品属性', permission_code: 'ItemPropertyMain', url: '/item/propert/main' },
-        { title: '货架商品', permission_code: 'ItemListMain', url: '/item/list/main' },
-        { title: '货架商品属性', permission_code: 'ItemListPropertyMain', url: '/item/list/property/main' },
-        { title: '每日报价', permission_code: 'ItemPricing', url: '/item/pricing' },
-        { title: '库存销售', permission_code: 'InventoryMarket', url: '/item/inventory/market' },
         { title: '供应商', permission_code: 'ItemSupplier', url: '/item/supplier' },
         { title: '采购', permission_code: 'ItemPurchaseMain', url: '/item/purchase/main' },
         { title: '调拨', permission_code: 'ItemSupDistribute', url: '/item/sup/distribute' },
-        { title: '客户提报', permission_code: 'AdvicedItemQuery', url: '/item/merchant/customer' },
-      ],
-    },
-    {
-      subitem: '业务',
-      permission_code: 'Business',
-      items: [
-        { title: '商户', permission_code: 'MerchantMain', url: '/merchant/main' },
-        { title: '商户属性', permission_code: 'MerchantPropertyMain', url: '/merchant/property/main' },
-        { title: '用户订单', permission_code: 'OrderList', url: '/business/order/list' },
-        { title: '售后订单', permission_code: 'OrderAfterSale', url: '/business/order/after_sale' },
-        { title: '营销', permission_code: 'MarketMain', url: '/market/main' },
-        { title: '营销策略', permission_code: 'MarketingStrategy', url: '/marketing/strategy' },
       ],
     },
     {
@@ -125,6 +111,30 @@ const routeConfig = {
         { title: '线路规划', permission_code: 'OperateLineMain', url: '/operate/line/main' },
         { title: '配送人员', permission_code: 'Deliver', url: '/operate/deliver' },
         { title: '退筐', permission_code: 'OperateRefundFrame', url: '/operate/refund/frame' },
+      ],
+    },
+  ],
+  bsc: [
+    {
+      subitem: '商城商品',
+      permission_code: 'Item',
+      items: [
+        { title: '货架商品', permission_code: 'ItemListMain', url: '/item/list/main' },
+        { title: '货架商品属性', permission_code: 'ItemListPropertyMain', url: '/item/list/property/main' },
+        { title: '每日报价', permission_code: 'ItemPricing', url: '/item/pricing' },
+        { title: '客户提报', permission_code: 'AdvicedItemQuery', url: '/item/merchant/customer' },
+      ],
+    },
+    {
+      subitem: '业务',
+      permission_code: 'Business',
+      items: [
+        { title: '商户', permission_code: 'MerchantMain', url: '/merchant/main' },
+        { title: '商户属性', permission_code: 'MerchantPropertyMain', url: '/merchant/property/main' },
+        { title: '用户订单', permission_code: 'OrderList', url: '/business/order/list' },
+        { title: '售后订单', permission_code: 'OrderAfterSale', url: '/business/order/after_sale' },
+        { title: '营销', permission_code: 'MarketMain', url: '/market/main' },
+        { title: '营销策略', permission_code: 'MarketingStrategy', url: '/marketing/strategy' },
       ],
     },
     {

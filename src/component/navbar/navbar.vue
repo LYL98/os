@@ -16,7 +16,7 @@
           <span class="brand">蒲公英</span>
           </div>
       </div>
-      <div class="pg-nav-item" style="min-width: 150px">
+      <div class="pg-nav-item" style="min-width: 130px">
         <a class="nav" :href="origin_yy">系统首页</a>
         <pg-popper trigger="hover" placement="bottom" v-if="adminMode">
           <a class="nav">
@@ -26,6 +26,28 @@
           <div class="pg-nav-service-panel" slot="content">
             <div class="pg-nav-service-panel--inner pg-panel-animation">
               <div class="menu-list-all">
+                <div class="menu-area-col" v-for="route in routes.gyl" :key="route.value">
+                  <div class="menu-area">
+                    <div class="menu-area-tit">
+                      <svg width="16" height="16">
+                        <g fill="none" fill-rule="evenodd">
+                          <path d="M0 0h16v16H0z" />
+                          <path
+                              d="M3.281 5L8 2.304 12.719 5 8 7.696 3.281 5zM8 0L1 4v8l3.027 1.73a3.968 3.968 0 01.642-1.937L3 10.839V7.143L8 10l5-2.857v3.696l-3.416 1.953A1.989 1.989 0 008 12a2 2 0 000 4c.729 0 1.361-.395 1.71-.978L15 12V4L8 0z"
+                              fill="#888"
+                              fill-rule="nonzero"
+                          />
+                        </g>
+                      </svg>
+                      <span>{{ route.label }}</span>
+                    </div>
+                    <div class="menu-area-con">
+                      <a v-for="item in route.items" :key="item.value" @click="handleJump(item)">
+                        <span>{{ item.label }}</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
                 <div class="menu-area-col" v-for="route in routes.bsc" :key="route.value">
                   <div class="menu-area">
                     <div class="menu-area-tit">
@@ -75,7 +97,20 @@
           </div>
         </pg-popper>
       </div>
-      <div class="position-relative d-flex align-items-center" style="min-width: 680px;">
+      <div class="position-relative d-flex align-items-center" style="min-width: 750px;">
+        <div class="pg-nav-item" v-for="(route, index) in routes.gyl" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
+          <pg-popper trigger="hover" placement="bottom-start">
+            <a class="nav">
+              <span>{{ route.label }}</span>
+              <i class="icon-arrow-down12 text-light"></i>
+            </a>
+            <div class="pg-nav-subitem-panel" slot="content">
+              <div class="pg-nav-subitem-panel--inner">
+                <a v-for="item in route.items" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+              </div>
+            </div>
+          </pg-popper>
+        </div>
         <div class="pg-nav-item" v-for="(route, index) in routes.bsc" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
           <pg-popper trigger="hover" placement="bottom-start">
             <a class="nav">
@@ -89,7 +124,7 @@
             </div>
           </pg-popper>
         </div>
-        <div class="pg-nav-item pg-nav-shortcut position-relative ml-20 pl-10" v-for="route in routes.cls" :key="route.value">
+        <div class="pg-nav-item" v-for="(route, index) in routes.cls" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
           <pg-popper trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
@@ -175,6 +210,7 @@ export default {
       },
       routes: {
         yy: [],
+        gyl: [],
         bsc: [],
         cls: [],
       },
@@ -184,7 +220,7 @@ export default {
   },
 
   created() {
-    const { env, routes, auth, origin_yy, origin_gyl, origin_bsc, origin_cls } = osConfig();
+    const { routes, auth, origin_yy, origin_gyl, origin_gylref, origin_bsc, origin_cls } = osConfig();
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
@@ -194,14 +230,15 @@ export default {
         .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
     };
 
-    const bsc = routes.bsc.map(item => {
-          let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'gyl' ? origin_gyl : origin_bsc) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
+    const gyl = routes.gyl.map(item => {
+          let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'gyl' ? origin_gyl : origin_gylref) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
           return { label: item.subitem, value: item.permission_code, items: items };
         }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
 
     const yy = authorization(routes.yy, origin_yy);
+    const bsc = authorization(routes.bsc, origin_bsc);
     const cls = authorization(routes.cls, origin_cls);
-    this.$data.routes = { yy, bsc, cls };
+    this.$data.routes = { yy, gyl, bsc, cls };
     this.$data.origin_yy = origin_yy;
     this.$data.adminMode = !!auth.isAdmin;
 

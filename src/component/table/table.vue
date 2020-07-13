@@ -119,7 +119,7 @@
     data() {
       return {
         options: [],
-        collapses: [],
+        // collapses: [],
         fixed: false,
         expandable: false,
         expand_indexs: [], // 展开行的index all | array. all 表示全部展开、array.length === 0 表示全部折叠 ｜ 包含展开的行索引
@@ -170,7 +170,7 @@
         immediate: true,
         handler(next, prev) {
           this.$data.checkedList = [];
-          if (Array.isArray(next)) {
+          if (Array.isArray(next) && this.$props.expandAll) {
             this.$data.expand_indexs = [...new Array(next && next.length || 0).keys()];
           } else {
             this.$data.expand_indexs = [];
@@ -186,7 +186,7 @@
             this.$data.expand_indexs = [];
           }
         }
-      }
+      },
     },
 
     created() {
@@ -207,9 +207,10 @@
         this.offsetTop = this.$refs['fixed-header-root'] ? this.$refs['fixed-header-root'].offsetTop : 0;
       }
       this.$data.options = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
-      this.$data.collapses = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
+      // this.$data.collapses = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
       this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row']; // 是否存在可折叠面板
     },
+
     methods: {
       onScroll() {
         if (!this.debounceScroll) {

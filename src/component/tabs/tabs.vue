@@ -22,6 +22,7 @@
     },
     methods: {
       update(index) {
+        if (this.$props.activeIndex === index) return;
         this.$emit('change', index);
       }
     }

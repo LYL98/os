@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" class="pg-checkbox" :class="{checked: is_checked, disabled, 'flex-row-reverse': reverse}">
+  <component :is="tag" class="pg-checkbox" :class="classnames">
 
     <input type="checkbox" :checked="is_checked" :disabled="disabled" hidden>
 
@@ -25,6 +25,7 @@
       value: { type: String | Number | Boolean | Object, default: false },
       trueValue: { type: String | Number | Boolean | Object, default: true },
       falseValue: { type: String | Number | Boolean | Object, default: false },
+      size: {type: String, default: '', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
       disabled: { type: Boolean, default: false },
       reverse: { type: Boolean, default: false }, // 反转
       indeterminate: { type: Boolean, default: false }, // 未确定状态
@@ -44,10 +45,34 @@
           return this.$props.value === this.$props.trueValue;
         }
         return this.pgCheckboxGroup?.value?.some?.(item => item === this.$props.value);
-      }
+      },
+      bordered() {
+        return this.pgCheckboxGroup && this.pgCheckboxGroup.border;
+      },
+      classnames() {
+        let { size, disabled, reverse } = this.$props;
+
+        let classnames = {disabled: disabled, checked: this.is_checked, border: this.bordered, 'flex-row-reverse': reverse};
+
+        // 如果 size 不存在，则判断 form-item 的 计算属性 _size_。
+        if (!size) {
+          if (this.pgFormItem?._size_ && this.pgFormItem._size_ !== 'base') {
+            size = this.pgFormItem._size_;
+          }
+          if (this.pgCheckboxGroup?.size && this.pgCheckboxGroup.size !== 'base') {
+            size = this.pgCheckboxGroup.size;
+          }
+        }
+
+        if (!!size) {
+          classnames[size] = true;
+        }
+        return classnames;
+      },
     },
     beforeCreate() {
       this.pgCheckboxGroup = findUpComponent(this, 'pg-checkbox-group');
+      this.pgFormItem = findUpComponent(this, 'pg-form-item');
     },
     methods: {
       doToggle() {

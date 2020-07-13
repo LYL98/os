@@ -43,7 +43,9 @@
 
           <div class="card">
 
-            <pg-table primary-key="id" :data="tableData" expand-all fixed-header checkable>
+            <pg-button @click="remove_remark = !remove_remark"></pg-button>
+
+            <pg-table primary-key="id" :data="tableData" :expand-all="false" fixed-header checkable>
 
               <template v-slot:name>
                 <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
@@ -59,7 +61,7 @@
               </template>
 
               <pg-column prop="name" title="门店名称" sort-key="name"></pg-column>
-              <pg-column prop="remark" title="备注"></pg-column>
+              <pg-column prop="remark" title="备注" v-if="!remove_remark"></pg-column>
               <pg-column title="备注">
                 <template v-slot="{row}">
                   <pg-confirm help-text="确认删除">
@@ -95,6 +97,7 @@
         text: '',
         drawer: false,
         qrcodePopper: false,
+        remove_remark: false,
         toggle: false,
         time: '10:20:30',
         date: { begin_date: '2020-04-13', end_date: '2020-05-16' },

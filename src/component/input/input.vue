@@ -131,7 +131,7 @@
             case 'number':
             case 'phone':
               if (!/^[0-9]*$/.test(ev)) {
-                ev = ev.replace(/[^\d.]/g,"");
+                ev = ev.replace(/[^\d]/g,"");
               }
               break;
             case 'decimal':

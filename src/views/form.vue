@@ -39,14 +39,28 @@
               帮助说明...
             </pg-tooltip>
           </template>
-          <pg-input type="decimal" v-model="rank" @change="changeRank" suffix="元"/>
+          <pg-input type="number" v-model="rank" @change="changeRank" suffix="元"/>
+        </pg-form-item>
+
+        <pg-form-item label="单选">
+          <pg-radio-group v-model="radio" inline border>
+            <pg-radio :value="1">男</pg-radio>
+            <pg-radio :value="0">女</pg-radio>
+          </pg-radio-group>
+        </pg-form-item>
+
+        <pg-form-item label="多选">
+          <pg-checkbox-group v-model="checkbox" inline border>
+            <pg-checkbox :value="1">男</pg-checkbox>
+            <pg-checkbox :value="0">女</pg-checkbox>
+          </pg-checkbox-group>
         </pg-form-item>
 
         <pg-form-item rules="required">
           <pg-textarea v-model="area"></pg-textarea>
         </pg-form-item>
         <pg-form-item>
-          <pg-uploader v-model="video" type="image" multiple/>
+          <pg-uploader v-model="video" type="video"/>
         </pg-form-item>
         <pg-form-item
             label="原密码"
@@ -64,6 +78,17 @@
           <pg-input type="password" placeholder="请输入新密码" v-model="formData.password" @change="changePassword"></pg-input>
         </pg-form-item>
 
+        <pg-transfer :data="data" style="width: 800px;">
+          <template v-slot:selected>
+            <pg-column prop="label" title="label"></pg-column>
+            <pg-column prop="value" title="value">
+              <template v-slot="{row}">
+                {{ row.value * 100 }}
+              </template>
+            </pg-column>
+          </template>
+        </pg-transfer>
+
         <pg-form-item
             size="lg"
             label="确认密码"
@@ -74,7 +99,7 @@
         </pg-form-item>
 
         <pg-form-item label="生效时间" item-width="500px">
-          <pg-datepicker v-model="date" :limit="limit" range :quickable="true" timeable ></pg-datepicker>
+          <pg-datepicker v-model="date" :limit="limit" range :quickable="true" timeable clearable></pg-datepicker>
         </pg-form-item>
 
         <pg-form-item label="商品详情" rules="required" item-width="600px">
@@ -117,12 +142,21 @@
     name: "modify-pwd",
     data() {
       return {
+        checkbox: [0],
+        radio: 0,
         area: '',
         rank: '1',
-        video: '',
+        video: 'item/123',
         content: '123',
         date: { begin_date: '2020-04-13', end_date: '2020-05-16' },
         limit: { from: '2020-04-11', to: '2020-05-19' },
+        data: [
+          { label: '1', value: 1 },
+          { label: '2', value: 2 },
+          { label: '3', value: 3 },
+          { label: '4', value: 4 },
+          { label: '5', value: 5 },
+        ],
         formData: {
           password_ori: '',
           password: '',

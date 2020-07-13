@@ -69,7 +69,7 @@
                 size="sm"
                 @click="selectTime = !selectTime"
             >
-              {{ selectTime ? '返回日期选择' : '选择时间' }}
+              {{ selectTime ? '选择日期' : '选择时间' }}
             </pg-button>
             <div class="ml-auto">
               <pg-button size="sm" @click="cancel">取消</pg-button>
@@ -99,10 +99,12 @@
               size="sm"
               @click="selectTime = !selectTime"
           >
-            {{ selectTime ? '返回日期选择' : '选择时间' }}
+            {{ selectTime ? '选择日期' : '选择时间' }}
           </pg-button>
-          <pg-button size="sm" @click="cancel">取消</pg-button>
-          <pg-button size="sm" color="primary" @click="confirm" :disabled="days.length < 1">确定</pg-button>
+          <div class="ml-auto">
+            <pg-button size="sm" @click="cancel">取消</pg-button>
+            <pg-button size="sm" color="primary" @click="confirm" :disabled="days.length < 1">确定</pg-button>
+          </div>
         </div>
       </div>
     </template>

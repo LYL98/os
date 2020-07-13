@@ -1,5 +1,5 @@
 <template>
-  <component :is="tag" class="pg-radio" :class="{checked: checked, disabled, border: bordered}" @click="handleToggle">
+  <component :is="tag" class="pg-radio" :class="classnames" @click="handleToggle">
     <input type="radio" :checked="checked" :disabled="disabled" hidden>
 
     <span class="toggle" @click="doToggle"></span>
@@ -18,10 +18,10 @@
     name: 'pg-radio',
     props: {
       value: { type: String | Number | Boolean, default: false },
+      size: {type: String, default: '', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
       trueValue: { type: String | Number | Boolean, default: true },
       falseValue: { type: String | Number | Boolean, default: false },
       disabled: { type: Boolean, default: false },
-      border: { type: Boolean, default: false },
       tag: { type: String, default: 'li' },
     },
     model: {
@@ -35,12 +35,36 @@
         }
         return this.pgRadioGroup?.value === this.$props.value;
       },
+
       bordered() {
-        return this.pgRadioGroup && this.$props.border;
-      }
+        return this.pgRadioGroup && this.pgRadioGroup.border;
+      },
+
+      classnames() {
+        let { size, disabled } = this.$props;
+
+        let classnames = {disabled: disabled, checked: this.checked, border: this.bordered};
+
+        // 如果 size 不存在，则判断 form-item 的 计算属性 _size_。
+        if (!size) {
+          if (this.pgFormItem?._size_ && this.pgFormItem._size_ !== 'base') {
+            size = this.pgFormItem._size_;
+          }
+          if (this.pgRadioGroup?.size && this.pgRadioGroup.size !== 'base') {
+            size = this.pgRadioGroup.size;
+          }
+        }
+
+        if (!!size) {
+          classnames[size] = true;
+        }
+        return classnames;
+      },
+
     },
     beforeCreate() {
       this.pgRadioGroup = findUpComponent(this, 'pg-radio-group');
+      this.pgFormItem = findUpComponent(this, 'pg-form-item');
       if (!this.pgRadioGroup && this.$props.border) {
         console.warn('[pgyos]: the border style need radio-group inline type!');
       }

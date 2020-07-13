@@ -6165,14 +6165,33 @@ template {
 .card-footer {
   padding: 15px; }
 
-.pg-checkbox, .wo-radio {
+.pg-form-item .pg-checkbox,
+.pg-form-item .pg-radio {
+  height: 30px; }
+  .pg-form-item .pg-checkbox.border,
+  .pg-form-item .pg-radio.border {
+    padding: 0 7px; }
+  .pg-form-item .pg-checkbox.sm,
+  .pg-form-item .pg-radio.sm {
+    height: 24px; }
+    .pg-form-item .pg-checkbox.sm.border,
+    .pg-form-item .pg-radio.sm.border {
+      padding: 0 4px; }
+  .pg-form-item .pg-checkbox.lg,
+  .pg-form-item .pg-radio.lg {
+    height: 36px; }
+    .pg-form-item .pg-checkbox.lg.border,
+    .pg-form-item .pg-radio.lg.border {
+      padding: 0 10px; }
+
+.pg-checkbox, .pg-radio {
   display: flex;
   align-items: center; }
-  .pg-checkbox > .toggle, .wo-radio > .toggle {
+  .pg-checkbox > .toggle, .pg-radio > .toggle {
     cursor: pointer;
     background-color: #ffffff;
-    transition: border-color .15s ease, background-color .15s ease; }
-  .pg-checkbox > label, .wo-radio > label {
+    transition: border-color .3s ease, background-color .3s ease; }
+  .pg-checkbox > label, .pg-radio > label {
     vertical-align: middle;
     cursor: pointer;
     padding: 0 5px 0 10px;
@@ -6181,31 +6200,20 @@ template {
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none; }
-  .pg-checkbox.checked > .toggle, .wo-radio.checked > .toggle {
+  .pg-checkbox.checked > .toggle, .pg-radio.checked > .toggle {
     background-color: #006eff;
     border-color: #006eff;
     position: relative; }
-    .pg-checkbox.checked > .toggle:before, .wo-radio.checked > .toggle:before {
-      content: '\e372';
-      font-family: "icomoon", serif !important;
-      font-style: normal;
-      font-size: 16px;
-      left: -0.5px;
-      top: -5px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      color: #FFF;
-      position: absolute; }
-  .pg-checkbox.disabled, .wo-radio.disabled {
+  .pg-checkbox.disabled, .pg-radio.disabled {
     cursor: not-allowed; }
-    .pg-checkbox.disabled > .toggle, .wo-radio.disabled > .toggle {
+    .pg-checkbox.disabled > .toggle, .pg-radio.disabled > .toggle {
       border-color: #dddddd;
       background-color: #dddddd;
       cursor: not-allowed; }
-    .pg-checkbox.disabled > label, .wo-radio.disabled > label {
+    .pg-checkbox.disabled > label, .pg-radio.disabled > label {
       cursor: not-allowed;
       color: #dddddd; }
-  .pg-checkbox.disabled:active, .wo-radio.disabled:active {
+  .pg-checkbox.disabled:active, .pg-radio.disabled:active {
     pointer-events: none; }
 
 .pg-checkbox > .icon-indeterminate {
@@ -6214,23 +6222,41 @@ template {
 .pg-checkbox > .toggle {
   padding: 7px;
   border: 1px solid #dddddd; }
-  .pg-checkbox > .toggle:before {
-    top: -2px;
-    left: 0; }
+
+.pg-checkbox.checked > .toggle:before {
+  left: -1px;
+  top: -5px;
+  content: '\e372';
+  font-family: "icomoon", serif !important;
+  font-style: normal;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFF;
+  position: absolute; }
 
 .pg-radio > .toggle {
   border-radius: 9999px;
-  padding: 6px;
-  border: 2px solid #006eff; }
-  .pg-radio > .toggle:before {
-    top: -3px;
-    left: -1px; }
+  padding: 7px;
+  border: 1px solid #dddddd; }
+
+.pg-radio.checked > .toggle:before {
+  left: 3px;
+  top: -5px;
+  content: '\f052';
+  font-family: "icomoon", serif !important;
+  font-style: normal;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFF;
+  position: absolute; }
 
 .pg-checkbox + .pg-checkbox {
-  margin-top: 12px; }
+  margin-top: 8px; }
 
 .pg-radio + .pg-radio {
-  margin-top: 12px; }
+  margin-top: 8px; }
 
 ul.pg-checkbox,
 ul.pg-checkbox-group,
@@ -6255,8 +6281,6 @@ ul.pg-radio-group {
 .pg-radio.border {
   cursor: pointer;
   border: 1px solid #dddddd;
-  border-radius: 2px;
-  padding: 6px;
   transition: border-color .2s ease, background-color .2s ease; }
   .pg-radio.border:hover {
     background-color: #fafafa; }

@@ -1,11 +1,36 @@
-.pg-checkbox, .wo-radio {
+.pg-form-item .pg-checkbox,
+.pg-form-item .pg-radio {
+
+  height: $form-item-height-base;
+  &.border {
+    padding: 0 7px;
+  }
+
+  &.sm {
+    height: $form-item-height-sm;
+    &.border {
+      padding: 0 4px;
+    }
+  }
+
+  &.lg {
+    height: $form-item-height-lg;
+    &.border {
+      padding: 0 10px;
+    }
+  }
+
+}
+
+
+.pg-checkbox, .pg-radio {
   display: flex;
   align-items: center;
 
   & > .toggle {
     cursor: pointer;
     background-color: $white;
-    transition: border-color .15s ease, background-color .15s ease;
+    transition: border-color .3s ease, background-color .3s ease;
   }
 
   & > label {
@@ -22,19 +47,6 @@
       background-color: $primary;
       border-color: $primary;
       position: relative;
-
-      &:before {
-        content: '\e372';
-        font-family: "icomoon", serif !important;
-        font-style: normal;
-        font-size: 16px;
-        left: -0.5px;
-        top: -5px;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        color: #FFF;
-        position: absolute;
-      }
     }
   }
 
@@ -65,27 +77,45 @@
 .pg-checkbox > .toggle {
   padding: 7px;
   border: $border-width solid $border-color;
-  &:before {
-    top: -2px;
-    left: 0;
-  }
+}
+
+.pg-checkbox.checked > .toggle:before {
+  left: -1px;
+  top: -5px;
+  content: '\e372';
+  font-family: "icomoon", serif !important;
+  font-style: normal;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFF;
+  position: absolute;
 }
 
 .pg-radio > .toggle {
   border-radius: $rounded-round;
-  padding: 6px;
-  border: $border-width * 2 solid $primary;
-  &:before {
-    top: -3px;
-    left: -1px;
-  }
+  padding: 7px;
+  border: $border-width solid $border-color;
+}
+
+.pg-radio.checked > .toggle:before {
+  left: 3px;
+  top: -5px;
+  content: '\f052';
+  font-family: "icomoon", serif !important;
+  font-style: normal;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFF;
+  position: absolute;
 }
 
 .pg-checkbox + .pg-checkbox {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 .pg-radio + .pg-radio {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 ul.pg-checkbox,
@@ -115,8 +145,6 @@ ul.pg-radio-group {
 .pg-radio.border {
   cursor: pointer;
   border: $border-width solid $border-color;
-  border-radius: $border-radius-base;
-  padding: 6px;
   transition: border-color .2s ease, background-color .2s ease;
 
   &:hover {

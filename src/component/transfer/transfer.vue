@@ -2,7 +2,9 @@
   <div class="pg-transfer">
     <div class="pg-transfer-table-wrapper">
       <pg-table :data="optionals" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionAdd">
-        <pg-column prop="label" :title="placeholder"></pg-column>
+        <slot name="unselected">
+          <pg-column prop="label" :title="placeholder"></pg-column>
+        </slot>
       </pg-table>
     </div>
     <div class="selector">
@@ -15,7 +17,14 @@
     </div>
     <div class="pg-transfer-table-wrapper">
       <pg-table :data="selectedList" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionRemove">
-        <pg-column prop="label" title="已选择"></pg-column>
+        <slot name="selected">
+          <pg-column prop="label" title="已选择"></pg-column>
+        </slot>
+<!--        <pg-column v-if="singleRemove" title="操作" width="50px">-->
+<!--          <template v-slot="{row}">-->
+<!--            <a class="text-decoration-none" @click="onSingleRemove(row)">移除</a>-->
+<!--          </template>-->
+<!--        </pg-column>-->
       </pg-table>
     </div>
   </div>
@@ -33,7 +42,7 @@
     for (let item1 of json) {  //循环json数组对象的内容
       let flag = true;  //建立标记，判断数据是否重复，true为不重复
       for (let item2 of newJson){  //循环新数组的内容
-        if(item1.value == item2.value){ //让json数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
+        if(item1.value === item2.value){ //让json数组对象的内容与新数组的内容作比较，相同的话，改变标记为false
           flag = false;
         }
       }
@@ -42,7 +51,7 @@
       }
     }
     return newJson;
-  }
+  };
 
   export default {
     name: 'pg-transfer',
@@ -56,7 +65,8 @@
         default() { return []; }
       },
       valid: { type: Boolean, default: true },
-      height: { type: String, default: '200px' }
+      height: { type: String, default: '200px' },
+      // singleRemove: { type: Boolean, default: true }
     },
     model: {
       prop: 'value',
@@ -141,13 +151,22 @@
         this.$data.selectedList = [...this.$data.selectedList, ...this.$data.addList];
         this.$data.addList = [];
         this.$emit('change', this.$data.selectedList.map(item => item.value));
+        this.$emit('selection', this.$data.selectedList);
       },
 
       doRemove() {
         this.$data.selectedList = this.$data.selectedList.filter(d => !this.$data.removeList.some(item => item.value === d.value));
         this.$data.removeList = [];
         this.$emit('change', this.$data.selectedList.map(item => item.value));
-      }
+        this.$emit('selection', this.$data.selectedList);
+      },
+
+      // onSingleRemove(item) {
+      //   this.$data.selectedList = this.$data.selectedList.filter(d => item.value !== d.value);
+      //   this.$data.removeList = this.$data.removeList.filter(d => item.value !== d.value);
+      //   this.$emit('change', this.$data.selectedList.map(item => item.value));
+      //   this.$emit('selection', this.$data.selectedList);
+      // },
     }
   }
 </script>

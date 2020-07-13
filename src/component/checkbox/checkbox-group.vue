@@ -10,6 +10,8 @@
     props: {
       value: { type: Array, default: [] },
       inline: { type: Boolean, default: false },
+      border: { type: Boolean, default: false },
+      size: {type: String, default: 'base', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
       tag: { type: String, default: 'ul' },
     },
     model: {

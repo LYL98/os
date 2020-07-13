@@ -16,7 +16,7 @@
           <span class="brand">蒲公英</span>
           </div>
       </div>
-      <div class="pg-nav-item" style="min-width: 130px">
+      <div class="pg-nav-item" style="min-width: 150px">
         <a class="nav" :href="origin_yy">系统首页</a>
         <pg-popper trigger="hover" placement="bottom" v-if="adminMode">
           <a class="nav">

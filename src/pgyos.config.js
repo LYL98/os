@@ -106,7 +106,7 @@ const routeConfig = {
       permission_code: 'Operate',
       items: [
         { title: '品控收货', permission_code: 'OperateReceivingMain', url: '/operate/receiving/main' },
-        { title: '场地商品', permission_code: 'OperateItem', url: '/operate/item' },
+        { title: '场地商品', permission_code: 'OperateItemSupStock', url: '/operate/item-sup-stock' },
         { title: '配送装车', permission_code: 'OperateTruckLoadMain', url: '/operate/truck/load/main' },
         { title: '发车', permission_code: 'OperateDepartMain', url: '/operate/depart/main' },
         { title: '调拨装车', permission_code: 'OperateDisTruckLoadMain', url: '/operate/dis/truck/load/main' },

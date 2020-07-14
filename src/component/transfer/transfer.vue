@@ -1,6 +1,6 @@
 <template>
   <div class="pg-transfer">
-    <div class="pg-transfer-table-wrapper">
+    <div class="pg-transfer-table-wrapper unselected">
       <pg-table :data="optionals" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionAdd">
         <slot name="unselected">
           <pg-column prop="label" :title="placeholder"></pg-column>
@@ -15,7 +15,7 @@
         <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-light': removeList.length <= 0, 'text-white': removeList.length > 0 }"></i>
       </pg-button>
     </div>
-    <div class="pg-transfer-table-wrapper">
+    <div class="pg-transfer-table-wrapper selected">
       <pg-table :data="selectedList" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionRemove">
         <slot name="selected">
           <pg-column prop="label" title="已选择"></pg-column>

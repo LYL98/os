@@ -18,8 +18,8 @@
         @keyup.enter="onEnter"
     />
     <transition name="fade">
-      <span class="suffix" v-show="clearable && !!value" @click.stop="onClear">
-        <i class="icon-cancel-circle2 cursor-pointer font-size-sm"></i>
+      <span class="suffix" v-show="clearable && !!value">
+        <i class="icon-cancel-circle2 cursor-pointer font-size-sm" @click.self="onClear"></i>
       </span>
     </transition>
     <span class="suffix pr-10" v-if="!!suffix">{{ suffix }}</span>

@@ -50,7 +50,7 @@ module.exports = {
 
         new HtmlWebpackTagsPlugin({
           useHash: isProd,
-          links: ['css/pg-ui.min.css']
+          links: ['css/pg-ui.css']
         }),
 
         // 将js文件自动添加到html文件中

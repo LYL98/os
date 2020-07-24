@@ -1,6 +1,6 @@
 <template>
   <component :is="tag" class="pg-radio" :class="classnames" @click="handleToggle">
-    <input type="radio" :checked="checked" :disabled="disabled" hidden>
+    <input type="radio" :checked="checked" :disabled="is_disabled" hidden>
 
     <span class="toggle" @click="doToggle"></span>
 
@@ -29,6 +29,9 @@
       event: 'change'
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || this.pgRadioGroup?.is_disabled;
+      },
       checked() {
         if (!this.pgRadioGroup) {
           return this.$props.value === this.$props.trueValue;
@@ -41,9 +44,9 @@
       },
 
       classnames() {
-        let { size, disabled } = this.$props;
+        let { size } = this.$props;
 
-        let classnames = {disabled: disabled, checked: this.checked, border: this.bordered};
+        let classnames = {disabled: this.is_disabled, checked: this.checked, border: this.bordered};
 
         // 如果 size 不存在，则判断 form-item 的 计算属性 _size_。
         if (!size) {
@@ -65,9 +68,6 @@
     beforeCreate() {
       this.pgRadioGroup = findUpComponent(this, 'pg-radio-group');
       this.pgFormItem = findUpComponent(this, 'pg-form-item');
-      if (!this.pgRadioGroup && this.$props.border) {
-        console.warn('[pgyos]: the border style need radio-group inline type!');
-      }
     },
     methods: {
       /**

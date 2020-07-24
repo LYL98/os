@@ -43,14 +43,14 @@
         </pg-form-item>
 
         <pg-form-item label="单选">
-          <pg-radio-group v-model="radio" inline border>
+          <pg-radio-group v-model="radio" inline border disabled>
             <pg-radio :value="1">男</pg-radio>
             <pg-radio :value="0">女</pg-radio>
           </pg-radio-group>
         </pg-form-item>
 
         <pg-form-item label="多选">
-          <pg-checkbox-group v-model="checkbox" inline border>
+          <pg-checkbox-group v-model="checkbox" inline border disabled>
             <pg-checkbox :value="1">男</pg-checkbox>
             <pg-checkbox :value="0">女</pg-checkbox>
           </pg-checkbox-group>
@@ -142,6 +142,7 @@
     name: "modify-pwd",
     data() {
       return {
+        btg: 0,
         checkbox: [0],
         radio: 0,
         area: '',

@@ -66,7 +66,7 @@
     <div class="row no-gutters">
       <div class="col-12">
         <pg-form-item label="角色" rules="required" item-width="600px">
-          <pg-transfer :required-data="[{ label: '123', value: '123' }]" :data="roles" v-model="formData.role_ids" placeholder="角色列表"></pg-transfer>
+          <pg-transfer :data="roles" v-model="formData.role_ids" placeholder="角色列表"></pg-transfer>
         </pg-form-item>
       </div>
     </div>
@@ -302,6 +302,8 @@
 
       submit() {
         this.$refs['form']?.validateAll().then((valid) => {
+          console.log('valid', valid);
+          
           if (!valid) return;
           this.$data.loading = true;
           let data = {...this.$data.formData};

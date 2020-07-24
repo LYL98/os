@@ -15,6 +15,7 @@
     },
     props: {
       value: { type: String | Number, default: false },
+      disabled: {type: Boolean, default: false},
       inline: { type: Boolean, default: false },
       border: { type: Boolean, default: false },
       size: {type: String, default: 'base', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
@@ -24,11 +25,17 @@
       prop: 'value',
       event: 'change'
     },
+    computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
+    },
     data() {
       let ev = this.$props.value;
-      if (ev || ev === 0) {
+      if (ev || ev === 0 || ev === false) {
         this.pgFormItem?.sync?.(ev);
       }
+
       return {
         ev: ev
       }

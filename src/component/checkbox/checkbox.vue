@@ -1,7 +1,7 @@
 <template>
   <component :is="tag" class="pg-checkbox" :class="classnames">
 
-    <input type="checkbox" :checked="is_checked" :disabled="disabled" hidden>
+    <input type="checkbox" :checked="is_checked" :disabled="is_disabled" hidden>
 
     <i class="cursor-pointer icon-checkbox-partial text-primary" @click="doToggle" v-if="indeterminate"></i>
 
@@ -37,6 +37,9 @@
       event: 'change'
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || (this.pgCheckboxGroup && this.pgCheckboxGroup.is_disabled);
+      },
       is_checked() {
 
         if (this.$props.checked) return true;
@@ -50,9 +53,14 @@
         return this.pgCheckboxGroup && this.pgCheckboxGroup.border;
       },
       classnames() {
-        let { size, disabled, reverse } = this.$props;
+        let { size, reverse } = this.$props;
 
-        let classnames = {disabled: disabled, checked: this.is_checked, border: this.bordered, 'flex-row-reverse': reverse};
+        let classnames = {
+          disabled: this.is_disabled, 
+          checked: this.is_checked, 
+          border: this.bordered, 
+          'flex-row-reverse': reverse
+        };
 
         // 如果 size 不存在，则判断 form-item 的 计算属性 _size_。
         if (!size) {
@@ -76,6 +84,7 @@
     },
     methods: {
       doToggle() {
+
         let v = this.$props.value;
         let is_checked = !this.is_checked;
 

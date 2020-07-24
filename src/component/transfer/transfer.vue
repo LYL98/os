@@ -84,6 +84,8 @@
 
       let ev = this.$props.value;
       if (Array.isArray(ev) && ev.length > 0) {
+        console.log('ev', ev);
+        
         this.pgFormItem?.sync?.(ev);
       }
 
@@ -111,7 +113,6 @@
         deep: true,
         immediate: false,
         handler(next, prev) {
-
           if (Array.isArray(next)) {
             // 当组件在外部修改value时，需要同步selectedList，主要应用于 外部手动清空value的场景
             if (next.length === 0) {
@@ -127,8 +128,8 @@
 
           }
   
-          
           this.$nextTick(() => {
+            console.log('next', next);
             this.$props.valid && this.pgFormItem?.sync?.(next);
           });
         }

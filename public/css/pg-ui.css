@@ -6204,6 +6204,15 @@ template {
     background-color: #006eff;
     border-color: #006eff;
     position: relative; }
+  .pg-checkbox.checked.disabled, .pg-radio.checked.disabled {
+    cursor: not-allowed; }
+    .pg-checkbox.checked.disabled > .toggle, .pg-radio.checked.disabled > .toggle {
+      border-color: #006eff;
+      background-color: #006eff;
+      cursor: not-allowed;
+      opacity: 0.7; }
+    .pg-checkbox.checked.disabled > label, .pg-radio.checked.disabled > label {
+      cursor: not-allowed; }
   .pg-checkbox.disabled, .pg-radio.disabled {
     cursor: not-allowed; }
     .pg-checkbox.disabled > .toggle, .pg-radio.disabled > .toggle {
@@ -6211,8 +6220,7 @@ template {
       background-color: #dddddd;
       cursor: not-allowed; }
     .pg-checkbox.disabled > label, .pg-radio.disabled > label {
-      cursor: not-allowed;
-      color: #dddddd; }
+      cursor: not-allowed; }
   .pg-checkbox.disabled:active, .pg-radio.disabled:active {
     pointer-events: none; }
 
@@ -7474,7 +7482,6 @@ label {
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  position: absolute;
   margin-top: -1px;
   cursor: pointer; }
   .pg-column-sort .icon-arrow-up5,

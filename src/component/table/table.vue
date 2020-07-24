@@ -19,9 +19,11 @@
               class="font-weight-bolder px-5 text-center"
           >#
           </th>
-          <th v-for="option in options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
-            {{option.title}}
-            <slot :name="option.prop"></slot>
+          <th v-for="option in slots_options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
+            
+            <slot :name="option.prop">
+              {{option.title}}
+            </slot>
             <span v-html="option.children[0]" v-if="option.children && option.children[0]"></span>
           </th>
         </tr>
@@ -56,7 +58,7 @@
                 <i class="icon-arrow-right22 cursor-pointer pg-expand-icon" :class="{active: expandable && expand_indexs.includes(index)}" @click="onExpandRow(index)"></i>
               </td>
               <td v-if="checkable" width="38px" class="px-5 text-center">
-                <pg-checkbox class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
+                <pg-checkbox :disabled="disabledKeys.some(d =>  d === item[primaryKey])" class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
               </td>
               <td
                   v-if="serialable"
@@ -111,6 +113,7 @@
       borderless: {type: Boolean, default: false},
       serialable: {type: Boolean, default: true},
       checkable: {type: Boolean, default: false},
+      disabledKeys: { type: Array, default() { return [] } },
       highlightRow: {type: Boolean, default: true},
       loading: {type: Boolean, default: false},
       expandAll: {type: Boolean, default: false},
@@ -141,16 +144,27 @@
         }
       },
 
+      // 去除掉 disabledKeys 之后 可以被选中的列表
+      optionalList() {
+        const { data, disabledKeys, primaryKey } = this.$props;
+        return data.filter(item => !disabledKeys.some(d => d === item[primaryKey]));
+      },
+
+      // 选中的列表长度 === 可被选择的列表长度 表示全部选中
       checkedAll() {
         let length = this.$data.checkedList.filter(item => !!item).length;
         if (length === 0) return false;
-        return length === this.$props.data.length;
+        return length === this.optionalList.length;
       },
 
       indeterminate() {
         let length = this.$data.checkedList.filter(item => !!item).length;
-        if (length > 0 && this.$props.data && length < this.$props.data.length) return true;
+        if (length > 0 && this.optionalList && length < this.optionalList.length) return true;
         return false;
+      },
+
+      slots_options() {
+        return this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
       },
 
       colspan() {
@@ -207,7 +221,6 @@
         this.offsetTop = this.$refs['fixed-header-root'] ? this.$refs['fixed-header-root'].offsetTop : 0;
       }
       this.$data.options = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
-      // this.$data.collapses = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
       this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row']; // 是否存在可折叠面板
     },
 
@@ -235,7 +248,7 @@
         if (this.checkedAll) {
           this.$data.checkedList = [];
         } else {
-          this.$data.checkedList = this.$props.data || [];
+          this.$data.checkedList = this.optionalList;
         }
 
         this.$emit('selection', [...this.$data.checkedList]);

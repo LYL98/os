@@ -45,15 +45,22 @@
 
             <pg-button @click="remove_remark = !remove_remark"></pg-button>
 
-            <pg-table primary-key="id" :data="tableData" :expand-all="false" fixed-header checkable>
+            <pg-table primary-key="id" :disabled-keys="[1,2]" :data="tableData" :expand-all="false" fixed-header checkable>
 
               <template v-slot:name>
-                <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
-                <pg-select flat width="60px">
+                <div class="d-flex">
+                  <div class="text-center">
+                    <div>安义</div>
+                    <div>1/2/3</div>
+                  </div>
+                  <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
+                </div>
+                
+                <!-- <pg-select flat width="60px">
                   <pg-option>全部</pg-option>
                   <pg-option>未冻结</pg-option>
-                  <pg-option>已冻结</pg-option>
-                </pg-select>
+                  <pg-option>已冻结</pg-option> -->
+                <!-- </pg-select> -->
               </template>
 
               <template v-slot:expand-row="{row}">

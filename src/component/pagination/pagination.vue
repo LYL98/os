@@ -1,47 +1,58 @@
 <template>
   <div class="pg-pagination">
-
-    <div class="pg-pagination__state">
+    <!--总数-->
+    <div class="pg-pagination__state" v-if="layout.indexOf('total') >= 0">
       <span class="pg-pagination__text">共 <strong>{{ num }}</strong> 条</span>
     </div>
 
     <div class="pg-pagination__operate">
+      <!--跳转-->
+      <template v-if="layout.indexOf('jumper') >= 0">
+        <pg-select
+            size="sm"
+            v-model="page_size"
+            flat
+            text-align="center"
+            :clearable="false"
+            style="width: 60px"
+        >
+          <pg-option :value="10">10</pg-option>
+          <pg-option :value="20">20</pg-option>
+          <pg-option :value="30">30</pg-option>
+          <pg-option :value="40">40</pg-option>
+          <pg-option :value="50">50</pg-option>
+        </pg-select>
 
-      <pg-select
-          size="sm"
-          v-model="page_size"
-          flat
-          text-align="center"
-          :clearable="false"
-          style="width: 60px"
-      >
-        <pg-option :value="10">10</pg-option>
-        <pg-option :value="20">20</pg-option>
-        <pg-option :value="30">30</pg-option>
-        <pg-option :value="40">40</pg-option>
-        <pg-option :value="50">50</pg-option>
-      </pg-select>
+        <span class="pg-pagination__text">条 / 页</span>
+      </template>
 
-      <span class="pg-pagination__text">条 / 页</span>
+      <!--首页、上一页-->
+      <template v-if="layout.indexOf('prev') >= 0">
+        <pg-button square size="sm" style="margin-right: -1px;" :disabled="page === 1" @click="page=1">
+          <i class="icon-previous2 font-size-lg"></i>
+        </pg-button>
 
-      <pg-button square size="sm" style="margin-right: -1px;" :disabled="page === 1" @click="page=1">
-        <i class="icon-previous2 font-size-lg"></i>
-      </pg-button>
+        <pg-button square size="sm" style="margin-right: -1px;" :disabled="page === 1" @click="page-=1">
+          <i class="icon-arrow-left5"></i>
+        </pg-button>
+      </template>
 
-      <pg-button square size="sm" style="margin-right: -1px;" :disabled="page === 1" @click="page-=1">
-        <i class="icon-arrow-left5"></i>
-      </pg-button>
+      <!--页码-->
+      <template v-if="layout.indexOf('pager') >= 0">
+        <pg-input type="number" size="sm" style="width: 60px;" :value="page" text-align="center" @keyup.enter.native="changePage"/>
+        <span class="pg-pagination__totalpage"> / {{ total }} 页</span>
+      </template>
 
-      <pg-input type="number" size="sm" style="width: 60px;" :value="page" text-align="center" @keyup.enter.native="changePage"/>
-      <span class="pg-pagination__totalpage"> / {{ total }} 页</span>
+      <!--尾页、下一页-->
+      <template v-if="layout.indexOf('next') >= 0">
+        <pg-button square size="sm" style="margin-left: -1px;" :disabled="page === total" @click="page+=1">
+          <i class="icon-arrow-right5"></i>
+        </pg-button>
 
-      <pg-button square size="sm" style="margin-left: -1px;" :disabled="page === total" @click="page+=1">
-        <i class="icon-arrow-right5"></i>
-      </pg-button>
-
-      <pg-button square size="sm" style="margin-left: -1px;" :disabled="page === total"  @click="page=total">
-        <i class="icon-next2 font-size-lg"></i>
-      </pg-button>
+        <pg-button square size="sm" style="margin-left: -1px;" :disabled="page === total"  @click="page=total">
+          <i class="icon-next2 font-size-lg"></i>
+        </pg-button>
+      </template>
 
     </div>
 
@@ -61,6 +72,10 @@
       pgButton, pgSelect, pgOption, pgInput
     },
     props: {
+      layout: {
+        type: String,
+        default: 'prev, pager, next, jumper, total',
+      },
       num: { type: Number, default: 0 }, // 总共多少条记录
       query: {
         type: Object,

@@ -168,7 +168,6 @@ const routeConfig = {
         { title: '平台设置', permission_code: 'SystemSettingMain', url: '/system/setting/main' },
         { title: '区域运营配置', permission_code: 'SettingCustom', url: '/system/setting/custom' },
         { title: '区域配置', permission_code: 'SystemAreaMain', url: '/system/area/main' },
-        { title: 'app管理', permission_code: 'SystemAppSettings', url: '/system/appSettings' }
       ],
     },
   ],
@@ -180,7 +179,8 @@ const routeConfig = {
         { title: '商品库', permission_code: 'ClsItemPitem', url: '/item/pitem' },
         { title: '货架商品', permission_code: 'ClsItemSubitem', url: '/item/subitem' },
         { title: '货架商品属性', permission_code: 'ClsItemProperty', url: '/item/property' },
-        // { title: '秒杀', permission_code: 'ClsActivitySeckill', url: '/activity/seckill' },
+        { title: '秒杀', permission_code: 'ClsActivitySeckill', url: '/activity/seckill' },
+        { title: '优惠券', permission_code: 'ClsActivityCoupon', url: '/activity/coupon' },
         { title: '零售门店', permission_code: 'ClsUserStore', url: '/user/store' },
         { title: '推广者', permission_code: 'ClsUserPromoter', url: '/user/promoter' },
         { title: '消费者', permission_code: 'ClsUserMember', url: '/user/member' },

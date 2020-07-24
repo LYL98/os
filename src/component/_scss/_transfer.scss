@@ -11,7 +11,7 @@
   }
 
   .selector {
-    min-width: 80px;
+    min-width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,5 +21,22 @@
   .pg-table-wrapper.borderless {
     border-bottom: 0;
   }
+}
+
+.pg-transfer .pg-table thead tr {
+  height: auto;
+}
+
+.pg-transfer .pg-table thead th {
+  padding: 12px 10px 10px;
+}
+
+.pg-transfer .pg-table tbody td {
+  padding: 10px 8px;
+}
+
+.pg-form-item .pg-transfer .pg-checkbox, 
+.pg-form-item .pg-transfer .pg-radio {
+  height: auto;
 }
 

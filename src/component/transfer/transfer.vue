@@ -15,7 +15,7 @@
         <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-light': removeList.length <= 0, 'text-white': removeList.length > 0 }"></i>
       </pg-button>
     </div>
-    <div class="pg-transfer-table-wrapper selected">
+    <div class="pg-transfer-table-wrapper selected" :style="`min-width: ${selectedWidth}; width: ${selectedWidth}`">
       <pg-table :data="selectedList" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionRemove">
         <slot name="selected">
           <pg-column prop="label" title="已选择"></pg-column>
@@ -64,8 +64,16 @@
         validator: v => v.length === 0 || v.every(d => d['label'] !== undefined && d['value'] !== undefined), 
         default() { return []; }
       },
+      // 当 props.data 是分页数据时， value 中可能包含 data中不存在的项；
+      // 需要使用该参数，把value中已选中的项，添加进来
+      requiredData: {
+        type: Array,
+        validator: v => v.length === 0 || v.every(d => d['label'] !== undefined && d['value'] !== undefined),
+        default() { return []; }
+      }, //
       valid: { type: Boolean, default: true },
-      height: { type: String, default: '200px' },
+      height: { type: String, default: '202px' },
+      selectedTableWidth: { type: String, default: '265px' }
       // singleRemove: { type: Boolean, default: true }
     },
     model: {
@@ -73,12 +81,6 @@
       event: 'change'
     },
     data() {
-
-      // let ev = this.$props.value;
-      // let selectedList = this.$props.data.filter(d => ev.some(item => item === d.value));
-      // if (ev && ev.length > 0 && this.$props.valid) {
-      //   this.pgFormItem?.sync?.(ev);
-      // }
 
       let ev = this.$props.value;
       if (Array.isArray(ev) && ev.length > 0) {
@@ -94,9 +96,13 @@
       }
     },
     computed: {
+
+      complete_data() {
+        return unique([...this.$props.data, ...this.$props.requiredData]);
+      },
       // 可以被选择的列表，不包含已经选中的。
       optionals() {
-        return this.$props.data.filter(item => !this.$data.selectedList.some(d => d.value === item.value));
+        return this.complete_data.filter(item => !this.$data.selectedList.some(d => d.value === item.value));
       },
     },
 
@@ -105,11 +111,23 @@
         deep: true,
         immediate: false,
         handler(next, prev) {
-          // 1、需要同步到已经选择的列表中
-          this.$data.selectedList = unique(
-            [...this.$data.selectedList, 
-            ...this.$props.data.filter(d => next.some(item => item === d.value))]
-          );
+
+          if (Array.isArray(next)) {
+            // 当组件在外部修改value时，需要同步selectedList，主要应用于 外部手动清空value的场景
+            if (next.length === 0) {
+              this.$data.selectedList = [];
+            
+            // 兼容value 是异步的场景
+            } else {
+              this.$data.selectedList = unique(
+                [...this.$data.selectedList,
+                ...this.complete_data.filter(d => next.some(item => item === d.value))]
+              );
+            }
+
+          }
+  
+          
           this.$nextTick(() => {
             this.$props.valid && this.pgFormItem?.sync?.(next);
           });
@@ -122,7 +140,7 @@
           if (!next) return;
           this.$data.selectedList = unique(
             [...this.$data.selectedList, 
-            ...next.filter(d => this.$props.value.some(item => item === d.value))]
+            ...this.complete_data.filter(d => this.$props.value.some(item => item === d.value))]
           );
         }
       },

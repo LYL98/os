@@ -6,7 +6,6 @@
           :key="key"
           :value="v"
           :flat="borderless"
-          @click="update(v)"
       >{{key}}</pg-button>
     </slot>
   </div>

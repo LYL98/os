@@ -55,12 +55,6 @@
                   </div>
                   <pg-column-sort v-model="query.order" asc="1" desc="2"></pg-column-sort>
                 </div>
-                
-                <!-- <pg-select flat width="60px">
-                  <pg-option>全部</pg-option>
-                  <pg-option>未冻结</pg-option>
-                  <pg-option>已冻结</pg-option> -->
-                <!-- </pg-select> -->
               </template>
 
               <template v-slot:expand-row="{row}">

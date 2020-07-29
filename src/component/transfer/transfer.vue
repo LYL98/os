@@ -1,22 +1,37 @@
 <template>
   <div class="pg-transfer">
-    <div class="pg-transfer-table-wrapper unselected">
-      <pg-table :data="optionals" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionAdd">
-        <slot name="unselected">
-          <pg-column prop="label" :title="placeholder"></pg-column>
-        </slot>
-      </pg-table>
-    </div>
-    <div class="selector">
-      <pg-button color="primary" circle size="sm" @click="doSelect" :disabled="addList.length <= 0">
-        <i class="icon-arrow-right22" style="font-size: 20px" :class="{ 'text-light': addList.length <= 0, 'text-white': addList.length > 0 }"></i>
-      </pg-button>
-      <pg-button color="primary" circle size="sm" class="mt-20" @click="doRemove" :disabled="removeList.length <= 0">
-        <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-light': removeList.length <= 0, 'text-white': removeList.length > 0 }"></i>
-      </pg-button>
-    </div>
-    <div class="pg-transfer-table-wrapper selected" :style="`min-width: ${selectedWidth}; width: ${selectedWidth}`">
-      <pg-table :data="selectedList" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionRemove">
+    <template v-if="!is_disabled">
+      <div class="pg-transfer-table-wrapper unselected">
+        <pg-table :data="optionals" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionAdd">
+          <slot name="unselected">
+            <pg-column prop="label" :title="placeholder"></pg-column>
+          </slot>
+        </pg-table>
+      </div>
+      <div class="selector">
+        <pg-button color="primary" circle size="sm" @click="doSelect" :disabled="addList.length <= 0">
+          <i class="icon-arrow-right22" style="font-size: 20px" :class="{ 'text-light': addList.length <= 0, 'text-white': addList.length > 0 }"></i>
+        </pg-button>
+        <pg-button color="primary" circle size="sm" class="mt-20" @click="doRemove" :disabled="removeList.length <= 0">
+          <i class="icon-arrow-left22" style="font-size: 20px" :class="{ 'text-light': removeList.length <= 0, 'text-white': removeList.length > 0 }"></i>
+        </pg-button>
+      </div>
+    </template>
+    <div 
+      class="pg-transfer-table-wrapper selected" 
+      :style="selectedTableWidth ?`min-width: ${selectedTableWidth}; width: ${selectedTableWidth}` : ''"
+    >
+      <pg-table 
+        :data="selectedList" 
+        primary-key="value" 
+        placeholder="" 
+        :serialable="false" 
+        :highlight-row="false" 
+        :height="height" 
+        borderless 
+        :checkable="!is_disabled" 
+        @selection="onSelectionRemove"
+      >
         <slot name="selected">
           <pg-column prop="label" title="已选择"></pg-column>
         </slot>
@@ -72,8 +87,9 @@
         default() { return []; }
       }, //
       valid: { type: Boolean, default: true },
+      disabled: { type: Boolean, default: false },
       height: { type: String, default: '202px' },
-      selectedTableWidth: { type: String, default: '265px' }
+      selectedTableWidth: { type: String, default: '' }
       // singleRemove: { type: Boolean, default: true }
     },
     model: {
@@ -81,12 +97,9 @@
       event: 'change'
     },
     data() {
-
       let ev = this.$props.value;
       if (Array.isArray(ev) && ev.length > 0) {
-        console.log('ev', ev);
-        
-        this.pgFormItem?.sync?.(ev);
+        this.$props.valid && this.pgFormItem?.sync?.(ev);
       }
 
       return {
@@ -98,6 +111,9 @@
       }
     },
     computed: {
+      is_disabled() {
+        return this.$props.disabled || !!this.pgFormItem?.disabled;
+      },
 
       complete_data() {
         return unique([...this.$props.data, ...this.$props.requiredData]);
@@ -129,7 +145,6 @@
           }
   
           this.$nextTick(() => {
-            console.log('next', next);
             this.$props.valid && this.pgFormItem?.sync?.(next);
           });
         }

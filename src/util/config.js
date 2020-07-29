@@ -7,12 +7,12 @@ let isDev = url.indexOf('dev') >= 0 || url.indexOf('test') >= 0; //是否是测�
 let isPre = url.indexOf('pre') >= 0; //是否是预发布环境
 let isPro = !isLocalhost && !isDev && !isDev;
 
-let acc_url = 'https://apollodev.pgyscm.com';
-let tob_url = 'https://vestadev.pgyscm.com';
+let acc_url = 'https://apollodevls.pgyscm.com';
+let tob_url = 'https://vestadevls.pgyscm.com';
 
 if (isLocalhost || isDev) { //测试环境
-  acc_url = 'https://apollodev.pgyscm.com';
-  tob_url = 'https://vestadev.pgyscm.com';
+  acc_url = 'https://apollodevls.pgyscm.com';
+  tob_url = 'https://vestadevls.pgyscm.com';
 } else if (isPre) { //预发布环境
   acc_url = 'https://apollopre.pgyscm.com';
   tob_url = 'https://vestapre.pgyscm.com';

@@ -13,6 +13,7 @@
       disabled: {type: Boolean, default: false},
       inline: { type: Boolean, default: false },
       border: { type: Boolean, default: false },
+      valid: { type: Boolean, default: true },
       size: {type: String, default: 'base', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
       tag: { type: String, default: 'ul' },
     },
@@ -25,10 +26,20 @@
         return this.$props.disabled || !!this.pgFormItem?.disabled;
       },
     },
+    watch: {
+      value: {
+        deep: true,
+        immediate: false,
+        handler:function(val){
+          this.$props.valid && this.pgFormItem?.sync?.(val);
+        }
+
+      }
+    },
     data() {
       let ev = this.$props.value;
-      if (ev || ev === 0 || ev === false) {
-        this.pgFormItem?.sync?.(ev);
+      if (Array.isArray(ev) && ev.length > 0) {
+        this.$props.valid && this.pgFormItem?.sync?.(ev);
       }
       return {}
     },

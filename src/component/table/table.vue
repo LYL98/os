@@ -39,6 +39,7 @@
         v-model="checkedList"
         @change="onCheckChange"
         tag="div"
+        :valid="false"
         :style="`height: ${height}; overflow-y: auto; overflow: overlay;`"
         @scroll="$emit('scroll')"
     >

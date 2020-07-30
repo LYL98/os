@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "cross-env DEPLOY_ENV=pro vue-cli-service build --no-clean --report",
-    "lib": "vue-cli-service build --target lib --name pgyos --dest lib src/index.js --report lib",
+    "lib": "vue-cli-service build --target lib --name pgyos --dest lib src/pgyos.entry.js --report lib",
     "scss": "gulp build",
     "scss:dev": "gulp dev"
   },

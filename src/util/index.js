@@ -1,8 +1,8 @@
-import Config from './config';
+import Api from './api';
 import Constant from './constant';
-// import Http from './http';
-// import Http from '@/module/http/http';
-import { Http } from './../index';
-import Storage from './storage';
+import Excel from './excel';
+import Handle from './handle';
+import Lodop from './lodop';
+import { Http } from './../pgyos.entry';
 
-export { Config, Constant, Http, Storage };
+export { Http, Api, Constant, Excel, Handle, Lodop };

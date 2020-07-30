@@ -1,10 +1,17 @@
-import Vue from 'vue';
-import App from './app/app';
-import router from './router';
-import pgyos from './index';
-Vue.use(pgyos);
+import Vue from 'vue'
+import App from './App.vue'
+import VueRouter from 'vue-router'
+import routes from './routes'
+import pgyos from './pgyos.entry'
 
+Vue.use(pgyos);
 Vue.config.productionTip = false;
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+  routes
+});
 
 new Vue({
   router,

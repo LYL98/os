@@ -13,6 +13,7 @@
         <pg-search class="w-25 ml-20" clearable placeholder="手机号码、昵称、门店名称" v-model="query.condition" @change="changeQuery"/>
         <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
 
+        <pg-button @click="toggle = !toggle">toggle</pg-button>
         <pg-button color="primary" class="ml-auto" @click="handleAddItem" v-if="app.auth.isAdmin || app.auth.ClsUserPromoterAdd">新增</pg-button>
       </div>
 
@@ -33,6 +34,9 @@
             :page-size="query.page_size"
             borderless
           >
+            <template v-slot:ord_amount_cum>
+              搜索
+            </template>
             <pg-column title="推广者名称 / 手机号" width="160px">
               <template v-slot="{row}">
                 {{ row.nickname || '-' }}{{ row.login_phone && ' / ' }}{{ row.login_phone || '' }}
@@ -43,7 +47,7 @@
                 {{ row.store && row.store.title || '-' }}
               </template>
             </pg-column>
-            <pg-column title="累计分享下单金额" width="120px" text-align="center">
+            <pg-column title="累计分享下单金额" prop="ord_amount_cum" width="120px" text-align="center" v-if="toggle">
               <template v-slot="{row}">
                 <span v-if="!!row.ord_amount_cum">¥</span>{{ Handle.returnPrice(row.ord_amount_cum + row.ord_amount_today) || '-' }}
               </template>
@@ -153,6 +157,7 @@
           visible: false,
           item: {}
         },
+        toggle: true,
         loading: false,
         provinceListAuth: [],
       }

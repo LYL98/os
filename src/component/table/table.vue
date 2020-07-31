@@ -19,8 +19,7 @@
               class="font-weight-bolder px-5 text-center"
           >#
           </th>
-          <th v-for="option in slots_options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
-            
+          <th v-for="option in options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
             <slot :name="option.prop">
               {{option.title}}
             </slot>

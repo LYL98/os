@@ -26,6 +26,8 @@
           </pg-tabs>
         </div>
         <div class="card-body">
+          <pg-checkbox @change="changeCheck"></pg-checkbox>
+          <pg-checkbox-group v-model="checkboxList">
           <pg-table
             fixed-header
             :data="list.items"
@@ -34,9 +36,18 @@
             :page-size="query.page_size"
             borderless
           >
-            <template v-slot:ord_amount_cum>
-              搜索
+            <template v-slot:expand-row="{row}">
+              <pg-table primary-key="id" :data="[{ id: 21, title: 'haha' }, { id: 22, title: 'lele' }]">
+                <pg-column>
+                  <template v-slot="{row}">
+                    <pg-checkbox :value="row.id"></pg-checkbox>
+                  </template>
+                </pg-column>
+                <pg-column prop="id" title="id"></pg-column>
+                <pg-column prop="title" title="title"></pg-column>
+              </pg-table>
             </template>
+
             <pg-column title="推广者名称 / 手机号" width="160px">
               <template v-slot="{row}">
                 {{ row.nickname || '-' }}{{ row.login_phone && ' / ' }}{{ row.login_phone || '' }}
@@ -89,6 +100,8 @@
              </template>
             </pg-column>
           </pg-table>
+
+          </pg-checkbox-group>
         </div>
         <div class="card-footer">
           <pg-pagination :num="list.num" v-model="query" @change="userPromoterQuery"/>
@@ -157,9 +170,10 @@
           visible: false,
           item: {}
         },
-        toggle: true,
+        toggle: false,
         loading: false,
         provinceListAuth: [],
+        checkboxList: []
       }
     },
 
@@ -173,6 +187,18 @@
     },
 
     methods: {
+      changeCheck(v) {
+
+        console.log('v', v);
+        if (v) {
+          this.$data.checkboxList = [];
+        } else {
+          this.$data.checkboxList = [21,22];
+        }
+
+        this.$data.checkboxList = [21, 22];
+        console.log('this.$data.checkboxList', this.$data.checkboxList);
+      },
       initQuery() {
         this.$data.query = {
           province_code: this.app.userInfo.province_code,

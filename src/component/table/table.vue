@@ -19,7 +19,7 @@
               class="font-weight-bolder px-5 text-center"
           >#
           </th>
-          <th v-for="option in options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
+          <th v-for="option in slots_options" :width="option.width" :key="option.title" :style="`text-align: ${option.textAlign}; ${option.minWidth ? 'min-width: ' + option.minWidth : ''}`">
             <slot :name="option.prop">
               {{option.title}}
             </slot>
@@ -35,6 +35,7 @@
 <!--    </div>-->
 
     <pg-checkbox-group
+        v-if="checkable"
         v-model="checkedList"
         @change="onCheckChange"
         tag="div"
@@ -70,7 +71,7 @@
               </td>
               <slot></slot>
             </pg-row>
-            <tr class="expand-row" v-if="expandable && expand_indexs.includes(index)">
+            <tr class="expand-row" v-show="expandable && expand_indexs.includes(index)">
               <td :colspan="colspan" class="p-0">
                 <slot name="expand-row" :row="item"></slot>
               </td>
@@ -80,6 +81,46 @@
         </tbody>
       </table>
     </pg-checkbox-group>
+
+    <div v-else :style="`height: ${height}; overflow-y: auto; overflow: overlay;`" @scroll="$emit('scroll')">
+      <div class="pg-table-empty" v-if="Array.isArray(data) && data.length <= 0 && !!placeholder">
+        {{ placeholder }}
+      </div>
+      <table class="pg-table" :class="{borderless}">
+        <tbody>
+        <template v-for="(item, index) in (data || [])">
+          <pg-row
+              :item="item"
+              :key="item[primaryKey]"
+              @click.native="onSelectRow(item)"
+              :class="{selected: highlightRow && selectedRow[primaryKey] === item[primaryKey], expandable: expandable }"
+          >
+            <td width="20px" v-if="expandable">
+              <i class="icon-arrow-right22 cursor-pointer pg-expand-icon" :class="{active: expandable && expand_indexs.includes(index)}" @click="onExpandRow(index)"></i>
+            </td>
+            <td v-if="checkable" width="38px" class="px-5 text-center">
+              <pg-checkbox :disabled="disabledKeys.some(d =>  d === item[primaryKey])" class="mr-0 ml-10" :value="item" :true-value="item" :false-value="undefined"></pg-checkbox>
+            </td>
+            <td
+                v-if="serialable"
+                :width="indexWidth"
+                :style="'color: #666; min-width: ' + indexWidth"
+                class="font-weight-bold font-size-sm px-5 text-center"
+            >
+              {{ (page - 1) * pageSize + index + 1 }}
+            </td>
+            <slot></slot>
+          </pg-row>
+          <tr class="expand-row" v-show="expandable && expand_indexs.includes(index)">
+            <td :colspan="colspan" class="p-0">
+              <slot name="expand-row" :row="item"></slot>
+            </td>
+          </tr>
+        </template>
+
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -87,7 +128,7 @@
 
   import pgCheckbox from './../checkbox/checkbox';
   import pgCheckboxGroup from './../checkbox/checkbox-group';
-  import {debounce, findDownComponentList} from '../_util/assist';
+  import {debounce} from '../_util/assist';
 
   import Row from './row';
 
@@ -121,7 +162,7 @@
     },
     data() {
       return {
-        options: [],
+        slots_default: [],
         // collapses: [],
         fixed: false,
         expandable: false,
@@ -164,11 +205,11 @@
       },
 
       slots_options() {
-        return this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
+        return this.$data.slots_default.filter(item => !!item);
       },
 
       colspan() {
-        let l = this.$data.options.length;
+        let l = this.slots_options.length;
         if (this.$props.serialable) {
           l += 1;
         }
@@ -220,8 +261,31 @@
       if (this.$props.fixedHeader) {
         this.offsetTop = this.$refs['fixed-header-root'] ? this.$refs['fixed-header-root'].offsetTop : 0;
       }
-      this.$data.options = this.$slots.default?.map?.(item => item.componentOptions.propsData) || [];
-      this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row']; // 是否存在可折叠面板
+
+      // 是否存在可折叠面板
+      this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row'];
+
+      let slots_default = (this.$slots.default || [])
+        .map(item => {
+          if (item.componentOptions) {
+            return { ...item.componentOptions.propsData };
+          }
+          return undefined; // 表示 v-if 控制的column，初始值为 false 的情况
+        });
+
+      if (this.$props.checkable) {
+        slots_default = [undefined, ...slots_default];
+      }
+
+      if (this.$props.serialable) {
+        slots_default = [undefined, ...slots_default];
+      }
+
+      if (this.$data.expandable) {
+        slots_default = [undefined, ...slots_default];
+      }
+
+      this.$data.slots_default = slots_default;
     },
 
     methods: {

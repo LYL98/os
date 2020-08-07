@@ -170,6 +170,14 @@
               key: res.data.key,
               presigned_url: res.data.presigned_url
             };
+
+            // 为apk 文件自动添加后缀
+            if (this.$props.type === 'apk') {
+              let split_urls = formData.presigned_url.split('?');
+              formData.presigned_url = split_urls[0] + '.apk?' + split_urls[1];
+              formData.key = formData.key + '.apk';
+            }
+
             return this.upTencentPath(formData);
           })
         })).then(list => {
@@ -190,7 +198,7 @@
               if (xhr.status === 200) {
                 resolve({ code: 0, data: data.key });
               } else {
-                reject({ code: 4, message: '图片上传失败！请重试...', data: null });
+                reject({ code: 4, message: '上传失败！请重试...', data: null });
               }
             }
           };

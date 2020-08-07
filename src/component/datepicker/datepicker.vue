@@ -115,13 +115,14 @@
 
   import pgCalendar from './calendar';
   import pgTimer from './../timepicker/timer';
+  import pgInput from '../input/input';
   import pgButton from '../button/button';
   import {findUpComponent} from "../_util/assist";
   import {formatDate, fixDateRange} from '../_util/date';
 
   export default {
     name: 'pg-datepicker',
-    components: {pgCalendar, pgTimer, pgButton},
+    components: {pgCalendar, pgTimer, pgInput, pgButton},
     props: {
       value: {type: Object | String, default: {}},
       beginDateKey: {type: String, default: 'begin_date'},

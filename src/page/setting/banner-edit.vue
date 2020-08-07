@@ -2,7 +2,7 @@
   <pg-form ref="form" item-width="450px">
 
     <pg-form-item label="图片" rules="required" help-text="鼠标悬浮显示操作按钮, 建议上传尺寸为690x280的图片">
-      <pg-uploader v-model="formData.image" module="setting"/>
+      <pg-uploader v-model="formData.image" type="apk" module="setting"/>
     </pg-form-item>
     <pg-form-item label="可用状态" item-width="300px" rules="required" help-text="如果禁用，则该图片不会显示在首页">
       <pg-button-group v-model="formData.is_usable" :options="{ '显示': true, '禁用': false }">

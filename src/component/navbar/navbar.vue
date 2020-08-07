@@ -97,7 +97,7 @@
           </div>
         </pg-popper>
       </div>
-      <div class="position-relative d-flex align-items-center" style="min-width: 750px;">
+      <div class="position-relative d-flex align-items-center" style="min-width: 800px;">
         <div class="pg-nav-item" v-for="(route, index) in routes.gyl" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
           <pg-popper trigger="hover" placement="bottom-start">
             <a class="nav">
@@ -141,7 +141,7 @@
 
       <div class="pg-nav-item ml-auto text-right">
         <pg-popper trigger="hover" placement="bottom-end">
-          <div class="d-flex align-items-center justify-content-end mr-20" style="min-width: 200px">
+          <div class="d-flex align-items-center justify-content-end mr-20" style="min-width: 150px">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="-1 -1 22 22" id="user-avatar" x="164" y="119">
               <defs>
                 <circle id="dba" cx="10" cy="10" r="10" />
@@ -168,7 +168,7 @@
                 </g>
               </g>
             </svg>
-            <a class="nav">
+            <a class="nav overflow-ellipsis d-inline-block">
               <span>{{ username }}</span>
               <i class="icon-arrow-down12 ml-5 text-white"></i>
             </a>
@@ -220,7 +220,7 @@ export default {
   },
 
   created() {
-    const { routes, auth, origin_yy, origin_gyl, origin_gylref, origin_bsc, origin_cls } = osConfig();
+    const { routes, auth, origin_yy, origin_gyl, origin_gylref, origin_bsc, origin_sc, origin_cls } = osConfig();
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
@@ -235,8 +235,13 @@ export default {
           return { label: item.subitem, value: item.permission_code, items: items };
         }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
 
+    const bsc = routes.bsc.map(item => {
+      let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'sc' ? origin_sc : origin_bsc) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
+      return { label: item.subitem, value: item.permission_code, items: items };
+    }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
+
     const yy = authorization(routes.yy, origin_yy);
-    const bsc = authorization(routes.bsc, origin_bsc);
+    // const bsc = authorization(routes.bsc, origin_bsc);
     const cls = authorization(routes.cls, origin_cls);
     this.$data.routes = { yy, gyl, bsc, cls };
     this.$data.origin_yy = origin_yy;

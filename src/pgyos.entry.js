@@ -11,6 +11,7 @@ import Editor from './component/editor/editor';
 import Form from './component/form/form';
 import FormItem from './component/form/form-item';
 import Input from './component/input/input';
+import Locationpicker from './component/locationpicker/locationpicker';
 import Navbar from './component/navbar/navbar';
 import Pagination from './component/pagination/pagination';
 import Popper from './component/popper/popper';
@@ -53,6 +54,7 @@ const components = [
   Form,
   FormItem,
   Input,
+  Locationpicker,
   Navbar,
   Pagination,
   Popper,
@@ -117,6 +119,7 @@ export {
   Form,
   FormItem,
   Input,
+  Locationpicker,
   Navbar,
   Pagination,
   Popper,

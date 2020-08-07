@@ -7,6 +7,11 @@ export default [
     component: Home
   },
   {
+    path: '/demo',
+    name: 'demo',
+    component: () => import(/* webpackChunkName: "pitem" */ './demo.vue')
+  },
+  {
     path: '/item/pitem',
     name: 'pitem',
     component: () => import(/* webpackChunkName: "pitem" */ './page/item/pitem/pitem.vue')

@@ -71,7 +71,7 @@
               </td>
               <slot></slot>
             </pg-row>
-            <tr class="expand-row" v-show="expandable && expand_indexs.includes(index)">
+            <tr class="expand-row" v-if="expandable && expand_indexs.includes(index)">
               <td :colspan="colspan" class="p-0">
                 <slot name="expand-row" :row="item"></slot>
               </td>
@@ -111,7 +111,7 @@
             </td>
             <slot></slot>
           </pg-row>
-          <tr class="expand-row" v-show="expandable && expand_indexs.includes(index)">
+          <tr class="expand-row" v-if="expandable && expand_indexs.includes(index)">
             <td :colspan="colspan" class="p-0">
               <slot name="expand-row" :row="item"></slot>
             </td>
@@ -148,7 +148,7 @@
       data: {type: Array, default: null},
       primaryKey: {type: String, default: 'id'},
       page: {type: Number, default: 1},
-      pageSize: {type: Number, default: 30},
+      pageSize: {type: Number, default: 20},
       height: {type: String, default: 'auto'},
       fixedHeader: {type: Boolean, default: false},
       borderless: {type: Boolean, default: false},
@@ -230,6 +230,27 @@
           } else {
             this.$data.expand_indexs = [];
           }
+
+          if (next === prev) return;
+
+          this.$nextTick(() => {
+            let slots_default = (this.$slots.default || [])
+              .map(item => {
+                if (!item.componentOptions) return undefined; // 表示 v-if 控制的column，初始值为 false 的情况
+
+                return { ...item.componentOptions.propsData };
+              });
+
+            [
+              this.$props.checkable,
+              this.$props.serialable,
+              this.$data.expandable
+            ].forEach(item => {
+              item && (slots_default = [undefined, ...slots_default]);
+            });
+
+            this.$data.slots_default = slots_default;
+          })
         }
       },
       expandAll: {
@@ -264,28 +285,6 @@
 
       // 是否存在可折叠面板
       this.$data.expandable = !!this.$slots['expand-row'] || !!this.$scopedSlots['expand-row'];
-
-      let slots_default = (this.$slots.default || [])
-        .map(item => {
-          if (item.componentOptions) {
-            return { ...item.componentOptions.propsData };
-          }
-          return undefined; // 表示 v-if 控制的column，初始值为 false 的情况
-        });
-
-      if (this.$props.checkable) {
-        slots_default = [undefined, ...slots_default];
-      }
-
-      if (this.$props.serialable) {
-        slots_default = [undefined, ...slots_default];
-      }
-
-      if (this.$data.expandable) {
-        slots_default = [undefined, ...slots_default];
-      }
-
-      this.$data.slots_default = slots_default;
     },
 
     methods: {

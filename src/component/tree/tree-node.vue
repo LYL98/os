@@ -1,17 +1,39 @@
 <template>
   <li>
-    <span class="d-flex position-relative">
+    <div
+        class="d-flex position-relative"
+        @mouseenter="isHover=true"
+        @mouseleave="isHover=false"
+    >
       <i
         v-if="isFolder"
         class="icon"
         :class="(isOpen || expend) ? 'icon-arrow-down5' : 'icon-arrow-right5'"
         @click="toggle"
       ></i>
-      <pg-checkbox :disabled="disabled" style="margin-left: 20px;" tag="div" :value="options.code" @change="onChange">{{ options.title }}</pg-checkbox>
-    </span>
+      <pg-checkbox v-if="checkable" :disabled="disabled" style="margin-left: 20px;" tag="div" :value="options.code" @change="onChange">{{ options.title }}</pg-checkbox>
+      <div style="margin-left: 20px;" v-else>{{ options.title }}</div>
+      <transition name="fade">
+        <div v-if="isHover">
+          <slot :node="options" :level="options.paths.length"></slot>
+        </div>
+      </transition>
+    </div>
 
-    <ul v-show="isFolder && (isOpen || expend)" :class="{ 'd-flex flex-wrap': isFolder && (isOpen || expend) && options.paths.length >= 3 }">
-      <pg-tree-node v-for="item in options.childs" :disabled="disabled" :key="item.code" :options="item" :expend="expend" :update="update"></pg-tree-node>
+    <ul v-show="isFolder && (isOpen || expend)" :class="{ 'd-flex flex-wrap': isFolder && (isOpen || expend) && options.paths.length >= 4 }">
+      <pg-tree-node
+          :checkable="checkable"
+          v-for="item in options.childs"
+          :disabled="disabled"
+          :key="item.code"
+          :options="item"
+          :expend="expend"
+          :update="update"
+      >
+        <template v-slot="scope">
+          <slot :node="scope.node" :level="scope.node.paths.length"></slot>
+        </template>
+      </pg-tree-node>
     </ul>
   </li>
 </template>
@@ -27,11 +49,13 @@
       options: { type: Object, default: {} },
       update: { type: Function, default: () => {} },
       disabled: { type: Boolean, default: false },
+      checkable: { type: Boolean, default: true },
       expend: { type: Boolean, default: false },
     },
     data() {
       return {
-        isOpen: false
+        isOpen: false,
+        isHover: false,
       }
     },
     computed: {

@@ -1,15 +1,8 @@
-import Home from './page/home.vue'
-
 export default [
-  {
-    path: '/',
-    name: 'home',
-    component: Home
-  },
   {
     path: '/demo',
     name: 'demo',
-    component: () => import(/* webpackChunkName: "pitem" */ './demo.vue')
+    component: () => import(/* webpackChunkName: "demo" */ './demo.vue')
   },
   {
     path: '/item/pitem',

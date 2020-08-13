@@ -1,4 +1,4 @@
-import { api_prefix_vesta, api_prefix_juno } from './../env.config';
+import { api_prefix_apollo, api_prefix_vesta, api_prefix_juno } from './../env.config';
 
 export default {
 
@@ -176,5 +176,9 @@ export default {
   // 区域运营设置
   settingConstantGet: api_prefix_juno + '/m/constant/get', // 获取系统常量
   settingConstantedit: api_prefix_juno + '/m/constant/edit', // 编辑系统常量
+
+  // 权限树
+  permissionTree: api_prefix_apollo + '/m/system/permission/list/tree',// 权限树
+  systemClassTree: api_prefix_vesta + '/m/basicdata/system_class/list/tree',// 权限树
 
 }

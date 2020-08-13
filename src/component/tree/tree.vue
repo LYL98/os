@@ -1,7 +1,19 @@
 <template>
   <!-- class="ui-fancytree fancytree-container fancytree-plain" -->
   <pg-checkbox-group tag="ul" v-model="value" class="pg-tree">
-    <tree-node :expend="expend" v-for="item in formatOptions.childs" :disabled="disabled" :key="item.code" :options="item" :update="update" />
+    <tree-node
+        :checkable="checkable"
+        :expend="expend"
+        v-for="item in formatOptions.childs"
+        :disabled="disabled"
+        :key="item.code"
+        :options="item"
+        :update="update"
+    >
+      <template v-slot="{node, level}">
+        <slot :node="node" :level="level"></slot>
+      </template>
+    </tree-node>
   </pg-checkbox-group>
 </template>
 
@@ -16,8 +28,8 @@
     components: { 'pg-checkbox-group': pgCheckboxGroup, 'tree-node': pgTreeNode },
     props: {
       value: { type: Array, default: [] },
-      showCheckbox: { type: Boolean, default: true },
       options: { type: Object, required: true },
+      checkable: { type: Boolean, default: true },
       disabled: { type: Boolean, default: false },
       expend: { type: Boolean, default: false },
     },

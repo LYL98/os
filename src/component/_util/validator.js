@@ -76,8 +76,9 @@ const rules = {
   decimal: {
     validate: function (v, n) {
       n = isNaN(n[0]) ? 0 : Number(n[0]);
-      let s = '^(([1-9][0-9]*)|(([0]\\.\\d{1,2}|[1-9][0-9]*\\.\\d{0,' + n +
+      let s = '^(([1-9][0-9]*)|(([0]\\.\\d{1,' + n + '}|[1-9][0-9]*\\.\\d{0,' + n +
         '})))$';
+      console.log(new RegExp(s).test(v));
       return  new RegExp(s).test(v) || (v + '') === '0';
     },
     getMsg: function (l, n) {

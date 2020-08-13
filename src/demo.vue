@@ -1,52 +1,52 @@
 <template>
   <div class="p-20">
 
-    <pg-dialog :visible="true">
-      <pg-form ref="form">
-
-        <pg-form-item rules="required">
-          <pg-locationpicker v-model="location" level="all" @change="changeLocation"></pg-locationpicker>
-        </pg-form-item>
-
-        <pg-form-item rules="required">
-          <pg-input ></pg-input>
-        </pg-form-item>
-
-        <div class="">
-          <pg-button @click="onSubmit" color="primary">submit</pg-button>
-        </div>
-      </pg-form>
-    </pg-dialog>
-
+    <div class="card">
+      <pg-tree
+          :checkable="false"
+          class="mt-30 ml-20 p-30"
+          :options="system_class_tree"
+          :expend="system_class_tree_expend"
+      >
+        <template v-slot="{node, level}">
+          <a class="ml-20" @click="onclick(node, level)" v-if="level <= 2">添加子类型</a>
+          <a class="ml-20" @click="onclick(node, level)">操作</a>
+          <a class="ml-20" @click="onclick(node, level)">删除</a>
+        </template>
+      </pg-tree>
+    </div>
 
   </div>
 </template>
 
 <script>
+
+  import { Http, Api } from '@/util';
+
   export default {
     name: 'demo',
     data() {
       return {
-        location: {
-          city_title: "南充市",
-          lat: 30.9849,
-          lng: 105.888562,
-          poi: "四川省西充中学",
-          province_title: "四川省",
-        }
+        system_class_tree_expend: true,
+        system_class_tree: {childs: []},
       }
     },
 
+    created() {
+      this.systemClassTree();
+    },
+
     methods: {
-      changeLocation(v) {
-        console.log('v', v);
+      systemClassTree() {
+        Http.get(Api.systemClassTree, {}).then((res) => {
+          this.$data.system_class_tree.childs = res.data;
+        });
       },
 
-      onSubmit() {
-        this.$refs['form']?.validateAll().then(res => {
-          console.log('validate result: ', res);
-        })
-      }
+      onclick(node, level) {
+        console.log(node, node.title, level);
+      },
+
     }
   }
 </script>

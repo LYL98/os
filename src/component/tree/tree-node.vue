@@ -11,7 +11,7 @@
         :class="(isOpen || expend) ? 'icon-arrow-down5' : 'icon-arrow-right5'"
         @click="toggle"
       ></i>
-      <pg-checkbox v-if="checkable" :disabled="disabled" style="margin-left: 20px;" tag="div" :value="options.code" @change="onChange">{{ options.title }}</pg-checkbox>
+      <pg-checkbox v-if="checkable" :disabled="disabled" style="margin-left: 20px;" tag="div" :value="options[primaryKey]" @change="onChange">{{ options.title }}</pg-checkbox>
       <div style="margin-left: 20px;" v-else>{{ options.title }}</div>
       <transition name="fade">
         <div v-if="isHover">
@@ -25,7 +25,7 @@
           :checkable="checkable"
           v-for="item in options.childs"
           :disabled="disabled"
-          :key="item.code"
+          :key="item[primaryKey]"
           :options="item"
           :expend="expend"
           :update="update"
@@ -51,6 +51,7 @@
       disabled: { type: Boolean, default: false },
       checkable: { type: Boolean, default: true },
       expend: { type: Boolean, default: false },
+      primaryKey: { type: String, default: 'code' },
     },
     data() {
       return {
@@ -85,8 +86,9 @@
 
       },
       getChildren(options) {
+        const primaryKey = this.$props.primaryKey || 'code';
         return options.childs ? options.childs.reduce((list, child) => {
-          list.push(child.code);
+          list.push(child[primaryKey]);
           const foundChild = this.getChildren(child);
           return list.concat(foundChild);
         }, []) : [];

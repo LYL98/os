@@ -35,6 +35,7 @@
     directives: {TransferDom},
     props: {
       expend: {type: Boolean, default: false},
+      autoClose: {type: Boolean, default: false},
       disabled: {type: Boolean, default: false},
       appendArrow: {type: Boolean, default: false},
       placement: {type: String, default: 'bottom-start'},
@@ -89,12 +90,18 @@
         this.$data.visible = !this.$data.visible;
       },
 
+      // 在popper层展开的时候会注册该click事件
       clickOutside(e) {
 
-        if (this.$refs['toggle']?.contains(e.target) || this.$refs['popper']?.contains(e.target)) {
+        if (this.$refs['toggle']?.contains(e.target)) {
           return;
         }
-        this.$data.visible = false;
+
+        if (this.$refs['popper']?.contains(e.target) && !this.$props.autoClose) {
+          return;
+        }
+
+        this.$emit('change', false);
       },
 
       createPopper() {

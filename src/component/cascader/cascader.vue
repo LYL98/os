@@ -31,6 +31,7 @@
           <a :class="{ active: active_index === 0 }" @click.stop="onCascade(0)">一级</a>
           <a :class="{ active: active_index === 1 }" @click.stop="onCascade(1)">二级</a>
           <a :class="{ active: active_index === 2 }" @click.stop="onCascade(2)">三级</a>
+          <a :class="{ active: active_index === 3 }" @click.stop="onCascade(3)" v-if="level >= 4">四级</a>
         </div>
         <div class="city-select-content">
           <ul class="dropdown-list">
@@ -50,13 +51,15 @@ import pgPopper from './../popper/popper';
 import pgInput from './../input/input';
 import pgSearch from './../search/search';
 
-import { findUpComponent } from './../_util/assist';
+import { findUpComponent, treeToList } from './../_util/assist';
 
 export default {
   name: 'pg-cascader',
   components: { pgPopper, pgInput, pgSearch },
   props: {
     value: { type: String | Number | Array, required: true }, // 当前值
+    level: { type: String | Number, default: 4 },
+    titles: { type: Array, default() { return ['一级', '二级', '三级', '四级'] } },
     placeholder: { type: String, default: '请选择' },
     textAlign: { type: String, default: 'left' },
     options: {
@@ -95,8 +98,8 @@ export default {
       popperWidth: 'auto',
       isHover: false,
       active_index: 0,
-      list: [],
-      select_list: [],
+      list: [], // 当前选中的列表
+      select_list: [], // 选中的值列表（级联选择器，选中的值是一个数组）
     };
   },
   computed: {
@@ -106,6 +109,13 @@ export default {
     label() {
       return this.$data.select_list.map((item) => item.title).join(' / ');
     },
+    expandedTreeList() {
+      const options = this.$props.options;
+      if (Array.isArray(options)) {
+        return treeToList(options);
+      }
+      return [];
+    }
   },
   watch: {
     value: {
@@ -133,75 +143,52 @@ export default {
   },
   methods: {
 
+    // 更新组件内部状态
     upCascade(code) {
+
       if (!code) {
         this.$data.active_index = 0;
         this.$data.select_list = [];
-        this.$data.list = [...this.$props.options];
+        this.$data.list = this.expandedTreeList.filter(item => item._node_level_ === 1);
         return;
       }
-      if (this.$data.select_list.length > 0) return;
-      let d = code.slice(0, 2);
-      let options = this.$props.options || [];
-      options.forEach(item => {
-        if (item.code === d) {
-          this.$data.select_list = [item];
-          d = code.slice(0, 4);
-          item.childs.forEach(item => {
-            if (item.code === d) {
-              this.$data.select_list = [...this.$data.select_list, item];
-              item.childs.forEach(item => {
-                if (item.code === code) {
-                  this.$data.select_list = [...this.$data.select_list, item];
-                }
-              });
-            }
-          })
-        }
-      });
+
+      if (this.$data.select_list.length > 0) return; // 如果已经存在选中的值，则不更新
+
+      let node = this.expandedTreeList.find(item => item.code === code);
+
+      if (node) {
+        this.$data.select_list = [...node._node_path_];
+      }
+
+      console.log('this.$data.select_list', this.$data.select_list);
+
     },
 
     onCascade(index) {
       this.$data.active_index = index;
-      let item = null;
-      switch (index) {
-        case 0:
-          this.$data.list = this.$props.options;
-          break;
-        case 1:
-          if (this.$data.select_list[0]) {
-            item = this.$props.options.find((item) => item.code === this.$data.select_list[0].code);
-          }
-          this.$data.list = (item && item.childs) || [];
-          break;
-        case 2:
-          if (this.$data.select_list[0] && this.$data.select_list[1]) {
-            item = this.$props.options.find((item) => item.code === this.$data.select_list[0].code);
-            if (item) {
-              item = item.childs.find((item) => item.code === this.$data.select_list[1].code);
-            }
-          }
 
-          this.$data.list = (item && item.childs) || [];
+      switch (index) {
+        // 如果是第一级，则直接返回一级列表
+        case 0:
+          this.$data.list = this.expandedTreeList.filter(item => item._node_level_ === 1);
+          break;
+        default:
+          let item = this.$data.select_list[index - 1];
+          if (!item) {
+            this.$data.list = [];
+          } else {
+            this.$data.list = this.expandedTreeList.filter(d => d.top_code === item.code);
+          }
           break;
       }
+
     },
     onSelect(item, active_index) {
-      switch (active_index) {
-        case 0:
-          this.$data.select_list = [item];
-          this.$data.list = item.childs;
-          this.$data.active_index = active_index + 1;
-          break;
-        case 1:
-          this.$set(this.$data.select_list, 1, item);
-          this.$data.select_list = this.$data.select_list.filter((item, index) => index <= 1);
-          this.$data.list = item.childs;
-          this.$data.active_index = active_index + 1;
-          break;
-        case 2:
-          this.$set(this.$data.select_list, 2, item);
-          break;
+      this.$data.select_list = [...item._node_path_];
+      if (this.$props.level - 1 > active_index) {
+        this.$data.list = this.expandedTreeList.filter(d => d.top_code === item.code);
+        this.$data.active_index = active_index + 1;
       }
       this.$emit('change', item.code);
     },
@@ -212,7 +199,7 @@ export default {
     },
     onClear() {
       this.$data.active_index = 0;
-      this.$data.list = [...this.$props.options];
+      this.$data.list = this.expandedTreeList.filter(item => item._node_level_ === 1);
       this.$data.select_list = [];
       this.$emit('change', '');
     },

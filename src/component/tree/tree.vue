@@ -6,7 +6,7 @@
         :expend="expend"
         v-for="item in formatOptions.childs"
         :disabled="disabled"
-        :key="item.code"
+        :key="item[primaryKey]"
         :options="item"
         :update="update"
     >
@@ -32,6 +32,7 @@
       checkable: { type: Boolean, default: true },
       disabled: { type: Boolean, default: false },
       expend: { type: Boolean, default: false },
+      primaryKey: { type: String, default: 'code' },
     },
     model: {
       prop: 'value',
@@ -53,11 +54,12 @@
       },
       formatOptions: {
         get() {
+          const primaryKey = this.$props.primaryKey || 'code';
           let options = this.$props.options ? JSON.parse(JSON.stringify(this.$props.options)) : {};
           const formatTree = (arr = [], paths = []) => {
             return arr.map(item => {
               let parent = [...paths];
-              parent.push(item.code);
+              parent.push(item[primaryKey]);
               const temp = {
                 ...item,
                 paths: parent

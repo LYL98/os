@@ -199,6 +199,7 @@ const routeConfig = {
       items: [
         { title: '商品库', permission_code: 'ClsItemPitem', url: '/item/pitem' },
         { title: '货架商品', permission_code: 'ClsItemSubitem', url: '/item/subitem' },
+        { title: '当日达商品', permission_code: 'ClsItemStoreItem', url: '/item/storeitem' },
         { title: '货架商品属性', permission_code: 'ClsItemProperty', url: '/item/property' },
         { title: '秒杀', permission_code: 'ClsActivitySeckill', url: '/activity/seckill' },
         { title: '优惠券', permission_code: 'ClsActivityCoupon', url: '/activity/coupon' },
@@ -207,8 +208,10 @@ const routeConfig = {
         { title: '消费者', permission_code: 'ClsUserMember', url: '/user/member' },
         { title: '用户订单', permission_code: 'ClsOrderUser', url: '/order/user' },
         { title: '门店订单', permission_code: 'ClsOrderStore', url: '/order/store' },
+        { title: '门店现货订单', permission_code: 'ClsOrderStoresale', url: '/order/store-sale' },
         { title: '售后单', permission_code: 'ClsOrderAftersale', url: '/order/after-sale' },
         { title: '推广者提现', permission_code: 'ClsFinancePromoterWithdraw', url: '/finance/promoter-withdraw' },
+        { title: '门店提现', permission_code: 'ClsFinanceStoreWithdraw', url: '/finance/store-withdraw' },
         { title: 'Banner管理', permission_code: 'ClsSettingBanner', url: '/setting/banner' },
         { title: '区域运营设置', permission_code: 'ClsSettingOperation', url: '/setting/operation' },
       ],

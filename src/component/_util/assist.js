@@ -1,7 +1,7 @@
 /**
  * 判断参数是否是其中之一
  */
-export function oneOf (value, validList) {
+export function oneOf(value, validList) {
   for (let i = 0; i < validList.length; i++) {
     if (value === validList[i]) {
       return true;
@@ -18,7 +18,7 @@ export function findUpComponent(context, componentName) {
   let parent = context.$parent;
   let name = parent.$options.name;
 
-  while(parent && (!name || [componentName].indexOf(name) < 0)) {
+  while (parent && (!name || [componentName].indexOf(name) < 0)) {
     parent = parent.$parent;
     if (parent) name = parent.$options.name;
   }
@@ -111,34 +111,58 @@ export function debounce(func, wait) {
       func.apply(context, args)
     }, wait);
   }
-};
+}
 
 /**
  * 判断对象是否相等
  */
-export function equals(x,y){
-  var f1= x instanceof Object;
-  var f2= y instanceof Object;
-  if(!f1 || !f2){
+export function equals(x, y) {
+  var f1 = x instanceof Object;
+  var f2 = y instanceof Object;
+  if (!f1 || !f2) {
     return x === y
   }
-  if(Object.keys(x).length!== Object.keys(y).length){
+  if (Object.keys(x).length !== Object.keys(y).length) {
     return false
   }
-  Object.keys(x).forEach((p)=>{
-    var a= x[p] instanceof Object;
-    var b= y[p] instanceof Object;
-    if(a && b){
-      equals(x[p],y[p])
-    }else if(x[p]!=y[p]){
+  Object.keys(x).forEach((p) => {
+    var a = x[p] instanceof Object;
+    var b = y[p] instanceof Object;
+    if (a && b) {
+      equals(x[p], y[p])
+    } else if (x[p] !== y[p]) {
       return false;
     }
 
-  })
+  });
   return true;
 
-};
+}
 
+export function treeToList(nodes,  node_path = [], childs_key = 'childs') {
+  if (!nodes) return [];
+  let r = [];
+  if (Array.isArray(nodes)) {
+    for (var i = 0, l = nodes.length; i < l; i++) {
+      let node = nodes[i];
+      if (Array.isArray(node_path) && node_path.length > 0) {
+        node._node_path_ = [...node_path, node];
+      } else {
+        node._node_path_ = [node];
+      }
+      node._node_level_ = node._node_path_.length;
+      r.push(node);
+      if (node[childs_key]) {
+        r = r.concat(treeToList(node[childs_key], node._node_path_));
+      }
+    }
+  } else {
+    r.push(nodes);
+    if (nodes[childs_key])
+      r = r.concat(treeToList(nodes[childs_key]));
+  }
+  return r;
+}
 
 /**
  * scrollTop animation
@@ -150,7 +174,7 @@ export function scrollTop(el, from = 0, to, duration = 500, endCallback) {
       window.mozRequestAnimationFrame ||
       window.msRequestAnimationFrame ||
       function (callback) {
-        return window.setTimeout(callback, 1000/60);
+        return window.setTimeout(callback, 1000 / 60);
       }
     );
   }
@@ -175,5 +199,6 @@ export function scrollTop(el, from = 0, to, duration = 500, endCallback) {
     }
     window.requestAnimationFrame(() => scroll(d, end, step));
   }
+
   scroll(from, to, step);
 }

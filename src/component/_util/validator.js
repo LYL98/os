@@ -66,10 +66,10 @@ const rules = {
   // 必须是数字
   number: {
     validate: function (v, n) {
-      return !isNaN(v);
+      return /^[0-9]*$/.test(v);;
     },
     getMsg: function (l, n) {
-      return l + '必须是数字';
+      return l + '必须是整数';
     },
   },
   //必须是数字，且少于等于？位小数

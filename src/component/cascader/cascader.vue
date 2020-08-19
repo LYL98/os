@@ -58,7 +58,7 @@ export default {
   components: { pgPopper, pgInput, pgSearch },
   props: {
     value: { type: String | Number | Array, required: true }, // 当前值
-    level: { type: String | Number, default: 4 },
+    level: { type: String | Number, default: 3 },
     titles: { type: Array, default() { return ['一级', '二级', '三级', '四级'] } },
     placeholder: { type: String, default: '请选择' },
     textAlign: { type: String, default: 'left' },
@@ -161,8 +161,6 @@ export default {
         this.$data.select_list = [...node._node_path_];
       }
 
-      console.log('this.$data.select_list', this.$data.select_list);
-
     },
 
     onCascade(index) {
@@ -191,6 +189,7 @@ export default {
         this.$data.active_index = active_index + 1;
       }
       this.$emit('change', item.code);
+      this.$emit('selection', item);
     },
     onToggle(e) {
       if (this.is_disabled) {

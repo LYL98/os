@@ -88,6 +88,12 @@ const routeConfig = {
         { title: '供应商', permission_code: 'ItemSupplier', url: '/item/supplier' },
         { title: '采购', permission_code: 'ItemPurchaseMain', url: '/item/purchase/main' },
         { title: '调拨', permission_code: 'ItemSupDistribute', url: '/item/sup/distribute' },
+
+        // { title: '商品库', client: 'gyl', permission_code: 'ItemGlobalMain', url: '/item/global' },
+        // { title: '商品属性', client: 'gyl', permission_code: 'ItemPropertyMain', url: '/item/system/class' },
+        // { title: '供应商', client: 'gyl', permission_code: 'ItemSupplier', url: '/item/supplier' },
+        // { title: '采购', client: 'gyl', permission_code: 'ItemPurchaseMain', url: '/item/purchase' },
+        // { title: '调拨', client: 'gyl', permission_code: 'ItemSupDistribute', url: '/item/sup/distribute' },
       ],
     },
     {
@@ -118,6 +124,7 @@ const routeConfig = {
         { title: '线路规划', permission_code: 'OperateLineMain', url: '/operate/line/main' },
         { title: '配送人员', permission_code: 'Deliver', url: '/operate/deliver' },
         { title: '退筐', permission_code: 'OperateRefundFrame', url: '/operate/refund/frame' },
+
         // { title: '品控收货', client: 'gyl', permission_code: 'OperateReceivingMain', url: '/operate/receiving' },
         // { title: '场地商品', client: 'gyl', permission_code: 'OperateItemSupStock', url: '/operate/item-sup-stock' },
         // { title: '配送装车', client: 'gyl', permission_code: 'OperateTruckLoadMain', url: '/operate/truck/load' },
@@ -199,7 +206,7 @@ const routeConfig = {
       items: [
         { title: '商品库', permission_code: 'ClsItemPitem', url: '/item/pitem' },
         { title: '货架商品', permission_code: 'ClsItemSubitem', url: '/item/subitem' },
-        { title: '当日达商品', permission_code: 'ClsItemStoreItem', url: '/item/storeitem' },
+        { title: '门店现货商品', permission_code: 'ClsItemStoreitem', url: '/item/storeitem' },
         { title: '货架商品属性', permission_code: 'ClsItemProperty', url: '/item/property' },
         { title: '秒杀', permission_code: 'ClsActivitySeckill', url: '/activity/seckill' },
         { title: '优惠券', permission_code: 'ClsActivityCoupon', url: '/activity/coupon' },

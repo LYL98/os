@@ -70,6 +70,11 @@
       }
     }
 
+    &.current:not(.off):not(.active) {
+      color: $primary;
+      font-weight: $font-weight-bold;
+    }
+
     &.off,
     &.disabled {
       color: $light;

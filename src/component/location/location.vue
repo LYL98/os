@@ -1,7 +1,7 @@
 <template>
-  <div class="pg-locationpicker-wrapper">
+  <div class="pg-location-wrapper">
     <pg-input
-        class="pg-locationpicker w-100"
+        class="pg-location w-100"
         :size="size"
         :valid="false"
         :disabled="isDisabled"
@@ -54,7 +54,7 @@
             </li>
           </ul>
           <div class="amap-container">
-            <div id="bmap"></div>
+            <div :id="id"></div>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@
   import TransferDom from '../_util/transfer-dom';
 
   export default {
-    name: "pg-locationpicker",
+    name: "pg-location",
     components: {pgInput, pgSearch},
     directives: {TransferDom},
     props: {
@@ -110,6 +110,7 @@
         default: 'base',
         validator: v => ['lg', 'sm', 'base'].includes(v),
       },
+      id: { type: String, default: 'amap' },
       level: { type: String, default: "city" }, // province | city | all
       disabled: { type: Boolean, default: false },
       placeholder: { type: String, default: "请选择地理位置" }
@@ -169,8 +170,7 @@
           if (next && next.location && next.location.lng && next.location.lat) {
             if (this.map) {
               this.map.setCenter([next.location.lng, next.location.lat]);
-              this.$data.mapComplete &&
-              this.initCenterPoint(next.location.lng, next.location.lat);
+              this.$data.mapComplete && this.initCenterPoint(next.location.lng, next.location.lat);
             }
           }
         }
@@ -180,19 +180,6 @@
       this.pgFormItem = findUpComponent(this, 'pg-form-item');
     },
     created() {
-      this.geoCoder = new AMap.Geocoder({
-        city: "全国",
-        radius: 2000,
-        batch: false,
-        extensions: "all"
-      });
-      this.placeSearch = new AMap.PlaceSearch({
-        // city 指定搜索所在城市，支持传入格式有：城市名、citycode和adcode
-        city: "全国",
-        citylimit: true,
-        extensions: "all",
-        pageSize: 30
-      });
     },
     mounted() {
       this.initMap();
@@ -206,32 +193,52 @@
         this.$data.visible = !this.$data.visible;
       },
       initMap() {
+
+        if (!AMapLoader) return;
+
         let config = {
           zoom: 16,
           isHotspot: false,
           scrollWheel: true,
           mapStyle: MAP_STYLE
         };
-        let that = this;
-        const { location } = this.$props;
+        const { location, id } = this.$props;
         if (location && location.lag && location.lat) {
           config.center = [location.lng, location.lat];
         }
 
-        this.map = new AMap.Map("bmap", config);
-        AMap.plugin(["AMap.ToolBar", "AMap.Scale"], () => {
-          this.map.addControl(
-            new AMap.ToolBar({
-              position: "RB"
-            })
-          );
+        AMapLoader.load({
+          "key": "fc4a17b0d84178585e6aae0c3fe18270",              // 申请好的Web端开发者Key，首次调用 load 时必填
+          "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+          "plugins": ['AMap.Geocoder', 'AMap.PlaceSearch', 'AMap.ToolBar', 'AMap.Scale', 'AMap.PolygonEditor', 'AMap.MouseTool'],          // 需要使用的的插件列表，如比例尺'AMap.Scale'等
 
+        }).then(AMap => {
+
+          this.map = new AMap.Map(id, config);
+
+          this.map.addControl(new AMap.ToolBar({ position: "RB" }));
           this.map.addControl(new AMap.Scale());
+
+          this.geoCoder = new AMap.Geocoder({
+            city: "全国",
+            radius: 2000,
+            batch: false,
+            extensions: "all"
+          });
+          this.placeSearch = new AMap.PlaceSearch({
+            // city 指定搜索所在城市，支持传入格式有：城市名、citycode和adcode
+            city: "全国",
+            citylimit: true,
+            extensions: "all",
+            pageSize: 30
+          });
+
+          this.map.on("complete", () => {
+            this.$data.mapComplete = true;
+            this.initLogic();
+          });
         });
-        this.map.on("complete", () => {
-          this.$data.mapComplete = true;
-          this.initLogic();
-        });
+
       },
       destroyMap() {
         if (this.centerPoint) {
@@ -247,6 +254,8 @@
 
       // 初始化地图后执行的选点逻辑。
       initLogic() {
+
+        if (!this.map) return;
 
         const { province_title, city_title, lng, lat } = this.$props.location;
         // 如果中心点存在，则可以： 初始化地图、初始化中心点、根据中心点geo逆地理编码，再根据编码后的第一个地理位置获取poilist
@@ -304,9 +313,9 @@
           });
           return;
         }
-        if (this.$props.level === "all" && province_title) {
+        if (this.$props.level === "all") {
           //+ (city_title || '')
-          this.placeSearch.search(province_title, (status, result) => {
+          this.placeSearch.search(province_title || '深圳市', (status, result) => {
             if (status === "complete" && result.info === "OK") {
               this.$data.poiList = result.poiList.pois || [];
               let poi = this.$data.poiList[0];
@@ -358,12 +367,10 @@
             const { aois, formattedAddress } = result.regeocode;
             let keywords = Array.isArray(aois) && aois.length > 0 ? aois[0].name : formattedAddress;
             const { province_title, city_title } = this.$props.location;
-            if (
-              this.$props.level === "city" && keywords.indexOf(city_title) < 0
-            ) {
+            if (this.$props.level === "city" && keywords.indexOf(city_title) < 0) {
               keywords = city_title + keywords;
             }
-            if (keywords.indexOf(province_title) < 0) {
+            if (this.$props.level === "province" && keywords.indexOf(province_title) < 0) {
               keywords = province_title + keywords;
             }
             this.placeSearch.search(keywords, (status, result) => {
@@ -397,7 +404,7 @@
         if (this.$props.level === "city" && keywords.indexOf(city_title) < 0) {
           keywords = city_title + keywords;
         }
-        if (keywords.indexOf(province_title) < 0) {
+        if (this.$props.level === "province" && keywords.indexOf(province_title) < 0) {
           keywords = province_title + keywords;
         }
         this.placeSearch.search(keywords, (status, result) => {
@@ -440,6 +447,3 @@
     }
   };
 </script>
-
-<style lang="scss" scoped>
-</style>

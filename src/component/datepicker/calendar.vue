@@ -34,6 +34,7 @@
         <tr v-for="(week, index) in calendar.weeks" :key="index">
           <!--
           available: 日期可选择
+          current: 当日
           off: 非本月的日期
           disabled: 日期禁用
           active: 选中的日期
@@ -43,6 +44,7 @@
         -->
           <td v-for="day in week" :key="day.date" @click.stop="onSelect(day)" @mouseenter="enterDay=day"
               class="available" :class="{
+              current: day.year === today.year && day.month === today.month && day.date === today.date,
               off: day.month !== calendar.month || day.year !== calendar.year,
               disabled: day.disabled,
               active: selected.some(item => item.year === day.year && item.month === day.month && item.date === day.date)
@@ -91,6 +93,7 @@
 
     data() {
       let now = new Date();
+      let today = { year: now.getFullYear(), month: now.getMonth(), date: now.getDate() + 4 };
       return {
 
         year: now.getFullYear(),
@@ -100,7 +103,7 @@
 
         enterDay: {},
 
-        today: {},
+        today: today,
 
       }
     },
@@ -252,7 +255,3 @@
     }
   };
 </script>
-
-<style scoped>
-
-</style>

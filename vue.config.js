@@ -67,7 +67,8 @@ module.exports = {
             'js/popper-core.min.js',
             'js/lodop-func.js',
             'ckeditor/ckeditor.js',
-            'js/sentry.bundle.js'
+            'js/sentry.bundle.js',
+            '/webapi.amap.com/loader.js'
           ],
           append: true,
         }),

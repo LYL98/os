@@ -6473,6 +6473,9 @@ ul.pg-radio-group {
     border-radius: 2px; }
     .pg-table-calendar td.available:not(.disabled):not(.range):hover, .pg-table-calendar td.available:not(.disabled):not(.range):focus {
       background-color: whitesmoke; }
+  .pg-table-calendar td.current:not(.off):not(.active) {
+    color: #006eff;
+    font-weight: 600; }
   .pg-table-calendar td.off, .pg-table-calendar td.disabled {
     color: #dddddd;
     background-color: #FFF !important; }
@@ -6774,16 +6777,16 @@ label {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.3); }
 
-.pg-locationpicker-wrapper .pg-locationpicker :-moz-read-only {
+.pg-location-wrapper .pg-location :-moz-read-only {
   cursor: pointer; }
 
-.pg-locationpicker-wrapper .pg-locationpicker,
-.pg-locationpicker-wrapper .pg-locationpicker :read-only {
+.pg-location-wrapper .pg-location,
+.pg-location-wrapper .pg-location :read-only {
   cursor: pointer; }
-  .pg-locationpicker-wrapper .pg-locationpicker :-moz-read-only:disabled {
+  .pg-location-wrapper .pg-location :-moz-read-only:disabled {
     cursor: not-allowed; }
-  .pg-locationpicker-wrapper .pg-locationpicker:disabled,
-  .pg-locationpicker-wrapper .pg-locationpicker :read-only:disabled {
+  .pg-location-wrapper .pg-location:disabled,
+  .pg-location-wrapper .pg-location :read-only:disabled {
     cursor: not-allowed; }
 
 .pg-location-container {

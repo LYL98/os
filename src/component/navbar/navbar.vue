@@ -18,7 +18,7 @@
       </div>
       <div class="pg-nav-item" style="min-width: 150px">
         <a class="nav" :href="origin_yy">系统首页</a>
-        <pg-popper trigger="hover" placement="bottom" v-if="adminMode">
+        <pg-popper auto-close trigger="hover" placement="bottom" v-if="adminMode">
           <a class="nav">
             <span>总览</span>
             <i class="icon-arrow-down12 text-light"></i>
@@ -99,7 +99,7 @@
       </div>
       <div class="position-relative d-flex align-items-center" style="min-width: 800px;">
         <div class="pg-nav-item" v-for="(route, index) in routes.gyl" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
-          <pg-popper trigger="hover" placement="bottom-start">
+          <pg-popper auto-close trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
               <i class="icon-arrow-down12 text-light"></i>
@@ -112,7 +112,7 @@
           </pg-popper>
         </div>
         <div class="pg-nav-item" v-for="(route, index) in routes.bsc" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
-          <pg-popper trigger="hover" placement="bottom-start">
+          <pg-popper auto-close trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
               <i class="icon-arrow-down12 text-light"></i>
@@ -125,7 +125,7 @@
           </pg-popper>
         </div>
         <div class="pg-nav-item" v-for="(route, index) in routes.cls" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
-          <pg-popper trigger="hover" placement="bottom-start">
+          <pg-popper auto-close trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
               <i class="icon-arrow-down12 text-light"></i>
@@ -140,7 +140,7 @@
       </div>
 
       <div class="pg-nav-item ml-auto text-right">
-        <pg-popper trigger="hover" placement="bottom-end">
+        <pg-popper auto-close trigger="hover" placement="bottom-end">
           <div class="d-flex align-items-center justify-content-end mr-20" style="min-width: 150px">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="-1 -1 22 22" id="user-avatar" x="164" y="119">
               <defs>
@@ -220,36 +220,36 @@ export default {
   },
 
   created() {
-    const { routes, auth, origin_yy, origin_gyl, origin_gylref, origin_bsc, origin_sc, origin_cls } = osConfig();
+    const { auth, origin_yy, origin_gyl, origin_bsc, origin_sc, origin_cls, nav_router_api } = osConfig();
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
-          let items = item.items.map((d) => ({ label: d.title, value: d.permission_code, url: prefix + '/#' + d.url })).filter((d) => auth.isAdmin || auth[d.value]);
-          return { label: item.subitem, value: item.permission_code, items: items };
+          let childs = item.childs.map((d) => ({ label: d.title, value: d.code, url: prefix + '/#' + d.router })).filter((d) => auth.isAdmin || auth[d.value]);
+          return { label: item.title, value: item.code, items: childs };
         })
         .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
     };
 
-    const gyl = routes.gyl.map(item => {
-          let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'gyl' ? origin_gyl : origin_gylref) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
-          return { label: item.subitem, value: item.permission_code, items: items };
-        }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
-
-    const bsc = routes.bsc.map(item => {
-      let items = item.items.map(d => ({ label: d.title, value: d.permission_code, url: (d.client === 'sc' ? origin_sc : origin_bsc) + '/#' + d.url })).filter(d => auth.isAdmin || auth[d.value]);
-      return { label: item.subitem, value: item.permission_code, items: items };
-    }).filter(item => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
-
-    const yy = authorization(routes.yy, origin_yy);
-    // const bsc = authorization(routes.bsc, origin_bsc);
-    const cls = authorization(routes.cls, origin_cls);
-    this.$data.routes = { yy, gyl, bsc, cls };
     this.$data.origin_yy = origin_yy;
     this.$data.adminMode = !!auth.isAdmin;
+
+    Http.get(nav_router_api, { is_nav_router: 1 })
+      .then(res => {
+        const routes = res.data || [];
+
+        const yy = authorization(routes.filter(item => item.client === 'yy'), origin_yy);
+        const gyl = authorization(routes.filter(item => item.client === 'gyl'), origin_gyl);
+        const cls = authorization(routes.filter(item => item.client === 'cls'), origin_cls);
+        const bsc = authorization(routes.filter(item => item.client === 'bsc'), origin_bsc);
+        const sc = authorization(routes.filter(item => item.client === 'sc'), origin_sc);
+
+        this.$data.routes = { yy, gyl, bsc: [...bsc, ...sc], cls };
+      });
 
   },
 
   methods: {
+
     handleLogout() {
       Http.get(osConfig().logout_api).then(() => {
         this.$emit('logout');
@@ -257,6 +257,7 @@ export default {
     },
 
     handleJump(item) {
+      return;
       this.$emit('jump', item);
     },
   },

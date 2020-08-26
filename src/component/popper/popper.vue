@@ -92,7 +92,6 @@
 
       // 在popper层展开的时候会注册该click事件
       clickOutside(e) {
-
         if (this.$refs['toggle']?.contains(e.target)) {
           return;
         }
@@ -101,6 +100,7 @@
           return;
         }
 
+        this.$data.visible = false;
         this.$emit('change', false);
       },
 

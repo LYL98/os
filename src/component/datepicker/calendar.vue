@@ -93,7 +93,7 @@
 
     data() {
       let now = new Date();
-      let today = { year: now.getFullYear(), month: now.getMonth(), date: now.getDate() + 4 };
+      let today = { year: now.getFullYear(), month: now.getMonth(), date: now.getDate() };
       return {
 
         year: now.getFullYear(),

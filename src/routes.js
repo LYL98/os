@@ -1,8 +1,10 @@
+import Home from './page/home.vue'
+
 export default [
   {
-    path: '/demo',
-    name: 'demo',
-    component: () => import(/* webpackChunkName: "demo" */ './demo.vue')
+    path: '/',
+    name: 'home',
+    component: Home
   },
   {
     path: '/item/pitem',
@@ -20,9 +22,19 @@ export default [
     component: () => import(/* webpackChunkName: "subitem" */ './page/item/subitem/subitem-edit.vue')
   },
   {
+    path: '/item/storeItem',
+    name: 'storeitem',
+    component: () => import(/* webpackChunkName: "storeitem" */ './page/item/storeitem/store-item.vue'),
+  },
+  {
     path: '/item/property',
     name: 'property',
     component: () => import(/* webpackChunkName: "property" */ './page/item/property/property.vue')
+  },
+  {
+    path: '/item/stock',
+    name: 'stock',
+    component: () => import(/* webpackChunkName: "stock" */ './page/item/stock/stock.vue')
   },
   {
     path: '/activity/seckill',
@@ -40,8 +52,18 @@ export default [
     component: () => import(/* webpackChunkName: "user-store" */ './page/user/store.vue'),
   },
   {
+    path: '/order/store-sale',
+    name: 'store-sale',
+    component: () => import(/* webpackChunkName: "store-sale" */ './page/order/store-sale.vue'),
+  },
+  {
+    path: '/order/after-sale',
+    name: 'order-after-sale',
+    component: () => import(/* webpackChunkName: "order-after-sale" */ './page/order/after-sale.vue'),
+  },
+  {
     path: '/user/promoter',
-    name: 'user-promoter',
+    name: 'promoter',
     component: () => import(/* webpackChunkName: "user-promoter" */ './page/user/promoter.vue'),
   },
   {
@@ -63,6 +85,11 @@ export default [
     path: '/finance/promoter-withdraw',
     name: 'finance-promoter-withdraw',
     component: () => import(/* webpackChunkName: "finance-promoter" */ './page/finance/promoter-withdraw.vue'),
+  },
+  {
+    path: '/finance/store-withdraw',
+    name: 'finance-store-withdraw',
+    component: () => import(/* webpackChunkName: "finance-store" */ './page/finance/store-withdraw.vue'),
   },
   {
     path: '/setting/banner',

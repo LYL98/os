@@ -3,11 +3,11 @@
     <div class="pg-page-header">
 
       <pg-tabs v-model="tab_index" borderless class="font-size-lg font-weight-bolder">
-        <pg-tab index="list" v-if="app.auth.isAdmin || app.auth.ClsUserPromoter">推广者</pg-tab>
-        <pg-tab index="apply" v-if="app.auth.isAdmin || app.auth.ClsUserPromoterApply">申请列表</pg-tab>
+        <pg-tab index="stockSale" v-if="app.auth.isAdmin || app.auth.ClsItemStockForSale">销售库存</pg-tab>
+        <pg-tab index="stockDay" v-if="app.auth.isAdmin || app.auth.ClsItemStockForSaleSnapShot">每日库存</pg-tab>
       </pg-tabs>
 
-      <pg-select v-model="province_code" class="ml-auto mr-20" @change="changeProvince">
+      <pg-select :value="app.userInfo.province_code" class="ml-auto mr-20" @change="changeProvince">
         <pg-option
           v-for="item in provinceListAuth"
           :key="item.code"
@@ -16,8 +16,8 @@
       </pg-select>
     </div>
 
-    <promoter-list v-if="tab_index === 'list' && (app.auth.isAdmin || app.auth.ClsUserPromoter)" />
-    <applicant-list v-if="tab_index === 'apply' && (app.auth.isAdmin || app.auth.ClsUserPromoterApply)" />
+    <stock-sale v-if="tab_index === 'stockSale' && (app.auth.isAdmin || app.auth.ClsItemStockForSale)"></stock-sale>
+    <stock-day v-if="tab_index === 'stockDay' && (app.auth.isAdmin || app.auth.ClsItemStockForSaleSnapShot)"></stock-day>
 
   </div>
 
@@ -25,30 +25,29 @@
 <script>
 
   import { Http, Api } from '@/util';
-  import promoterList from './promoter-list';
-  import applicantList from './applicant-list';
+  import stockSale from './stock-sale';
+  import stockDay from './stock-day';
 
   export default {
-    name: 'promoter',
-    components: {promoterList, applicantList},
+    name: 'stock',
+    components: { stockSale, stockDay },
     inject: ['app'],
     data() {
-      let province_code = this.app.userInfo.province_code;
 
-      let tab_index = 'list';
+      let tab_index = 'stockSale';
       const { auth } = this.app;
       if (!auth.isAdmin) {
-        tab_index = auth.ClsUserPromoter ? 'list' : auth.ClsUserPromoterApply ? 'apply' : '';
+        tab_index = auth.ClsItemStockForSale ? 'stockSale' : auth.ClsItemStockForSaleSnapShot ? 'stockDay' : '';
       }
+
       return {
         tab_index: tab_index,
         provinceListAuth: [],
-        province_code: province_code,
       }
     },
 
     created() {
-      document.title = '推广者 - 零售中心 - 蒲公英运营管理系统';
+      document.title = '商品库存 - 零售中心 - 蒲公英运营管理系统';
       this.commonProvinceListAuth();
     },
 
@@ -64,7 +63,6 @@
             this.$data.provinceListAuth = res.data || [];
           });
       },
-
     }
 
   }

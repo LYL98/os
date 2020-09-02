@@ -1,33 +1,41 @@
-import { api_prefix_apollo, api_prefix_vesta, api_prefix_juno } from './../env.config';
+import { api_prefix_apollo, api_prefix_mercury, api_prefix_vesta, api_prefix_juno } from './../env.config';
 
 export default {
 
-  commonProvinceListAuth: api_prefix_vesta + '/m/common/my_province',
-  commonProvinceList: api_prefix_vesta + '/m/common/province/list', //区域列表 (组件共用）
+  commonProvinceListAuth: api_prefix_mercury + '/m/common/my_province',
+  commonProvinceList: api_prefix_mercury + '/m/common/province/list', // 区域列表 (组件共用）
+  commonZoneList: api_prefix_mercury + '/m/common/zone/list', // 片区列表（组件共用）
+  commonCityList: api_prefix_mercury + '/m/common/city/list', // 县区列表（组件共用）
+  commonSystemClassList: api_prefix_mercury + '/m/common/system_class/list', // 科学分类列表
+  commonSystemClassTree: api_prefix_mercury + '/m/common/system_class/tree', // 科学分类树形数据
+  commonSystemClassTreeNew: api_prefix_mercury + '/m/common/system_class/tree_new', //科学四级分类列表（商品库组件共用,3.9.1新增的）
+
+  commonBuyerList: api_prefix_apollo + '/m/common/buyer/list', // 采购员
+
   commonStoreList: api_prefix_vesta + '/m/common/store/list', // 门店列表(组件共用)
   commonStoreMemberList: api_prefix_vesta + '/m/common/member/list', // 门店列表(组件共用)
-  commonZoneList: api_prefix_vesta + '/m/common/zone/list', //片区列表（组件共用）
-  commonCityList: api_prefix_vesta + '/m/common/city/list', //县区列表（组件共用）
-  commonSystemClassList: api_prefix_vesta + '/m/common/system_class/list', // 科学分类列表
-  commonSystemClassTree: api_prefix_vesta + '/m/common/system_class/tree', // 科学分类树形数据
   tencentPresignedUrl: api_prefix_vesta + '/common/tencent/presigned_url', //腾讯云上传url（组件共用）
 
   commonItemList: api_prefix_juno + '/m/common/item/list', // 商品列表
   commonItemDetail: api_prefix_juno + '/m/common/item/detail', // 商品详情
   commonItemTagList: api_prefix_juno + '/m/common/item_tag/list', // 运营专区（即：商品标签）
   commonDisplayClassList: api_prefix_juno + '/m/common/display_class/list', // 展示分类
+  commonDisplayClassTree: api_prefix_juno + '/common/display_class/list/tree', // 展示分类树形
   commonItemTagImageList: api_prefix_juno + '/m/common/tag_images/list', // 运营专区（即：商品标签）
+  commonAftersaleRule: api_prefix_juno + '/common/aftersale/rule', // 运营专区（即：商品标签）
+
 
   // 商品库
-  pitemQuery: api_prefix_juno + '/m/p_item/query', // 查询
-  pitemDetail: api_prefix_juno + '/m/p_item/detail', // 详情
-  pitemAdd: api_prefix_juno + '/m/p_item/add', // 新增
-  pitemEdit: api_prefix_juno + '/m/p_item/edit', // 修改
-  pitemDelete: api_prefix_juno + '/m/p_item/delete', // 删除
-  pitemRecover: api_prefix_juno + '/m/p_item/recover', // 恢复
-  pitemModifyLog: api_prefix_juno + '/m/p_item/modify/query', // 操作日志
-  pitemExportCheck: api_prefix_juno + '/m/p_item/export_check', // 导出检查
-  pitemExport: api_prefix_juno + '/m/p_item/export', // 导出
+  pitemQuery: api_prefix_mercury + '/m/p_item/query', // 查询
+  pitemDetail: api_prefix_mercury + '/m/p_item/detail', // 详情
+  pitemAdd: api_prefix_mercury + '/m/p_item/add', // 新增
+  pitemEdit: api_prefix_mercury + '/m/p_item/edit', // 修改
+  pitemDelete: api_prefix_mercury + '/m/p_item/delete', // 删除
+  pitemRecover: api_prefix_mercury + '/m/p_item/recover', // 恢复
+
+  pitemModifyLog: api_prefix_mercury + '/m/p_item/modify_detail', // 操作日志
+  pitemExportCheck: api_prefix_mercury + '/m/p_item/export_check', // 导出检查
+  pitemExport: api_prefix_mercury + '/m/p_item/export', // 导出
 
   // 货架商品
   subitemQuery: api_prefix_juno + '/m/sub_item/query', // 查询
@@ -50,6 +58,10 @@ export default {
   subitemMaterialModify: api_prefix_juno + '/m/item/material/edit', // 编辑
   subitemMaterialDelete: api_prefix_juno + '/m/item/material/delete', // 删除
 
+  //当日达商品
+  storeItemOnSale: api_prefix_juno + '/m/store/item/on_ground', // 上架
+  storeItemUnderSale: api_prefix_juno + '/m/store/item/under_ground', // 下架
+
   // 定时上下架
   subitemSchedulerQuery: api_prefix_juno + '/m/item/scheduler/query', // 查询
   subitemSchedulerAdd: api_prefix_juno + '/m/item/scheduler/add', // 新增
@@ -65,7 +77,7 @@ export default {
   operationItemDelete: api_prefix_juno + '/m/item_tag/delete_item', // 删除专区商品
 
   // 展示分类
-  displayClassQuery: api_prefix_juno + '/m/display_class/query', // 查询
+  displayClassTree: api_prefix_juno + '/m/display_class/list/tree', // 查询
   displayClassAdd: api_prefix_juno + '/m/display_class/add', // 新增
   displayClassEdit: api_prefix_juno + '/m/display_class/edit', // 修改
   displayClassDelete: api_prefix_juno + '/m/display_class/delete', // 删除
@@ -117,12 +129,12 @@ export default {
   activityCouponManualGrantAgain: api_prefix_juno + '/m/coupon_activity/grant', // 手动发放类型 再次发放 { id, phones }
 
   // 零售门店
-  userStoreQuery: api_prefix_vesta + '/m/store/query', // 查询
+  userStoreQuery: api_prefix_juno + '/m/store/query', // 查询
   userStoreDetail: api_prefix_vesta + '/m/store/detail', // 详情
   // userStoreAdd: api_prefix_vesta + '/m/store/gb/edit', // 新增
   userStoreFreeze: api_prefix_vesta + '/m/store/gb/freeze', // 冻结门店
   userStoreUnFreeze: api_prefix_vesta + '/m/store/gb/unfreeze', // 解冻门店
-  userStoreBalanceLogs: api_prefix_vesta + '/m/store/balance_log/query', // 余额明细
+  userStoreBalanceLogs: api_prefix_juno + '/m/store/balance_log/query', // 余额明细
   // userStoreHeaderAdd: api_prefix_vesta + '/m/store/header/add', // 新增团长
   userStoreHeaderFreeze: api_prefix_vesta + '/m/store/header/gb/freeze', // 冻结推广者
   userStoreHeaderUnFreeze: api_prefix_vesta + '/m/store/header/gb/unfreeze', // 解冻推广者
@@ -135,6 +147,11 @@ export default {
   userPromoterUnFreeze: api_prefix_juno + '/m/promoter/un_freeze', // 解冻
   userPromoterBalanceAdjust: api_prefix_juno + '/m/promoter/balance/adjust', // 余额调整
   userPromoterBalance: api_prefix_juno + '/m/promoter/balance_log/query', // 余额明细
+
+  // 申请者
+  userApplicantQuery: api_prefix_juno + '/m/promoter/apply/query', // 查询
+  userApplicantPass: api_prefix_juno + '/m/promoter/apply/pass', // 通过
+  userApplicantReject: api_prefix_juno + '/m/promoter/apply/reject', // 拒绝
 
   // 消费者
   userMemberQuery: api_prefix_juno + '/m/gb_member/query', // 查询
@@ -161,11 +178,33 @@ export default {
   orderStoreExportCheck: api_prefix_juno + '/m/store_order/export_check', // 导出订单检查
   orderStoreExport: api_prefix_juno + '/m/store_order/export', // 导出订单
 
+  //售后订单
+  orderAfterSaleQuery: api_prefix_juno + '/m/aftersale/query', // 查询
+  orderAfterSaleDetail: api_prefix_juno + '/m/aftersale/detail', // 详情
+  orderAfterSaleAudit: api_prefix_juno + '/m/aftersale/audit', // 审核
+  orderAfterSaleReject: api_prefix_juno + '/m/aftersale/reject', // 审核
+  orderAfterSaleRule: api_prefix_juno + '/m/aftersale/rule', // 审核
+  orderAfterSaleExport: api_prefix_juno + '/m/aftersale/export', // 导出
+  orderAfterSaleExportCheck: api_prefix_juno + '/m/aftersale/export/check', // 导出校验
+
   // 推广者提现申请
   promoterWithdrawQuery: api_prefix_juno + '/m/promoter/withdraw/query', // 查询
   promoterWithdrawApprove: api_prefix_juno + '/m/promoter/withdraw/approve', // 审核通过
   promoterWithdrawReject: api_prefix_juno + '/m/promoter/withdraw/reject', // 申请拒绝
 
+  // 推广者提现申请
+  storeWithdrawQuery: api_prefix_juno + '/m/store/withdraw/query', // 查询
+  storeWithdrawApprove: api_prefix_juno + '/m/store/withdraw/approve', // 审核通过
+  storeWithdrawReject: api_prefix_juno + '/m/store/withdraw/reject', // 申请拒绝
+
+  //推广者提现申请记录导出
+  promoterWithdrawExport: api_prefix_juno + '/m/promoter/withdraw/export', // 提现单导出
+  promoterWithdrawExportCheck: api_prefix_juno + '/m/promoter/withdraw/export/check', //提现单审核校验
+
+  //门店提现导出
+  storeWithdrawExport: api_prefix_juno + '/m/store/withdraw/export', // 提现单导出
+  storeWithdrawExportCheck: api_prefix_juno + '/m/store/withdraw/export/check', //提现单审核校验
+  
   // banner管理
   settingBannerList: api_prefix_juno + '/m/banner/list', // 列表
   settingBannerDetail: api_prefix_juno + '/m/banner/detail', // 详情
@@ -175,10 +214,12 @@ export default {
 
   // 区域运营设置
   settingConstantGet: api_prefix_juno + '/m/constant/get', // 获取系统常量
-  settingConstantedit: api_prefix_juno + '/m/constant/edit', // 编辑系统常量
+  settingConstantedit: api_prefix_juno + '/m/constant/edit', // 编辑系统常量、首页专区展示
 
-  // 权限树
-  permissionTree: api_prefix_apollo + '/m/system/permission/list/tree',// 权限树
-  systemClassTree: api_prefix_vesta + '/m/basicdata/system_class/list/tree',// 权限树
+  //商品库存
+  supCPlatStockForSale: api_prefix_mercury + '/m/sup_c_plat/stock_for_sale', //销售库存
+  supCPlatStockForSaleSnapShot: api_prefix_mercury + '/m/sup_c_plat/stock_for_sale_snap_shot', //每日库存
+  itemStockDetail: api_prefix_mercury + '/m/item/stock_detail', //每日库存详情
+
 
 }

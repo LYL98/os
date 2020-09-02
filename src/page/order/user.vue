@@ -16,7 +16,7 @@
       </div>
 
       <div class="d-flex mt-10">
-        <pg-search style="width: 356px" clearable placeholder="订单编号、收货人姓名" v-model="query.condition" @change="changeQuery"/>
+        <pg-search style="width: 356px" clearable placeholder="订单编号、收货人姓名、收货手机号" v-model="query.condition" @change="changeQuery"/>
         <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
         <div class="ml-auto" v-if="app.auth.isAdmin || app.auth.ClsOrderUserExport">
           <pg-button @click="handleExport">导出订单</pg-button>
@@ -56,7 +56,14 @@
                 </div>
               </template>
             </pg-column>
-            <pg-column title="自提点" width="200px">
+            <pg-column title="收货手机号" width="120px">
+              <template v-slot="{row}">
+                <div class="overflow-ellipsis">
+                  {{ row.phone }}
+                </div>
+              </template>
+            </pg-column>
+            <pg-column title="提货门店" width="120px">
               <template v-slot="{row}">
                 <div class="overflow-ellipsis">
                   {{ row.store && row.store.title || '-' }}
@@ -103,7 +110,7 @@
       </div>
     </div>
 
-    <pg-drawer v-model="drawer.visible" width="900px">
+    <pg-drawer v-model="drawer.visible" width="950px">
       <template slot="header">
         <div class="d-flex align-items-center">
           <h3 class="mb-0">{{drawer.item.code || ''}} 用户订单详情</h3>

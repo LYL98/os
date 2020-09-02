@@ -4,6 +4,8 @@
       <pg-button-group v-model="query.is_presale" :options="{ '全部': '', '非预售': 0, '预售': 1 }" @change="changeQuery"/>
       <pg-cascader
         class="ml-20"
+        style="width:200px;"
+        level='4'
         :options="systemClassTree"
         v-model="query.system_class_code"
         @change="changeQuery"
@@ -37,14 +39,14 @@
           :page-size="query.page_size"
           borderless
         >
-          <pg-column title="商品编号/名称" width="270px">
+          <pg-column title="商品编号/名称" width="200px">
             <template v-slot="{row}">
               <a class="text-dark" @click="handleDetailItem(row)">
                 {{ row.code }} / {{ row.title }}
               </a>
             </template>
           </pg-column>
-          <pg-column prop="item_spec" title="商品规格" width="150px">
+          <pg-column prop="item_spec" title="商品规格" width="120px">
             <template v-slot="{row}">
               <div v-if="row.p_item && row.p_item.origin_place && row.p_item.package_spec && (row.p_item.weight || row.p_item.weight === 0)" class="overflow-ellipsis">
                 <span>{{ row.p_item.origin_place }}、</span>
@@ -54,9 +56,14 @@
               <span v-else>-</span>
             </template>
           </pg-column>
-          <pg-column title="销售价" width="100px" text-align="center">
+          <pg-column title="销售价" width="80px" text-align="center">
             <template v-slot="{row}">
               {{ !!row.price_sale ? '¥' : '' }} {{ Handle.returnPrice(row.price_sale) || '-' }}
+            </template>
+          </pg-column>
+          <pg-column title="科学分类" width="150px">
+            <template v-slot="{row}">
+              <span v-for="(item,index) in row.system_classes" :key="item">{{item.title || '-'}}{{index===(row.system_classes.length-1)?'':'/'}}</span>
             </template>
           </pg-column>
           <pg-column title="展示分类" width="90px">

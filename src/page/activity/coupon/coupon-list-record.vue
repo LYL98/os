@@ -21,10 +21,10 @@
       borderless
       :serialable="false"
     >
-      <pg-column prop="created" title="领取时间">
+      <pg-column prop="created" title="领取时间" width="140px">
         <template v-slot="{row}">{{ row.created || '-' }}</template>
       </pg-column>
-      <pg-column prop="login_phone" title="领取人">
+      <pg-column prop="login_phone" title="领取人" width="110px">
         <template v-slot="{row}">{{ row.login_phone || '-' }}</template>
       </pg-column>
       <pg-column prop="grant_way" title="发放类型" width="80px">
@@ -40,14 +40,14 @@
           </div>
         </template>
       </pg-column>
-      <pg-column prop="use_time" title="使用时间">
+      <pg-column prop="use_time" title="使用时间" width="140px">
         <template v-slot="{row}">{{ row.use_time || '-' }}</template>
       </pg-column>
-      <pg-column prop="order_code" title="关联单号">
+      <pg-column prop="order_code" title="关联单号" width="140px">
         <template v-slot="{row}">{{ row.order_code || '-' }}</template>
       </pg-column>
 
-      <pg-column title="操作" width="70px">
+      <pg-column title="操作" width="90px">
         <template v-slot="{row}">
           <pg-confirm
             help-text="确认取消发放该优惠券"

@@ -1,8 +1,8 @@
 <template>
-  <pg-form ref="form" item-width="450px">
+  <pg-form ref="form" item-width="520px">
 
     <pg-form-item label="图片" rules="required" help-text="鼠标悬浮显示操作按钮, 建议上传尺寸为690x280的图片">
-      <pg-uploader v-model="formData.image" type="apk" module="setting"/>
+      <pg-uploader v-model="formData.image" module="setting"/>
     </pg-form-item>
     <pg-form-item label="可用状态" item-width="300px" rules="required" help-text="如果禁用，则该图片不会显示在首页">
       <pg-button-group v-model="formData.is_usable" :options="{ '显示': true, '禁用': false }">
@@ -15,7 +15,7 @@
       <pg-button-group
         @change="formData.url.link_id = ''"
         v-model="formData.url.type"
-        :options="{ '商品': 'item', '预售商品': 'presale', '展示分类': 'display', '秒杀': 'seckill', '优惠券': 'coupon', '其他': 'other' }"
+        :options="{ '商品': 'item', '预售商品': 'presale', '展示分类': 'display', '秒杀': 'seckill', '优惠券': 'coupon', '限时抢购': 'flash', '其他': 'other' }"
       />
     </pg-form-item>
     <pg-form-item :key="item" label="商品" rules="required" v-if="formData.url.type === 'item'">
@@ -93,7 +93,7 @@
         if (typeof formData.url === 'string') {
           formData.url = JSON.parse(formData.url);
 
-          if (typeof formData.url === 'object' && ['item', 'presale', 'display', 'seckill', 'coupon'].includes(formData.url.type)) { // 只处理正确格式的字符串
+          if (typeof formData.url === 'object' && ['item', 'presale', 'display', 'seckill', 'coupon' , 'flash'].includes(formData.url.type)) { // 只处理正确格式的字符串
           } else {
             formData.url = { type: 'other', link_id: '' };
           }

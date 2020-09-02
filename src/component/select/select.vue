@@ -179,7 +179,6 @@
             this.$data.keywords = v;
             this.$emit('search', v);
           }, 300);
-          return;
         }
         this.debounceEmit(v);
       },

@@ -31,21 +31,23 @@
             :page-size="query.page_size"
             borderless
           >
-            <pg-column title="门店名称" width="160px">
+            <pg-column title="门店名称" width="140px">
               <template v-slot="{row}">
                 <div class="overflow-ellipsis">
-<!--                  <a class="text-dark" @click="handleDetailItem(row)">-->
-<!--                    {{ row.title || '-' }}-->
-<!--                  </a>-->
                   {{ row.title || '-' }}
                 </div>
               </template>
             </pg-column>
-            <pg-column title="门店地址" width="280px">
+            <pg-column title="门店地址" width="260px">
               <template v-slot="{row}">
                 <div class="overflow-ellipsis">
                   {{ row.address || '-' }}
                 </div>
+              </template>
+            </pg-column>
+            <pg-column title="推广者分润比例" prop="promoter_rate" width="70px" text-align="center">
+              <template v-slot="{row}">
+                {{ row.promoter_rate ? `${Handle.returnPercent(row.promoter_rate)}%` : '-' }}
               </template>
             </pg-column>
             <pg-column title="联系方式" width="110px">
@@ -71,18 +73,6 @@
               </template>
             </pg-column>
             <pg-column title="创建时间" prop="created" width="140px"></pg-column>
-<!--            <pg-column title="状态" width="70px">-->
-<!--              <template v-slot="{row}">-->
-<!--                <pg-confirm-->
-<!--                  v-if="app.auth.isAdmin || app.auth.ClsUserStoreFreeze"-->
-<!--                  :help-text="`确认${row.is_freeze_header ? '解冻' : '冻结'}该用户`"-->
-<!--                  @confirm="handleFreezeItem(row)"-->
-<!--                >-->
-<!--                  <pg-switch :value="!row.is_freeze_header"/>-->
-<!--                </pg-confirm>-->
-<!--                <span v-else>{{ row.is_freeze_header ? '已冻结' : '正常' }}</span>-->
-<!--              </template>-->
-<!--            </pg-column>-->
             <pg-column title="操作" width="80px">
               <template v-slot="{row}">
                 <a class="text-decoration-none" @click="handleBalanceItem(row)" v-if="app.auth.isAdmin || app.auth.ClsUserStoreBalanceLogs">余额明细</a>

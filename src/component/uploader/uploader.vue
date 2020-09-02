@@ -71,6 +71,7 @@
       value: { type: String | Array, default: '' },
       type: { type: String, default: 'image' },
       limit: { type: Number, default: 5 },
+      ratio: { type: String, default: '' }, // 格式(width*height): 750*1336
       disabled: { type: Boolean, default: false },
     },
     model: {
@@ -91,6 +92,13 @@
           default: 
             return 'image/*';
         }
+      },
+      ratios() {
+        const { type, ratio } = this.$props;
+        if (type !== 'image') return [];
+        if (typeof ratio !== 'string') return [];
+
+        return ratio.split("*").map(item => parseInt(item)).filter(item => !isNaN(item));
       }
     },
 
@@ -141,27 +149,71 @@
       onChange(event) {
         
         let files = event.target.files;
+        files = [...files]; // files 类数组 需要进行转化。
 
         const { multiple, value, limit } = this.$props;
 
-        if (multiple) {
-          if (limit - value.length < files.length) {
-            Toast({ type: 'warning', message: `最多还能选择${limit - value.length}张图片` });
-            return;
-          }
-          this.tencentPresignedUrl(files);
-        } else {
-          let file = files[0];
-          if (!file) return;
-          this.tencentPresignedUrl(files);
+        if (multiple && ((limit - value.length) < files.length)) {
+          Toast({ type: 'warning', message: `最多还能选择${limit - value.length}张图片` });
+          return;
         }
+
+        // 清空选择过的图片
+        event.target.value = '';
+
+        // 如果没有 比例规格 配置
+        if (this.ratios.length !== 2) {
+          this.tencentPresignedUrl(files);
+
+        } else {
+
+          Promise.allSettled(files.map(file => this.specsCheck(file)))
+              .then(results => {
+                const success_list = results.filter(item => item.status === 'fulfilled').map(item => item.value);
+                const fail_list = results.filter(item => item.status === 'rejected');
+
+                success_list.length > 0 && this.tencentPresignedUrl(success_list);
+
+                if (fail_list.length > 0) {
+                  if (fail_list.length === files.length) {
+                    Toast({ type: 'warning', message: `所选图片不符合规格` });
+                  } else {
+                    Toast({ type: 'warning', message: `${fail_list.length} 张图片不符合规格` });
+                  }
+                }
+              });
+
+        }
+
+      },
+
+      specsCheck(file) {
+        return new Promise((resolve, reject) => {
+
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const data = e.target.result;
+            const image = new Image();
+            image.onload = () => {
+              const width = image.width;
+              const height = image.height;
+              if (width === this.ratios[0] && height === this.ratios[1]) {
+                return resolve(file);
+              }
+              reject();
+            };
+            image.src= data;
+          };
+
+          reader.readAsDataURL(file);
+
+        });
 
       },
 
       // 获取到腾讯云的上传url
       tencentPresignedUrl(files) {
         this.$data.loading = true;
-        files = [...files]; // files 类数组 需要进行转化。
         Promise.all(files.map(file => {
           return Http.get(osConfig().cos_presigned_api, {module: this.$props.module})
           .then(res => {
@@ -186,7 +238,7 @@
             this.$emit('change', d);
         }).catch(e => {
             this.$data.loading = false;
-            Toast({ type: 'danger', message: e.message });
+            Toast({ type: 'danger', message: '图片上传失败' });
           });
       },
 

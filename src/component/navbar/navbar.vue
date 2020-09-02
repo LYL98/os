@@ -42,7 +42,7 @@
                       <span>{{ route.label }}</span>
                     </div>
                     <div class="menu-area-con">
-                      <a v-for="item in route.items" :key="item.value" @click="handleJump(item)">
+                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
                         <span>{{ item.label }}</span>
                       </a>
                     </div>
@@ -64,7 +64,7 @@
                       <span>{{ route.label }}</span>
                     </div>
                     <div class="menu-area-con">
-                      <a v-for="item in route.items" :key="item.value" @click="handleJump(item)">
+                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
                         <span>{{ item.label }}</span>
                       </a>
                     </div>
@@ -86,7 +86,7 @@
                       <span>{{ route.label }}</span>
                     </div>
                     <div class="menu-area-con">
-                      <a v-for="item in route.items" :key="item.value" @click="handleJump(item)">
+                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
                         <span>{{ item.label }}</span>
                       </a>
                     </div>
@@ -106,7 +106,7 @@
             </a>
             <div class="pg-nav-subitem-panel" slot="content">
               <div class="pg-nav-subitem-panel--inner">
-                <a v-for="item in route.items" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+                <a v-for="item in route.childs" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
               </div>
             </div>
           </pg-popper>
@@ -119,7 +119,7 @@
             </a>
             <div class="pg-nav-subitem-panel" slot="content">
               <div class="pg-nav-subitem-panel--inner">
-                <a v-for="item in route.items" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+                <a v-for="item in route.childs" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
               </div>
             </div>
           </pg-popper>
@@ -132,7 +132,7 @@
             </a>
             <div class="pg-nav-subitem-panel" slot="content">
               <div class="pg-nav-subitem-panel--inner">
-                <a v-for="item in route.items" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+                <a v-for="item in route.childs" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
               </div>
             </div>
           </pg-popper>
@@ -224,10 +224,10 @@ export default {
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
-          let childs = item.childs.map((d) => ({ label: d.title, value: d.code, url: prefix + '/#' + d.router })).filter((d) => auth.isAdmin || auth[d.value]);
-          return { label: item.title, value: item.code, items: childs };
+          let childs = item.childs.map((d) => ({ label: d.title, value: d.code, url: prefix + '/#' + d.nav_router })).filter((d) => auth.isAdmin || auth[d.value]);
+          return { label: item.title, value: item.code, url: prefix + '/#' + item.nav_router, childs: childs };
         })
-        .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.items) && item.items.length > 0);
+        .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.childs) && item.childs.length > 0);
     };
 
     this.$data.origin_yy = origin_yy;
@@ -235,7 +235,7 @@ export default {
 
     Http.get(nav_router_api, { is_nav_router: 1 })
       .then(res => {
-        const routes = res.data || [];
+        let routes = res.data || [];
 
         const yy = authorization(routes.filter(item => item.client === 'yy'), origin_yy);
         const gyl = authorization(routes.filter(item => item.client === 'gyl'), origin_gyl);
@@ -243,7 +243,9 @@ export default {
         const bsc = authorization(routes.filter(item => item.client === 'bsc'), origin_bsc);
         const sc = authorization(routes.filter(item => item.client === 'sc'), origin_sc);
 
-        this.$data.routes = { yy, gyl, bsc: [...bsc, ...sc], cls };
+        routes = { yy, gyl, bsc: [...bsc, ...sc], cls };
+        this.$data.routes = routes;
+        this.$emit('created', routes);
       });
 
   },
@@ -257,7 +259,6 @@ export default {
     },
 
     handleJump(item) {
-      return;
       this.$emit('jump', item);
     },
   },

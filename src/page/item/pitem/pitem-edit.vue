@@ -64,16 +64,17 @@
         </pg-form-item>
       </div>
       <div class="col-6">
-        <pg-form-item label="科学分类" :rules="{required: true, logic: systemClassValid}" help-text="新增商品所选择的科学分类，不可以再次编辑">
+        <pg-form-item label="科学分类" :rules="{required: true, logic: systemClassValid}">
           <pg-cascader
+            :level="4"
             :options="systemClassTree"
             v-model="formData.system_class_code"
-            @change="changeQuery"
+            @selection="selectClsId"
             :clearable="false"
             placeholder="请选择科学分类"
-            :disabled="type === 'modify'"
           />
         </pg-form-item>
+        <!-- :disabled="type === 'modify'" -->
       </div>
     </div>
     <div class="row no-gutters">
@@ -122,6 +123,13 @@
       </div>
     </div>
     <div class="row no-gutters">
+      <div class="col-6">
+        <pg-form-item label="条形码" rules="max_length:35">
+          <pg-input type="number" v-model="formData.barcode" placeholder="请输入条形码" />
+        </pg-form-item>
+      </div>
+    </div>
+    <div class="row no-gutters">
       <div class="col-12">
         <pg-form-item label="商品详情" item-width="620px" rules="required" help-text="富文本编辑器支持全屏编辑模式, 点击操作栏第一行右侧的全屏ICON, 开启该模式">
           <pg-editor v-model="formData.content"/>
@@ -150,6 +158,7 @@
     data() {
       return {
         formData: {
+          source: 'retail',
           video: '', // 视频
           images: [], // 商品图片
           title: '', // 商品名称
@@ -165,6 +174,8 @@
           stock_life: '', // 库存期
           st_unit: '天', // 库存期单位
           content: '', // 富文本详情
+          cls_id: '',
+          barcode:''//条形码
         },
 
         loading: false,
@@ -175,15 +186,17 @@
     created() {
       this.systemClassValid = {
         validate: (v) => {
-          return v.length >= 6;
+          return v.length >= 8;
         },
-        getMsg: '科学分类必须选择三级'
+        getMsg: '科学分类必须选择四级'
       };
 
       this.commonSystemClassTree();
       if (this.$props.type !== 'add') {
         const formData = {...this.$props.item};
         formData.weight = Handle.returnWeight(formData.weight);
+        formData.source = 'retail'; // 兼容历史数据缺失 类型的问题
+        formData.system_class_code = formData.system_classes[formData.system_classes.length - 1].code //设置正确的system_class_code
         this.$data.formData = formData;
       }
 
@@ -219,11 +232,14 @@
       },
 
       commonSystemClassTree() {
-        Http.get(Api.commonSystemClassTree)
+        Http.get(Api.commonSystemClassTreeNew)
           .then(res => {
             this.$data.systemClassTree = res.data || [];
           });
       },
+      selectClsId(v){
+        this.$data.formData.cls_id = v.cls_id
+      }
     }
   }
 </script>

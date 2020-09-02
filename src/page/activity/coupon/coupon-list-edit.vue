@@ -1,5 +1,11 @@
 <template>
-  <pg-form item-width="200px" label-width="90px" ref="form" :disabled="type === 'detail'">
+  <pg-form
+    item-width="200px"
+    label-width="90px"
+    ref="form"
+    :disabled="type === 'detail'"
+    :style="type === 'detail' ? `height: ${app.windowHeight - 70 + 'px'}; overflow-y: auto;` : ''"
+  >
 
     <div class="row no-gutters">
       <div class="col-7">
@@ -23,11 +29,11 @@
               固定日期
             </pg-radio>
             <template v-if="formData.date_type === 'fixed'">
-              <pg-form-item rules="required" class="ml-15 pb-20">
-                <pg-datepicker v-model="formData.effective_date" :limit="{ from: today }" placeholder="开始日期"></pg-datepicker>
+              <pg-form-item label="开始日期" :show-label="false" rules="required" class="ml-15 pb-20">
+                <pg-datepicker v-model="formData.effective_date" :limit="{ from: today }" placeholder="开始日期" @change="changeEffectiveDate"></pg-datepicker>
               </pg-form-item>
               <span class="form-item-label mx-20">至</span>
-              <pg-form-item rules="required" class="pb-20">
+              <pg-form-item label="结束日期" :show-label="false" :rules="{'required': true, 'logic': expire_date_validator}" class="pb-20">
                 <pg-datepicker v-model="formData.expire_date" :limit="{ from: today }" placeholder="结束日期"></pg-datepicker>
               </pg-form-item>
             </template>
@@ -266,10 +272,26 @@
           return Number(v) < this.$data.formData.threshold_amount;
         },
         getMsg: '减免上限必须小于使用门槛'
-      }
+      };
+
+      this.expire_date_validator = {
+      //  date_type
+        validate: v => {
+          if (!this.formData.date_type === 'custom') return true;
+          if (!this.$data.formData.effective_date) return true;
+          return new Date(this.$data.formData.effective_date).getTime() <= new Date(v).getTime();
+        },
+        getMsg: '结束日期不能小于开始日期'
+      };
 
     },
     methods: {
+
+      changeEffectiveDate(v) {
+        if (v && this.$data.formData.expire_date) {
+          this.$refs['form']?.validate('结束日期');
+        }
+      },
 
       changeThresholdAmount(v) {
         if (v && this.$data.formData.reduce_amount) {

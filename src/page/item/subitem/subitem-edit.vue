@@ -168,12 +168,12 @@
       </div>
       <div class="row no-gutters">
         <div class="col-6">
-          <pg-form-item label="销售价" rules="required|max_value:999999">
-            <pg-input type="decimal" v-model="formData.price_sale" placeholder="请输入销售价" suffix="元"/>
+          <pg-form-item label="销售价" rules="required|min_value:0.01:blur|max_value:999999">
+            <pg-input type="decimal" v-model="formData.price_sale" placeholder="请输入销售价" suffix="元" @change="changePriceSale"/>
           </pg-form-item>
         </div>
         <div class="col-6">
-          <pg-form-item label="原价" rules="required|max_value:999999">
+          <pg-form-item label="原价" :rules="{'max_value:999999': true, logic: price_origin_validator}">
             <pg-input type="decimal" v-model="formData.price_origin" placeholder="请输入原价" suffix="元"/>
           </pg-form-item>
         </div>
@@ -186,7 +186,7 @@
         </div>
         <div class="col-6">
           <pg-form-item label="库存">
-            <pg-input type="number" v-model="formData.stock" placeholder="请输入库存" suffix="件"/>
+            <pg-input type="number" disabled v-model="formData.stock" placeholder="请输入库存" suffix="件"/>
           </pg-form-item>
         </div>
       </div>
@@ -204,16 +204,31 @@
       </div>
       <div class="row no-gutters">
         <div class="col-6">
-          <pg-form-item label="展示分类" rules="required">
-            <pg-select v-model="formData.display_class_id" :clearable="false" placeholder="请选择展示分类">
-              <pg-option
-                v-for="item in displayClassList"
-                :key="item.id"
-                :value="item.id"
-              >
-                {{ item.title }}
-              </pg-option>
-            </pg-select>
+          <pg-form-item label="展示分类" class="mb-0">
+            <div class="d-flex">
+              <pg-form-item label="一级分类" :show-label="false" item-width="120px" rules="required">
+                <pg-select v-model="formData.display_class_id" :clearable="false" placeholder="一级分类" @change="changeDisplayClass">
+                  <pg-option
+                    v-for="item in displayClassList"
+                    :key="item.id"
+                    :value="item.id"
+                  >
+                    {{ item.title }}
+                  </pg-option>
+                </pg-select>
+              </pg-form-item>
+              <pg-form-item label="二级分类" :show-label="false" item-width="120px">
+                <pg-select :disabled="!formData.display_class_id" v-model="formData.display_sec_id" :clearable="false" placeholder="二级分类">
+                  <pg-option
+                    v-for="item in displayClassSecList"
+                    :key="item.id"
+                    :value="item.id"
+                  >
+                    {{ item.title }}
+                  </pg-option>
+                </pg-select>
+              </pg-form-item>
+            </div>
           </pg-form-item>
         </div>
         <div class="col-6">
@@ -223,8 +238,21 @@
         </div>
       </div>
       <div class="row no-gutters">
-        <div class="col-12">
-          <pg-form-item label="概述" item-width="600px" rules="max_length:10">
+        <div class="col-6">
+          <pg-form-item label="采购员">
+            <pg-select v-model="formData.buyer_id" searchable clearable placeholder="请选择采购员">
+              <pg-option
+                v-for="item in buyerList"
+                :key="item.id"
+                :value="item.id"
+              >
+                {{ item.realname }} / {{ item.phone }}
+              </pg-option>
+            </pg-select>
+          </pg-form-item>
+        </div>
+        <div class="col-6">
+          <pg-form-item label="概述" rules="max_length:10">
             <pg-input v-model="formData.remark" placeholder="请输入商品概述"/>
           </pg-form-item>
         </div>
@@ -300,12 +328,14 @@
           stock: '', // 库存
           minimum: '', // 最小购买数量
           maximum: 999, // 最大购买数量
-          display_class_id: '', // 展示分类
+          display_class_id: '', // 一级分类
+          display_sec_id: '', // 二级分类
           rank: '', // 排序
           remark: '', // 概述
+          buyer_id: '', // 采购员
+
           share_content: '', // 分享文案
           share_images: [], // 分享图片
-
 
         },
 
@@ -313,23 +343,48 @@
 
         systemClassTree: [],
         displayClassList: [],
-        itemTagList: [],
+        displayClassSecList: [],
+        buyerList: [],
       }
     },
     created() {
 
       this.commonSystemClassTree();
-      this.commonDisplayClassList();
-      this.commonItemTagList();
+      this.commonDisplayClassTree();
+      this.commonBuyerList();
 
       const formData = { ...this.$props.item };
       formData.p_item.weight = Handle.returnWeight(formData.p_item.weight);
       formData.price_sale = Handle.returnPrice(formData.price_sale);
-      formData.price_origin = Handle.returnPrice(formData.price_origin);
-      formData.price_divide = Handle.returnPrice(formData.price_divide);
+      formData.price_origin = Handle.returnPrice(formData.price_origin) || '';
+      formData.price_divide = Handle.returnPrice(formData.price_divide) || '';
       this.$data.formData = formData;
+
+      this.price_origin_validator = {
+        //  date_type
+        validate: v => {
+          if (!this.formData.price_sale) return true;
+          return Number(v) >= this.formData.price_sale;
+        },
+        getMsg: '原价不能小于销售价'
+      };
     },
     methods: {
+
+      changePriceSale(v) {
+        if (v && this.$data.formData.price_origin) {
+          this.$refs['form']?.validate('原价');
+        }
+      },
+
+      changeDisplayClass(v) {
+        this.$data.formData.display_sec_id = '';
+        const class_item = this.$data.displayClassList.find(item => item.id === v);
+        if (!class_item) return;
+
+        this.$data.displayClassSecList = [...class_item.childs];
+      },
+
       onSubmit() {
         this.$refs['form'].validateAll().then(valid => {
           if (!valid) return;
@@ -346,6 +401,7 @@
           formData.display_class_id = Number(formData.display_class_id);
           formData.rank = Number(formData.rank);
           formData.is_presale = Number(formData.is_presale);
+          formData.buyer_id = Number(formData.buyer_id);
 
           const type = this.$props.type;
           this.$data.loading = true;
@@ -380,10 +436,24 @@
           });
       },
 
-      commonItemTagList() {
-        Http.get(Api.commonItemTagList, { province_code: this.app.userInfo.province_code })
+      commonDisplayClassTree() {
+        Http.get(Api.commonDisplayClassTree, { province_code: this.app.userInfo.province_code })
           .then(res => {
-            this.$data.itemTagList = res.data || [];
+            this.$data.displayClassList = res.data || [];
+
+            if (!this.$data.formData.display_class_id) return;
+
+            const class_item = this.$data.displayClassList.find(item => item.id === this.$data.formData.display_class_id);
+            if (!class_item) return;
+
+            this.$data.displayClassSecList = [...class_item.childs];
+          });
+      },
+
+      commonBuyerList() {
+        Http.get(Api.commonBuyerList, { province_code: this.app.userInfo.province_code })
+          .then(res => {
+            this.$data.buyerList = res.data || [];
           });
       },
     }

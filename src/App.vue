@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <pg-navbar
-        v-if="complete"
-        :username="userInfo.realname"
-        @logout="handleLogout"
-        @jump="handleJump"
+      v-if="complete"
+      :username="userInfo.realname"
+      @logout="handleLogout"
+      @jump="handleJump"
     />
 
     <div class="page-content" v-if="complete">
@@ -13,16 +13,16 @@
     </div>
 
     <iframe
-        ref="transmitter"
-        class="iframe-hidden"
-        :src="oauth_token_page"
-        @load="postMessage"
+      ref="transmitter"
+      class="iframe-hidden"
+      :src="oauth_token_page"
+      @load="postMessage"
     />
   </div>
 </template>
 <script>
 
-  import pgyos from './pgyos.entry';
+  import pgyos from '@/pgyos.entry';
   import {
     node_env,
     env,
@@ -76,9 +76,11 @@
         let d = [
           {name: '商品库', icon: 'icon-file-text', code: 'ClsItemPitem', path: '/item/pitem'},
           {name: '货架商品', icon: 'icon-bookmark4', code: 'ClsItemSubitem', path: '/item/subitem'},
+          {name: '商品库存', icon: 'icon-bookmark3', code: 'ClsItemStock', path: '/item/stock'},
+          {name: '门店现货商品', icon: 'icon-bookmarks', code: 'ClsItemStoreitem', path: '/item/storeitem'},
           {name: '货架商品属性', icon: 'icon-color-sampler', code: 'ClsItemProperty', path: '/item/property'},
           { group: true, title: '营销活动', codes: ['ClsActivitySeckill', 'ClsActivityCoupon'] },
-          {name: '秒杀', icon: 'icon-rocket', code: 'ClsActivitySeckill', path: '/activity/seckill'},
+          {name: '秒杀/限时抢购', icon: 'icon-rocket', code: 'ClsActivitySeckill', path: '/activity/seckill'},
           {name: '优惠券', icon: 'icon-cash2', code: 'ClsActivityCoupon', path: '/activity/coupon'},
           { group: true, title: '用户管理', codes: ['ClsUserStore', 'ClsUserPromoter', 'ClsUserMember'] },
           {name: '零售门店', icon: 'icon-home2', code: 'ClsUserStore', path: '/user/store'},
@@ -87,10 +89,13 @@
           { group: true, title: '订单管理', codes: ['ClsOrderUser', 'ClsOrderStore'] },
           {name: '用户订单', icon: 'icon-browser', code: 'ClsOrderUser', path: '/order/user'},
           {name: '门店订单', icon: 'icon-windows2', code: 'ClsOrderStore', path: '/order/store'},
+          {name: '门店现货订单', icon: 'icon-store', code: 'ClsOrderStoresale', path: '/order/store-sale'},
+          {name: '售后单', icon: 'icon-stack', code: 'ClsOrderAftersale', path: '/order/after-sale'},
           { group: true, title: '财务管理', codes: ['ClsFinancePromoterWithdraw'] },
           {name: '推广者提现', icon: 'icon-coin-yen', code: 'ClsFinancePromoterWithdraw', path: '/finance/promoter-withdraw'},
+          {name: '门店提现', icon: 'icon-cash', code: 'ClsFinanceStoreWithdraw', path: '/finance/store-withdraw'},
           { group: true, title: '设置', codes: ['ClsSettingBanner', 'ClsSettingOperation'] },
-          {name: 'Banner管理', icon: 'icon-width', code: 'ClsSettingBanner', path: '/setting/banner'},
+          {name: '首页管理', icon: 'icon-width', code: 'ClsSettingBanner', path: '/setting/banner'},
           {name: '区域运营设置', icon: 'icon-cog', code: 'ClsSettingOperation', path: '/setting/operation'},
         ];
         if (this.auth.isAdmin) return d;

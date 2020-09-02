@@ -11,6 +11,8 @@
     <div class="p-20">
       <div class="d-flex">
         <pg-cascader
+          level='4'
+          style="width:200px;"
           :options="systemClassTree"
           v-model="query.system_class_code"
           @change="changeQuery"
@@ -149,6 +151,7 @@
     methods: {
       initQuery() {
         this.$data.query = {
+          custom_type: 'C',
           is_deleted: 0, // 0 表示 未删除 1 表示已删除
           system_class_code: '',
           condition: '',
@@ -193,7 +196,7 @@
       },
 
       handleDeleteItem(item) {
-        Http.post(Api.pitemDelete, { id: item.id })
+        Http.post(Api.pitemDelete, { c_item_id: item.c_item_id })
           .then(() => {
             this.pitemQuery();
           });
@@ -213,7 +216,7 @@
       },
 
       handleRecoverItem(row) {
-        Http.post(Api.pitemRecover, { id: row.id })
+        Http.post(Api.pitemRecover, { c_item_id: row.c_item_id })
           .then(() => {
             this.pitemQuery();
           });

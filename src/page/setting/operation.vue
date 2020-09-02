@@ -14,11 +14,11 @@
     <div class="p-20">
       <div class="card position-relative">
         <div class="p-20">
-          <pg-form class="mt-20" item-width="300px" ref="setting">
+          <pg-form class="mt-20" vertical item-width="300px" ref="setting">
+            
             <div class="row no-gutters">
               <div class="col-6">
-                <h3>订单确认时间</h3>
-                <pg-form-item help-text="系统会在此时间之后30分钟开始集单，集单成功的订单将于明日配送">
+                <pg-form-item label="订单确认时间" help-text="系统会在此时间之后30分钟开始集单，集单成功的订单将于明日配送">
                   <pg-timepicker placeholder="请选择订单确认时间" v-model="order_confirm_time"/>
                 </pg-form-item>
                 <pg-button
@@ -28,10 +28,12 @@
                   :disabled="order_confirm_time === data_record.order_confirm_time"
                 >保存修改</pg-button>
               </div>
+            </div>
+
+            <div class="row no-gutters mt-30">
               <div class="col-6">
-                <h3>自提点佣金比例</h3>
-                <pg-form-item help-text="自提点获得的佣金金额 = 在该自提点取货的订单金额 * 配置的佣金比例" rules="required|min_value:0:blur|max_value:100:blur">
-                  <pg-input type="decimal" v-model="commission_rate" placeholder="请输入自提点佣金比例" suffix="%"></pg-input>
+                <pg-form-item label="门店提货佣金比例" help-text="门店获得的佣金金额 = 在该门店取货的订单金额 * 配置的佣金比例" rules="required|min_value:0:blur|max_value:100:blur">
+                  <pg-input type="decimal" v-model="commission_rate" placeholder="请输入门店提货佣金比例" suffix="%"></pg-input>
                 </pg-form-item>
                 <pg-button
                   color="primary"
@@ -40,9 +42,9 @@
                   :disabled="commission_rate === data_record.commission_rate"
                 >保存修改</pg-button>
               </div>
-              <div class="col-6 mt-30">
-                <h3>拉新返现金额</h3>
-                <pg-form-item help-text="新用户下单成功后，给其推广者返此笔金额" rules="required|min_value:0:blur|max_value:100000:blur">
+
+              <div class="col-6">
+                <pg-form-item label="拉新返现金额" help-text="新用户下单成功后，给其推广者返此笔金额" rules="required|min_value:0:blur|max_value:100000:blur">
                   <pg-input type="decimal" v-model="new_cash_back" placeholder="请输入拉新返现金额" suffix="元 / 人"></pg-input>
                 </pg-form-item>
                 <pg-button
@@ -50,6 +52,32 @@
                   @click="handleSubmitSetting"
                   :loading="loading"
                   :disabled="new_cash_back === data_record.new_cash_back"
+                >保存修改</pg-button>
+              </div>
+            </div>
+              
+            <div class="row no-gutters mt-30">
+              <div class="col-6">
+                <pg-form-item label="提现免手续费金额" rules="required|min_value:0:blur|max_value:100000:blur">
+                  <pg-input type="decimal" v-model="withdraw_free_amount" placeholder="请输入提现免手续费金额" suffix="元"></pg-input>
+                </pg-form-item>
+                <pg-button
+                  color="primary"
+                  @click="handleSubmitSetting"
+                  :loading="loading"
+                  :disabled="withdraw_free_amount === data_record.withdraw_free_amount"
+                >保存修改</pg-button>
+              </div>
+
+              <div class="col-6">
+                <pg-form-item label="提现手续费" rules="required|min_value:0:blur|max_value:100000:blur">
+                  <pg-input type="decimal" v-model="withdraw_fee" placeholder="请输入提现手续费" suffix="元"></pg-input>
+                </pg-form-item>
+                <pg-button
+                  color="primary"
+                  @click="handleSubmitSetting"
+                  :loading="loading"
+                  :disabled="withdraw_fee === data_record.withdraw_fee"
                 >保存修改</pg-button>
               </div>
             </div>
@@ -88,11 +116,23 @@
 
       return {
         query: {},
-        data_record: {}, // 接口请求回来的数据 存在该对象中。
+
+        data_record: {
+          order_confirm_time: '',
+          commission_rate: '',
+          new_cash_back: '',
+          item_content: '',
+          withdraw_fee: '',
+          withdraw_free_amount: '',
+        }, // 接口请求回来的数据 存在该对象中。
+
         order_confirm_time: '', // 订单确认时间
-        commission_rate: '',   // 自提点佣金比例
+        commission_rate: '',   // 门店佣金比例
         new_cash_back: '', // 拉新返现金额
         item_content: '',
+        withdraw_fee: '',//提现手续费
+        withdraw_free_amount: '',//提现免手续费金额
+
         provinceListAuth: [],
         loading: false,
       }
@@ -114,7 +154,7 @@
 
       initQuery() {
         this.$data.query = {
-          province_code: this.app.userInfo.province_code
+          province_code: this.app.userInfo.province_code,
         }
       },
 
@@ -133,14 +173,18 @@
             rd.commission_rate = (rd.commission_rate + '') ? Handle.returnPercent(rd.commission_rate) : '';
             rd.new_cash_back = (rd.new_cash_back + '') ? Handle.returnPrice(rd.new_cash_back) : '';
             rd.item_content = rd.item_content || '';
+            rd.withdraw_fee = (rd.withdraw_fee + '') ? Handle.returnPrice(rd.withdraw_fee) : '';
+            rd.withdraw_free_amount = (rd.withdraw_free_amount + '') ? Handle.returnPrice(rd.withdraw_free_amount) : '';
 
             this.$data.data_record = rd;
 
-            const { order_confirm_time, commission_rate, new_cash_back, item_content } = rd;
+            const { order_confirm_time, commission_rate, new_cash_back, item_content , withdraw_fee ,withdraw_free_amount} = rd;
             this.$data.order_confirm_time = order_confirm_time;
             this.$data.commission_rate = commission_rate;
             this.$data.new_cash_back = new_cash_back;
             this.$data.item_content = item_content;
+            this.$data.withdraw_fee = withdraw_fee;
+            this.$data.withdraw_free_amount = withdraw_free_amount;
           })
       },
 
@@ -151,9 +195,11 @@
           const data_record = {...this.$data.data_record};
 
           data_record.order_confirm_time = this.$data.order_confirm_time;
-          data_record.commission_rate = Handle.handlePercent(this.$data.commission_rate);
-          data_record.new_cash_back = Handle.handlePrice(this.$data.new_cash_back);
+          data_record.commission_rate = Handle.handlePercent(this.$data.commission_rate) - '';
+          data_record.new_cash_back = Handle.handlePrice(this.$data.new_cash_back) - '';
           data_record.item_content = this.$data.item_content;
+          data_record.withdraw_fee = Handle.handlePrice(parseInt(this.$data.withdraw_fee)) - '';
+          data_record.withdraw_free_amount = Handle.handlePrice(parseInt(this.$data.withdraw_free_amount)) - '';
 
           data_record.province_code = this.app.userInfo.province_code;
 

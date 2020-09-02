@@ -1,14 +1,44 @@
 <template>
-  <pg-form item-width="200px" label-width="90px" ref="form" :disabled="type === 'detail'">
 
-    <div class="row no-gutters" v-if="formData.grant_way === 'auto' || formData.grant_way === 'receive'">
-      <pg-form-item label="发放数量" item-width="295px" :rules="{ 'required': true, [`max_value:${item.stock}`]: true }" help-text="单次发放数量 不能超过 优惠券总量">
-        <pg-input v-model="formData.stock" type="number" suffix="张" placeholder="请输入本次发放的数量"></pg-input>
-      </pg-form-item>
+  <div v-if="formData.grant_way === 'manual'">
+    <pg-table
+      :data="manualGrantPhones.items"
+      borderless
+      :highlight-row="false"
+      :page="query.page"
+      :page-size="query.page_size"
+      :height="app.windowHeight - 170 + 'px'"
+    >
+      <pg-column prop="phone" title="发放手机号" width="120px"></pg-column>
+      <pg-column prop="num" title="发放数量" width="80px" text-align="center"></pg-column>
+      <pg-column prop="status" title="发放状态" width="90px" text-align="center">
+        <template v-slot="{row}">
+          <div class="d-flex justify-content-center align-items-center overflow-ellipsis">
+            <span :class="`status-dot mr-5 bg-${Constant.ACTIVITY_COUPON_MANUAL_GRANT_STATUS('color')[row.status]}`"></span>
+            {{ Constant.ACTIVITY_COUPON_MANUAL_GRANT_STATUS('enum')[row.status] || row.status || '-' }}
+          </div>
+        </template>
+      </pg-column>
+      <pg-column prop="updated" title="发放时间" width="140px">
+        <template v-slot="{row}">
+          {{ row.updated || '-' }}
+        </template>
+      </pg-column>
+    </pg-table>
+    <div class="card-footer">
+      <pg-pagination :num="manualGrantPhones.num" v-model="query" @change="manualGrantPhonesQuery"/>
     </div>
+  </div>
 
-    <!-- 自动发放 -->
-    <template v-if="formData.grant_way === 'auto' || formData.grant_way === 'receive'">
+  <div :style="`height: ${app.windowHeight - 70 + 'px'}; overflow-y: auto;`" v-else>
+    <pg-form item-width="200px" label-width="90px" ref="form" :disabled="type === 'detail'">
+
+      <div class="row no-gutters">
+        <pg-form-item label="发放数量" item-width="295px" help-text="单次发放数量 不能超过 优惠券总量">
+          <pg-input v-model="formData.total_num" type="number" suffix="张" placeholder="请输入本次发放的数量"></pg-input>
+        </pg-form-item>
+      </div>
+
       <div class="row no-gutters">
         <pg-form-item label="发放时限" rules="required" item-width="295px" :disabled="false">
           <pg-datepicker v-model="formData" :limit="{ from: today, to: limit_to }" range begin-date-key="begin_date" end-date-key="end_date"></pg-datepicker>
@@ -65,27 +95,9 @@
           </pg-radio-group>
         </pg-form-item>
       </div>
-    </template>
 
-    <!-- 手动发放 -->
-    <template v-if="formData.grant_way === 'manual'">
-      <pg-table
-        :data="manualGrantPhones.items"
-        borderless
-        :highlight-row="false"
-        :page="query.page"
-        :page-size="query.page_size"
-        :height="app.windowHeight - 170 + 'px'"
-      >
-        <pg-column prop="phone" title="发放手机号"></pg-column>
-        <pg-column prop="num" title="数量"></pg-column>
-      </pg-table>
-      <div class="card-footer">
-        <pg-pagination :num="manualGrantPhones.num" v-model="query" @change="manualGrantPhonesQuery"/>
-      </div>
-    </template>
-
-  </pg-form>
+    </pg-form>
+  </div>
 
 </template>
 
@@ -94,7 +106,7 @@
   import {Http, Api, Handle, Constant} from '@/util';
 
   export default {
-    name: 'coupon-grant-edit',
+    name: 'coupon-grant-detail',
     inject: ['app'],
     props: {
       type: {type: String, default: 'detail'},
@@ -224,7 +236,7 @@
 
       initQuery() {
         this.$data.query = {
-          id: this.$data.formData.coupon_id,
+          id: this.$data.formData.id,
           page: 1,
           page_size: 20
         }
@@ -242,4 +254,10 @@
 </script>
 
 <style scoped>
+  .status-dot {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+  }
 </style>

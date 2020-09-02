@@ -2,6 +2,8 @@
   <div class="p-20">
     <div class="d-flex">
       <pg-cascader
+        level='4'
+        style="width:200px;"
         :options="systemClassTree"
         v-model="query.system_class_code"
         @change="changeQuery"

@@ -19,7 +19,7 @@
   import { Http, Api } from '@/util';
 
   export default {
-    name: 'promoter-withdraw-approve',
+    name: 'store-withdraw-approve',
     inject: ['app'],
     props: {
       item: { type: Object, default() { return {} } },
@@ -50,7 +50,7 @@
           const type = this.$data.type;
 
           this.$data.loading = true;
-          Http.post(type === 'approve' ? Api.promoterWithdrawApprove : Api.promoterWithdrawReject, formData)
+          Http.post(type === 'approve' ? Api.storeWithdrawApprove : Api.storeWithdrawReject, formData)
             .then(() => {
               this.$data.loading = false;
               this.$toast({ type: 'success', message: type === 'approve' ? '推广者提现审核通过' : '已拒绝该提现申请' });

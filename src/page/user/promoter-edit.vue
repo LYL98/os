@@ -1,8 +1,14 @@
 <template>
   <pg-form ref="form" label-width="90px" item-width="270px">
 
-    <pg-form-item label="所属门店" rules="required" help-text="输入门店名称，搜索对应的门店。不支持模糊匹配">
-      <pg-select searchable v-model="formData.store_id" placeholder="请筛选所属门店" @search="commonStoreList">
+    <pg-form-item label="所属县域" rules="required">
+      <pg-select class="mr-20" v-model="formData.city_id" searchable @change="changeQuery">
+        <pg-option v-for="item in cityList" :key="item.id" :value="item.id">{{ item.title }}</pg-option>
+      </pg-select>
+    </pg-form-item>
+
+    <pg-form-item label="绑定门店" help-text="输入门店名称，搜索对应的门店。不支持模糊匹配" rules="required">
+      <pg-select searchable v-model="formData.store_id" placeholder="请筛选所属门店" @search="commonStoreList" :disabled='!formData.city_id'>
         <pg-option
           v-for="item in storeList"
           :key="item.id"
@@ -38,48 +44,58 @@
     },
     data() {
       return {
-
         formData: {
           store_id: '',
           login_phone: '',
           nickname: '',
+          city_id:'',
+          province_code: this.$props.query.province_code,
         },
         storeList: [],
         loading: false,
+        cityList:[],
       }
     },
+
     created() {
       if (this.$props.type === 'modify') {
-        const { id, store_id, login_phone, nickname } = this.$props.item;
+        const { id, store_id, city_id, login_phone, nickname, province_code } = this.$props.item;
         this.$data.formData = {
           id: id,
           store_id: store_id,
+          city_id: city_id,
           login_phone: login_phone,
-          nickname: nickname
+          nickname: nickname,
+          province_code: province_code,
         };
-      }
       this.commonStoreList();
+      }
+      this.commonCityList();
     },
 
     methods: {
+
+      commonCityList() {
+        Http.get(Api.commonCityList, { province_code: this.$data.formData.province_code})
+          .then(res => {
+            this.$data.cityList = res.data || [];
+        });
+      },
+
+      changeQuery() {
+        this.$data.formData.store_id = '';
+        this.commonStoreList();
+      },
 
       commonStoreList(condition = '') {
         Http.get(Api.commonStoreList, {
           province_code: this.$props.query.province_code,
           gb_included: 1,
+          city_id: this.$data.formData.city_id,
           condition: condition,
-          need_num: 30,
+          need_num: 500,
         }).then(res => {
-          let list = (res.data || []).filter(item => !item.is_freeze_header && !item.is_freeze);
-          if (this.$props.type === 'modify') {
-            const { store } = this.$props.item;
-            if (list.some(d => d.id === store.id)) {
-
-            } else {
-              list = [store, ...list];
-            }
-          }
-          this.$data.storeList = list;
+          this.$data.storeList = (res.data || []).filter(item => !item.is_freeze_header && !item.is_freeze);
         })
       },
 

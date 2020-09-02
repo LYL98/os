@@ -40,7 +40,7 @@
     name: 'display-edit',
     inject: ['app'],
     props: {
-      type: { type: String, default: 'add' },
+      type: { type: String, default: 'top' },
       item: { type: Object, default() { return {} } },
     },
     data() {
@@ -50,6 +50,7 @@
           province_code: province_code,
           title: '',
           rank: '',
+          upper_id: '',
           image: 'tags/icon01.png',
         },
         loading: false,
@@ -62,6 +63,11 @@
       }
     },
     created() {
+      // 表示添加子类
+      if (this.$props.type === 'add') {
+        this.$data.formData.upper_id = this.$props.item.id;
+      }
+
       if (this.$props.type === 'modify') {
         this.$data.formData = { ...this.$props.item };
       }
@@ -76,13 +82,14 @@
 
           const formData = {...this.$data.formData};
           formData.rank = Number(formData.rank);
+          formData.upper_id = Number(formData.upper_id);
 
           this.$data.loading = true;
           const type = this.$props.type;
-          Http.post(type === 'add' ? Api.displayClassAdd : Api.displayClassEdit, formData)
+          Http.post(type === 'modify' ? Api.displayClassEdit : Api.displayClassAdd, formData)
             .then(() => {
               this.$data.loading = false;
-              this.$toast({ type: 'success', message: `${type === 'add' ? '新增' : '修改'}展示分类成功` });
+              this.$toast({ type: 'success', message: `${type === 'modify' ? '修改' : '新增'}展示分类成功` });
               this.$emit('submit');
             })
             .catch(() => {

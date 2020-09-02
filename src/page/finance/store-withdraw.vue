@@ -6,7 +6,8 @@
         <pg-datepicker style="width: 450px;" v-model="query" range quickable @change="changeQuery" clearable placeholder="提现申请时间"></pg-datepicker>
         <pg-search class="w-25 ml-20" clearable placeholder="申请人、手机号、转账银行、门店" v-model="query.condition" @change="changeQuery"/>
         <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
-        <div class="ml-auto" v-if="app.auth.isAdmin || app.auth.ClsPromoterWithdrawExport">
+
+        <div class="ml-auto" v-if="app.auth.isAdmin || app.auth.ClsStoreWithdrawExport">
           <pg-button @click="handleExport">导出提现记录</pg-button>
         </div> 
       </div>
@@ -36,7 +37,7 @@
                     处理时间：{{ row.updated || '-' }}
                   </div>
                   <div class="col-3">
-                    处理人：{{ row.operator || '-' }}
+                    处理人：{{ (typeof row.operator == 'string')? row.operator : '-' }}
                   </div>
                   <div class="col-3">
                     备注：{{ row.remark || '-' }}
@@ -103,13 +104,13 @@
           </pg-table>
         </div>
         <div class="card-footer">
-          <pg-pagination :num="list.num" v-model="query" @change="promoterWithdrawQuery"/>
+          <pg-pagination :num="list.num" v-model="query" @change="storeWithdrawQuery"/>
         </div>
       </div>
     </div>
 
-    <pg-dialog v-model="dialog.visible" title="推广者提现审核">
-      <promoter-withdraw-approve
+    <pg-dialog v-model="dialog.visible" title="门店提现审核">
+      <store-withdraw-approve
         v-if="dialog.visible"
         :item="dialog.item"
         @submit="handleSubmit"
@@ -129,7 +130,7 @@
           </div>
         </div>
       </template>
-      <promoter-withdraw-detail
+      <store-withdraw-detail
         v-if="drawer.visible"
         :item="drawer.item"
       />
@@ -142,14 +143,14 @@
 
   import { Http, Api, Handle, Constant } from '@/util';
 
-  import promoterWithdrawApprove from './promoter-withdraw-approve';
-  import promoterWithdrawDetail from './promoter-withdraw-detail';
+  import storeWithdrawApprove from './store-withdraw-approve';
+  import storeWithdrawDetail from './store-withdraw-detail';
 
   export default {
-    name: 'promoter-withdraw',
+    name: 'store-withdraw',
     components: {
-      promoterWithdrawApprove,
-      promoterWithdrawDetail
+      storeWithdrawApprove,
+      storeWithdrawDetail
     },
     inject: ['app'],
     data() {
@@ -160,6 +161,7 @@
         },
         dialog: {
           visible: false,
+          type: '',
           item: {}
         },
         drawer: {
@@ -172,9 +174,9 @@
     created() {
       this.Handle = Handle;
       this.Constant = Constant;
-      document.title = '推广者提现 - 财务管理 - 蒲公英运营管理系统';
+      document.title = '门店提现 - 财务管理 - 蒲公英运营管理系统';
       this.initQuery();
-      this.promoterWithdrawQuery();
+      this.storeWithdrawQuery();
     },
 
     methods: {
@@ -190,16 +192,16 @@
 
       changeQuery() {
         this.$data.query.page = 1;
-        this.promoterWithdrawQuery();
+        this.storeWithdrawQuery();
       },
 
       resetQuery() {
         this.initQuery();
-        this.promoterWithdrawQuery();
+        this.storeWithdrawQuery();
       },
 
-      promoterWithdrawQuery() {
-        Http.get(Api.promoterWithdrawQuery, this.$data.query)
+      storeWithdrawQuery() {
+        Http.get(Api.storeWithdrawQuery, this.$data.query)
           .then(res => {
             this.$data.list = res.data || { items: [] }
           });
@@ -215,7 +217,7 @@
 
       handleSubmit() {
         this.handleCancel();
-        this.promoterWithdrawQuery();
+        this.storeWithdrawQuery();
       },
 
       handleCancel() {
@@ -238,9 +240,9 @@
 
       handleExport() {
         this.$loading.show();
-        Http.get(Api.promoterWithdrawExportCheck, this.$data.query)
+        Http.get(Api.storeWithdrawExportCheck, this.$data.query)
           .then(() => {
-            return Http.download(Api.promoterWithdrawExport, this.$data.query, { filename: '门店提现单.xls' })
+            return Http.download(Api.storeWithdrawExport, this.$data.query, { filename: '门店提现单.xls' })
           })
           .then(() => {
             this.$loading.hide();

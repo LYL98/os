@@ -2,7 +2,10 @@
   <div class="p-20">
     <div class="d-flex">
       <pg-datepicker style="width: 450px;" v-model="query" quickable range clearable @change="changeQuery" />
-      <pg-search class="w-25 ml-20" placeholder="活动名称" v-model="query.condition" clearable @change="changeQuery" />
+
+      <pg-button-group class="ml-20" v-model="query.act_type" :options="{ '全部': '', '秒杀': 'seckill', '限时抢购': 'flash' }" @change="changeQuery"></pg-button-group>
+
+      <pg-search class="ml-20" placeholder="活动名称" v-model="query.condition" clearable @change="changeQuery" />
       <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
 
       <pg-button class="ml-auto" color="primary" v-if="app.auth.isAdmin || app.auth.ClsActivitySeckillAdd" @click="handleAddItem">新增</pg-button>
@@ -41,6 +44,15 @@
             </div>
           </template>
           <pg-column prop="title" title="活动名称" width="140px">
+            <template v-slot="{row}">
+              <a class="text-dark" @click="handleDetailItem(row)">{{ row.title || '-' }}</a>
+            </template>
+          </pg-column>
+          <pg-column prop="title" title="活动类型" width="140px">
+            <template v-slot="{row}">
+              <span v-if="row.act_type === 'flash'">限时抢购</span>
+              <span v-if="row.act_type === 'seckill'">秒杀</span>
+            </template>
           </pg-column>
           <pg-column prop="act_date" title="活动日期" width="90px"></pg-column>
           <pg-column title="起止时间" width="120px">
@@ -101,7 +113,7 @@
       </div>
     </div>
 
-    <pg-dialog v-model="dialog.visible" :title="`${dialog.type === 'add' ? '新增' : '修改'}秒杀活动`">
+    <pg-dialog v-model="dialog.visible" :title="`${dialog.type === 'add' ? '新增' : '修改'}活动`">
       <seckill-edit
         v-if="dialog.visible"
         :type="dialog.type"
@@ -111,7 +123,14 @@
       />
     </pg-dialog>
 
-    <pg-drawer v-model="drawer.visible" :title="`${drawer.item.title} 操作日志`" width="800px">
+    <pg-drawer v-model="drawer.visible" v-if="drawer.type === 'detail'" :title="`${drawer.item.title} 活动详情`" width="800px">
+      <seckill-detail
+        v-if="drawer.visible"
+        :item="drawer.item"
+      />
+    </pg-drawer>
+
+    <pg-drawer v-model="drawer.visible" v-if="drawer.type === 'logs'" :title="`${drawer.item.title} 操作日志`" width="800px">
       <seckill-logs
         v-if="drawer.visible"
         :id="drawer.item.id"
@@ -124,11 +143,12 @@
   import { Http, Api, Constant } from '@/util';
 
   import seckillEdit from './seckill-edit';
+  import seckillDetail from './seckill-detail';
   import seckillLogs from './seckill-logs';
 
   export default {
     name: 'seckill-list',
-    components: { seckillEdit, seckillLogs },
+    components: { seckillEdit, seckillDetail, seckillLogs },
     inject: ['app'],
     data() {
       return {
@@ -143,8 +163,13 @@
         },
         drawer: {
           visible: false,
+          type: 'detail',
           item: {}
-        }
+        },
+        actTypeList:[
+          {id: '限时抢购',value: 'flash'},
+          {id: '秒杀',value: 'seckill'},
+        ]
       }
     },
 
@@ -193,6 +218,13 @@
           });
       },
 
+      handleDetailItem(item) {
+        Http.get(Api.activitySeckillDetail, { act_id: item.id})
+          .then(res => {
+            this.$data.drawer = { visible: true, type: 'detail', item: res.data || {} };
+          });
+      },
+
       handleAddItem() {
         this.$data.dialog = { visible: true, type: 'add', item: {} };
       },
@@ -200,7 +232,7 @@
       handleModifyItem(item) {
         Http.get(Api.activitySeckillDetail, { act_id: item.id})
           .then(res => {
-            this.$data.dialog = { visible: true, type: 'modify', item: res.data || { items: [] } };
+            this.$data.dialog = { visible: true, type: 'modify', item: res.data || {} };
           });
       },
 
@@ -237,7 +269,7 @@
       },
 
       handleLogsItem(item) {
-        this.$data.drawer = { visible: true, item: item };
+        this.$data.drawer = { visible: true, type: 'logs', item: item };
       },
 
       handleSubmit() {

@@ -12,7 +12,7 @@
             :value="item.code"
           >{{ item.title }}</pg-option>
         </pg-select>
-        <pg-search class="w-25 ml-20" clearable placeholder="微信昵称、团员名称" v-model="query.condition" @change="changeQuery"/>
+        <pg-search class="w-25 ml-20" clearable placeholder="微信昵称、团员名称、绑定手机号" v-model="query.condition" @change="changeQuery"/>
         <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
       </div>
 
@@ -45,10 +45,10 @@
                 </div>
               </template>
             </pg-column>
-            <pg-column title="联系方式" width="120px">
+            <pg-column title="绑定手机号" width="120px">
               <template v-slot="{row}">
                 <div class="overflow-ellipsis">
-                  {{ row.phone || '-' }}
+                  {{ row.login_phone || '-' }}
                 </div>
               </template>
             </pg-column>

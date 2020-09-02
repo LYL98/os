@@ -20,7 +20,7 @@
       <pg-column title="变动金额">
         <template v-slot="{row}">
           <span v-if="!!row.amount">
-            <span class="text-success" v-if="row.amount > 0">+ &yen;{{Handle.returnPrice(row.amount)}}</span>
+            <span class="text-success" v-if="row.reckon_flg > 0">+ &yen;{{Handle.returnPrice(row.amount)}}</span>
             <span class="text-danger" v-else>- &yen;{{Math.abs(Handle.returnPrice(row.amount))}}</span>
           </span>
           <span v-else>-</span>
@@ -36,7 +36,7 @@
       </pg-column>
       <pg-column title="变动原因">
         <template v-slot="{row}">
-          {{ row.reason === 'gb_profit' ? '团购收益' : '余额转账' }}
+          {{ Constant.USER_STORE_BALANCE_TYPE('enum')[row.opt_type] || row.opt_type || '-' }}
         </template>
       </pg-column>
     </pg-table>
@@ -49,7 +49,7 @@
 </template>
 <script>
 
-  import { Http, Api, Handle } from '@/util';
+  import { Http, Api, Handle, Constant } from '@/util';
 
   export default {
     name: 'store-balance',
@@ -68,6 +68,7 @@
 
     created() {
       this.Handle = Handle;
+      this.Constant = Constant;
       this.initQuery();
       this.balanceQuery();
     },

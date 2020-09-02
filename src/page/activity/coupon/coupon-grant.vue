@@ -63,7 +63,8 @@
           </pg-column>
           <pg-column prop="condition" title="发放条件" width="90px">
             <template v-slot="{row}">
-              {{ Constant.ACTIVITY_COUPON_GRANT_CONDITION('enum')[row.condition] || row.condition || '-' }}
+              <span v-if="row.grant_way === 'manual'">-</span>
+              <span v-else>{{ Constant.ACTIVITY_COUPON_GRANT_CONDITION('enum')[row.condition] || row.condition || '-' }}</span>
             </template>
           </pg-column>
           <pg-column prop="created" title="创建时间" width="130px">
@@ -74,10 +75,16 @@
 
               <!--  手动发放的类型 -->
               <div v-if="row.grant_way === 'manual'">
-                <a class="text-decoration-none mr-10"
-                   @click="handleManualGrantFirst(row)"
-                   v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantFirst)"
-                >确认发放</a>
+                <pg-confirm
+                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantFirst)"
+                  @confirm="handleManualGrantFirst(row)"
+                >
+                  <template v-slot:help-text>
+                    <div>手动发放有一定耗时！在发放</div>
+                    <div>成功后一段时间，才能看到发放记录</div>
+                  </template>
+                  <a class="text-decoration-none mr-10">确认发放</a>
+                </pg-confirm>
                 <pg-confirm
                   help-text="确认删除该发放活动"
                   v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantDelete)"
@@ -85,10 +92,16 @@
                 >
                   <a class="text-decoration-none mr-10">删除</a>
                 </pg-confirm>
-                <a class="text-decoration-none mr-10"
-                   @click="handleManualGrantAgain(row)"
-                   v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantAgain)"
-                >再次发放</a>
+                <pg-confirm
+                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantAgain)"
+                  @confirm="handleManualGrantAgain(row)"
+                >
+                  <template v-slot:help-text>
+                    <div>手动发放有一定耗时！在发放</div>
+                    <div>成功后一段时间，才能看到发放记录</div>
+                  </template>
+                  <a class="text-decoration-none mr-10">再次发放</a>
+                </pg-confirm>
                 <pg-confirm
                   help-text="确认作废该发放活动"
                   v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantStop)"

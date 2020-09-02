@@ -2,6 +2,7 @@
   <div class="p-20">
     <div class="d-flex">
       <pg-datepicker style="width: 450px;" v-model="query" quickable range clearable @change="changeQuery" />
+      <pg-button-group class="ml-20" v-model="query.act_type" :options="{ '全部': '', '秒杀': 'seckill', '限时抢购': 'flash' }" @change="changeQuery"></pg-button-group>
       <pg-search class="w-25 ml-20" placeholder="商品名称、活动名称" v-model="query.condition" clearable @change="changeQuery" />
       <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
     </div>
@@ -60,6 +61,12 @@
           <pg-column prop="title" title="商品名称" width="160px"></pg-column>
           <pg-column prop="act_title" title="所属活动" width="140px"></pg-column>
           <pg-column prop="act_date" title="活动日期" width="90px"></pg-column>
+          <pg-column prop="title" title="活动类型" width="100px">
+            <template v-slot="{row}">
+              <span v-if="row.act_type === 'flash'">限时抢购</span>
+              <span v-if="row.act_type === 'seckill'">秒杀</span>
+            </template>
+          </pg-column>
           <pg-column title="商品状态" width="70px" text-align="center">
             <template v-slot="{row}">
               <div class="d-flex justify-content-center align-items-center overflow-ellipsis">
@@ -163,7 +170,11 @@
           visible: false,
           type: 'modify',
           item: {}
-        }
+        },
+        actTypeList:[
+          {id: '限时抢购',value: 'flash'},
+          {id: '秒杀',value: 'seckill'},
+        ]
       }
     },
 

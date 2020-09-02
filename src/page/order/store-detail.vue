@@ -13,7 +13,7 @@
     <div class="row mt-10">
       <div class="col-4">实付金额：{{ item.item_amount ?  `¥${Handle.returnPrice(item.item_amount)}` : '-' }}</div>
       <div class="col-4">利润分成：{{ item.item_divide_amount ? `¥${Handle.returnPrice(item.item_divide_amount)}` : '-' }}</div>
-      <div class="col-4">自提点佣金：{{ item.commission_amount ? `¥${Handle.returnPrice(item.commission_amount)}` : '-' }}</div>
+      <div class="col-4">门店佣金：{{ item.commission_amount ? `¥${Handle.returnPrice(item.commission_amount)}` : '-' }}</div>
     </div>
 
     <h4 class="mt-20">商品信息</h4>

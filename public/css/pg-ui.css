@@ -5723,13 +5723,9 @@ template {
     border-color: #505b65;
     color: #505b65;
     caret-color: #ffffff; }
-    .pg-nav-service-panel--inner .pg-form-control ::-webkit-input-placeholder {
-      color: #505b65; }
     .pg-nav-service-panel--inner .pg-form-control ::-moz-placeholder {
       color: #505b65; }
     .pg-nav-service-panel--inner .pg-form-control :-ms-input-placeholder {
-      color: #505b65; }
-    .pg-nav-service-panel--inner .pg-form-control ::-ms-input-placeholder {
       color: #505b65; }
     .pg-nav-service-panel--inner .pg-form-control ::placeholder {
       color: #505b65; }
@@ -6612,22 +6608,12 @@ ul.pg-radio-group {
     .pg-form-control.disabled:active,
     .pg-form-control :disabled:active {
       pointer-events: none; }
-  .pg-form-control ::-webkit-input-placeholder {
-    color: #888;
-    -webkit-user-select: none;
-            user-select: none;
-    font-size: 12px; }
   .pg-form-control ::-moz-placeholder {
     color: #888;
     -moz-user-select: none;
          user-select: none;
     font-size: 12px; }
   .pg-form-control :-ms-input-placeholder {
-    color: #888;
-    -ms-user-select: none;
-        user-select: none;
-    font-size: 12px; }
-  .pg-form-control ::-ms-input-placeholder {
     color: #888;
     -ms-user-select: none;
         user-select: none;

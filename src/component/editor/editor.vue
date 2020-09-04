@@ -66,7 +66,7 @@
       CKEDITOR && CKEDITOR.on('instanceReady', this.instanceReady);
     },
 
-    beforeDestory() {
+    beforeDestroy() {
       CKEDITOR && CKEDITOR.instances.ckeditor && CKEDITOR.instances.ckeditor.destroy();
     },
 

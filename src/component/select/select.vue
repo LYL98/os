@@ -31,7 +31,7 @@
     </pg-input>
 
     <div class="dropdown-box" slot="content" :style="`width: ${popperWidth};`">
-      <div class="filter-feedback" v-if="list.length <= 0 || noResults">没有符合条件的结果..</div>
+      <div class="filter-feedback" v-if="list.length <= 0 || noResults">暂无结果..</div>
 
       <ul class="dropdown-list">
         <slot></slot>

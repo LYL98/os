@@ -37,7 +37,7 @@
     mounted() {
       this.updateOptions();
     },
-    beforeDestory() {
+    beforeDestroy() {
       this.destoryOptions();
     },
 

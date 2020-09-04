@@ -90,7 +90,7 @@
       disabled: { type: Boolean, default: false },
       height: { type: String, default: '202px' },
       selectedTableWidth: { type: String, default: '' }
-      // singleRemove: { type: Boolean, default: true }
+      // singleRemove: { type: Boolean, default: true } 单项移除 与 多选移除 存在交互上的冲突，暂时屏蔽
     },
     model: {
       prop: 'value',

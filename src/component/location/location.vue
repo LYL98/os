@@ -69,6 +69,12 @@
 
   const ICON_CENTER_POINT = require("./center.png");
 
+  const loadConfig = {
+    "key": "fc4a17b0d84178585e6aae0c3fe18270", // 申请好的Web端开发者Key，首次调用 load 时必填
+    "version": "1.4.15",  // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+    "plugins": ['AMap.Geocoder', 'AMap.PlaceSearch', 'AMap.ToolBar', 'AMap.Scale'], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+  };
+
   const debounce = function(func, wait) {
     let timeout;
 
@@ -207,12 +213,7 @@
           config.center = [location.lng, location.lat];
         }
 
-        AMapLoader.load({
-          "key": "fc4a17b0d84178585e6aae0c3fe18270",              // 申请好的Web端开发者Key，首次调用 load 时必填
-          "version": "2.0",   // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
-          "plugins": ['AMap.Geocoder', 'AMap.PlaceSearch', 'AMap.ToolBar', 'AMap.Scale', 'AMap.PolygonEditor', 'AMap.MouseTool'],          // 需要使用的的插件列表，如比例尺'AMap.Scale'等
-
-        }).then(AMap => {
+        AMapLoader.load(loadConfig).then(AMap => {
 
           this.map = new AMap.Map(id, config);
 

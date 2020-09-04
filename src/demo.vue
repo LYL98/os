@@ -20,11 +20,11 @@
         system_class_tree: {childs: []},
 
         center_geo: {
-          city_title: "",
-          lat: '',
-          lng: '',
-          poi: "",
-          province_title: "",
+          city_title: "深圳市",
+          lat: 22.72755,
+          lng: 113.90358,
+          poi: "菜鸟驿站(深圳公明田寮一巷8号店)",
+          province_title: "广东省"
         }
       }
     },

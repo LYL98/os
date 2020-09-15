@@ -162,7 +162,10 @@
         </div>
         <div class="col-6">
           <pg-form-item label="库位序号">
-            <pg-input type="number" v-model="formData.location_num" placeholder="请输入库位序号"></pg-input>
+            、
+            <!--  signed 控制是否可以输入负值     decimal:1 只能输入一位小数、     decimal 或 decimal:2 只能输入两位小数 -->
+            <pg-input signed type="decimal:1" v-model="formData.location_num" placeholder="请输入库位序号"></pg-input>
+
           </pg-form-item>
         </div>
       </div>

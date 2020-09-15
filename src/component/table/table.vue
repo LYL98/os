@@ -9,7 +9,7 @@
 <!--            <i class="icon-arrow-right22"></i>-->
           </th>
           <th v-if="checkable" width="38px" class="px-5 text-center">
-            <pg-checkbox class="mr-0 ml-10" :value="checkedAll" @change="onCheckAllToggle"
+            <pg-checkbox class="mr-0 ml-10" v-if="checkallable" :value="checkedAll" @change="onCheckAllToggle"
                          :indeterminate="indeterminate"></pg-checkbox>
           </th>
           <th
@@ -154,6 +154,7 @@
       borderless: {type: Boolean, default: false},
       serialable: {type: Boolean, default: true},
       checkable: {type: Boolean, default: false},
+      checkallable: {type: Boolean, default: true}, // 是否显示全选的按钮
       disabledKeys: { type: Array, default() { return [] } },
       highlightRow: {type: Boolean, default: true},
       loading: {type: Boolean, default: false},

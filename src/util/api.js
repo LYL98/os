@@ -19,7 +19,7 @@ export default {
   commonItemList: api_prefix_juno + '/m/common/item/list', // 商品列表
   commonItemDetail: api_prefix_juno + '/m/common/item/detail', // 商品详情
   commonItemTagList: api_prefix_juno + '/m/common/item_tag/list', // 运营专区（即：商品标签）
-  commonDisplayClassList: api_prefix_juno + '/m/common/display_class/list', // 展示分类
+  commonDisplayClassList: api_prefix_vesta + '/m/common/display_class/list_new', // 展示分类
   commonDisplayClassTree: api_prefix_juno + '/common/display_class/list/tree', // 展示分类树形
   commonItemTagImageList: api_prefix_juno + '/m/common/tag_images/list', // 运营专区（即：商品标签）
   commonAftersaleRule: api_prefix_juno + '/common/aftersale/rule', // 运营专区（即：商品标签）

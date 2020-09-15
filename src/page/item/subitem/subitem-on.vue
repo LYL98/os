@@ -5,7 +5,7 @@
       <pg-cascader
         class="ml-20"
         style="width:200px;"
-        level='4'
+        level='2'
         :options="systemClassTree"
         v-model="query.system_class_code"
         @change="changeQuery"
@@ -21,6 +21,20 @@
           {{ item.title }}
         </pg-option>
       </pg-select>
+
+      <pg-cascader
+          class="ml-20"
+          style="width:200px;"
+          :level='2'
+          primary-key="id"
+          parent-key="parent_id"
+          :options="displayClassList"
+          v-model="query.display_class_id"
+          @change="changeQuery"
+          placeholder="按展示分类筛选"
+          clearable
+      />
+
       <pg-search class="w-25 ml-20" placeholder="商品编号、名称" clearable v-model="query.condition" @change="changeQuery"/>
       <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
 
@@ -206,6 +220,7 @@
       },
 
       changeQuery() {
+        console.log('this.$data.query.display_class_id', this.$data.query.display_class_id);
         this.$data.query.page = 1;
         this.subitemQuery();
       },

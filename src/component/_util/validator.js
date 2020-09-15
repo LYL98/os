@@ -66,7 +66,7 @@ const rules = {
   // 必须是数字
   number: {
     validate: function (v, n) {
-      return /^[0-9]*$/.test(v);;
+      return /^[0-9]*$/.test(v);
     },
     getMsg: function (l, n) {
       return l + '必须是整数';
@@ -76,10 +76,14 @@ const rules = {
   decimal: {
     validate: function (v, n) {
       n = isNaN(n[0]) ? 0 : Number(n[0]);
-      let s = '^(([1-9][0-9]*)|(([0]\\.\\d{1,' + n + '}|[1-9][0-9]*\\.\\d{0,' + n +
+      const s = '^(([1-9][0-9]*)|(([0]\\.\\d{1,' + n + '}|[1-9][0-9]*\\.\\d{0,' + n +
         '})))$';
-      console.log(new RegExp(s).test(v));
-      return  new RegExp(s).test(v) || (v + '') === '0';
+      let _v = v + '';
+      const minus_sign = _v.charAt(0);
+      if (minus_sign === '-') {
+        _v = _v.slice(1, _v.length);
+      }
+      return  new RegExp(s).test(_v) || (_v + '') === '0' || !_v;
     },
     getMsg: function (l, n) {
       return l + '必须是数字，且最多只能保留' + n[0] + '位小数';

@@ -1,4 +1,4 @@
-const local_env = 'devls';
+const local_env = 'testls';
 
 export const node_env = process.env.NODE_ENV;
 export const deploy_env = process.env.DEPLOY_ENV;

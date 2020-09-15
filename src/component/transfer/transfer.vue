@@ -2,7 +2,19 @@
   <div class="pg-transfer">
     <template v-if="!is_disabled">
       <div class="pg-transfer-table-wrapper unselected">
-        <pg-table :data="optionals" primary-key="value" placeholder="" :serialable="false" :highlight-row="false" :height="height" borderless checkable @selection="onSelectionAdd">
+        <pg-table
+            :data="optionals"
+            checkable
+            :checkallable="!limit || limit <= 0"
+            :disabled-keys="disabled_keys"
+            primary-key="value"
+            placeholder=""
+            :serialable="false"
+            :highlight-row="false"
+            :height="height"
+            borderless
+            @selection="onSelectionAdd"
+        >
           <slot name="unselected">
             <pg-column prop="label" :title="placeholder"></pg-column>
           </slot>
@@ -74,6 +86,7 @@
     props: {
       value: { type: Array, default: [] },
       placeholder: { type: String, default: '请选择' },
+      limit: { type: Number | String, defailt: 0, validator: v => !isNaN(v) }, // 最多选择几项
       data: {
         type: Array, 
         validator: v => v.length === 0 || v.every(d => d['label'] !== undefined && d['value'] !== undefined), 
@@ -121,6 +134,15 @@
       // 可以被选择的列表，不包含已经选中的。
       optionals() {
         return this.complete_data.filter(item => !this.$data.selectedList.some(d => d.value === item.value));
+      },
+
+      disabled_keys() {
+        const { limit } = this.$props;
+        const { addList, selectedList } = this.$data;
+        if (!limit) return [];
+        if ((addList.length + selectedList.length) < limit) return []; // 如果未达到选择数量限制
+
+        return this.optionals.filter(item => !addList.some(d => d.value === item.value)).map(item => item.value);
       },
     },
 
@@ -182,10 +204,15 @@
       },
 
       doSelect() {
-        this.$data.selectedList = [...this.$data.selectedList, ...this.$data.addList];
+        let selectedList = [...this.$data.selectedList, ...this.$data.addList];
+        const { limit } = this.$props;
+        if (limit && selectedList.length > limit) { // 判断是否有数量限制
+          selectedList = selectedList.slice(0, limit);
+        }
+        this.$data.selectedList = selectedList;
         this.$data.addList = [];
-        this.$emit('change', this.$data.selectedList.map(item => item.value));
-        this.$emit('selection', this.$data.selectedList);
+        this.$emit('change', selectedList.map(item => item.value));
+        this.$emit('selection', selectedList);
       },
 
       doRemove() {

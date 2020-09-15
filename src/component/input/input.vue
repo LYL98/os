@@ -47,7 +47,8 @@
       placeholder: {type: String, default: ''},
       size: {type: String, default: '', validator: v => !v || ['lg', 'base', 'sm'].includes(v)},
       value: {type: String | Number, default: ''},
-      type: {type: String, default: 'text', validator: v => ['text', 'password', 'number', 'decimal', 'phone'].includes(v)},
+      type: {type: String, default: 'text', validator: v => ['text', 'password', 'number', 'decimal:1', 'decimal:2', 'decimal', 'phone'].includes(v)},
+      signed: {type: Boolean, default: false}, // 当type === number 或 decimal类型时，是否允许输入负数
       autoFocus: {type: Boolean, default: false},
       readonly: {type: Boolean, default: false},
       disabled: {type: Boolean, default: false},
@@ -95,7 +96,7 @@
         return classnames;
       },
       inputType() {
-        if (['number', 'phone', 'decimal'].includes(this.$props.type)) {
+        if (['number', 'phone', 'decimal:1', 'decimal', 'decimal:2'].includes(this.$props.type)) {
           return 'text';
         }
         return this.$props.type;
@@ -126,22 +127,38 @@
 
       onChange() {
         let ev = this.$data.ev + '';
-        if (!!ev.trim()) {
-          switch (this.$props.type) {
-            case 'number':
-            case 'phone':
-              if (!/^[0-9]*$/.test(ev)) {
-                ev = ev.replace(/[^\d]/g,"");
-              }
-              break;
-            case 'decimal':
-              if (!/^(([1-9][0-9]*)|([0]\.\d{1,2}|[1-9][0-9]*\.\d{0,2}))$/.test(ev)) {
-                ev = ev.replace(/[^\d.]/g,"");
-                ev = ev.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
-              }
-              break;
+        const { signed } = this.$props;
+
+        let minus_sign = '';
+
+        if (signed) {
+          minus_sign = ev.charAt(0);
+          if (minus_sign === '-') {
+            ev = ev.slice(1, ev.length);
+          } else {
+            minus_sign = '';
           }
         }
+
+        switch (this.$props.type) {
+          case 'number':
+          case 'phone':
+            ev = ev.replace(/[^\d]/g,"");
+            break;
+          case 'decimal:1':
+            ev = ev.replace(/[^\d.]/g,"");
+            ev = ev.replace(/^(\-)*(\d+)\.(\d).*$/, '$1$2.$3');;
+            break;
+          case 'decimal':
+          case 'decimal:2':
+            ev = ev.replace(/[^\d.]/g,"");
+            ev = ev.replace(/^(\-)*(\d+)\.(\d\d).*$/,'$1$2.$3');
+            break;
+          default:
+            break;
+        }
+
+        ev = minus_sign + ev;
         this.$data.ev = ev;
         this.$emit('change', ev);
       },

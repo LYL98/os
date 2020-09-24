@@ -226,6 +226,7 @@
         immediate: true,
         handler(next, prev) {
           this.$data.checkedList = [];
+          this.$emit('selection', []);
           if (Array.isArray(next) && this.$props.expandAll) {
             this.$data.expand_indexs = [...new Array(next && next.length || 0).keys()];
           } else {

@@ -9,6 +9,10 @@ let CATCHE_POSTED_LIST = []; // 缓存 post api 请求 的列表 { url: string, 
 const THROTTLE_INTERVAL = 2000; // 防抖时间间隔，单位毫秒
 
 const configuration = function (config) {
+  if (!config) {
+    config = {};
+  }
+
   let handleError = true;
   let throttle = config.method === 'post'; // post 请求时，节流开关默认打开
 
@@ -20,7 +24,9 @@ const configuration = function (config) {
     throttle = config.throttle;
   }
 
-  return {handleError, throttle};
+  const contentType = config.contentType;
+
+  return {handleError, throttle, contentType};
 };
 
 const _interce = axios.create({
@@ -35,7 +41,7 @@ const _interce = axios.create({
 // 请求拦截器
 _interce.interceptors.request.use(config => {
 
-  const {throttle, handleError} = configuration(config);
+  const {throttle, handleError, contentType} = configuration(config);
 
   if (throttle) {
     let posted = CATCHE_POSTED_LIST.find(item => item.url === config.url);
@@ -58,6 +64,10 @@ _interce.interceptors.request.use(config => {
       posted = {url: config.url, latest_timestamp: new Date().getTime()};
       CATCHE_POSTED_LIST.push(posted);
     }
+  }
+
+  if (contentType) {
+    config.headers.common['Content-Type'] = contentType;
   }
 
   if (osConfig().jwt_token) {

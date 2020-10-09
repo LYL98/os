@@ -5,6 +5,7 @@
       :username="userInfo.realname"
       @logout="handleLogout"
       @jump="handleJump"
+      @created="handleRoutes"
     />
 
     <div class="page-content" v-if="complete">
@@ -182,6 +183,10 @@
           JSON.stringify({ type: 'remove', key: oauth_token_key }),
           '*'
         );
+      },
+
+      handleRoutes(routes) {
+        console.log('routes: ', routes);
       },
 
       handleJump(item) {

@@ -9,6 +9,7 @@ let config = {
   origin_gylref: '',
   origin_bsc: '',
   origin_sc: '',
+  origin_cw: '',
   origin_cls: '',
   auth: {},
   env: '',
@@ -37,6 +38,7 @@ export const init = (options) => {
     origin_gylref: `https://gylref${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_bsc: `https://bsc${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_sc: `https://sc${env === 'pro' ? '' : env}.pgyscm.com`,
+    origin_cw: `https://sc${env === 'pro' ? '' : env}.pgyscm.com`,
     origin_cls: `https://cls${env === 'pro' ? '' : env}.pgyscm.com`,
   };
 };
@@ -53,6 +55,7 @@ export const destory = () => {
     origin_gylref: '',
     origin_bsc: '',
     origin_sc: '',
+    origin_cw: '',
     origin_cls: '',
     auth: {},
     env: '',

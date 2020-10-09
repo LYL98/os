@@ -26,72 +26,30 @@
           <div class="pg-nav-service-panel" slot="content">
             <div class="pg-nav-service-panel--inner pg-panel-animation">
               <div class="menu-list-all">
-                <div class="menu-area-col" v-for="route in routes.gyl" :key="route.value">
-                  <div class="menu-area">
-                    <div class="menu-area-tit">
-                      <svg width="16" height="16">
-                        <g fill="none" fill-rule="evenodd">
-                          <path d="M0 0h16v16H0z" />
-                          <path
-                              d="M3.281 5L8 2.304 12.719 5 8 7.696 3.281 5zM8 0L1 4v8l3.027 1.73a3.968 3.968 0 01.642-1.937L3 10.839V7.143L8 10l5-2.857v3.696l-3.416 1.953A1.989 1.989 0 008 12a2 2 0 000 4c.729 0 1.361-.395 1.71-.978L15 12V4L8 0z"
-                              fill="#888"
-                              fill-rule="nonzero"
-                          />
-                        </g>
-                      </svg>
-                      <span>{{ route.label }}</span>
-                    </div>
-                    <div class="menu-area-con">
-                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
-                        <span>{{ item.label }}</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="menu-area-col" v-for="route in routes.bsc" :key="route.value">
-                  <div class="menu-area">
-                    <div class="menu-area-tit">
-                      <svg width="16" height="16">
-                        <g fill="none" fill-rule="evenodd">
-                          <path d="M0 0h16v16H0z" />
-                          <path
-                            d="M3.281 5L8 2.304 12.719 5 8 7.696 3.281 5zM8 0L1 4v8l3.027 1.73a3.968 3.968 0 01.642-1.937L3 10.839V7.143L8 10l5-2.857v3.696l-3.416 1.953A1.989 1.989 0 008 12a2 2 0 000 4c.729 0 1.361-.395 1.71-.978L15 12V4L8 0z"
-                            fill="#888"
-                            fill-rule="nonzero"
-                          />
-                        </g>
-                      </svg>
-                      <span>{{ route.label }}</span>
-                    </div>
-                    <div class="menu-area-con">
-                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
-                        <span>{{ item.label }}</span>
-                      </a>
+                <template v-for="client in ['gyl', 'sc', 'cls', 'cw', 'bsc']">
+                  <div class="menu-area-col" v-for="route in routes[client]" :key="route.value">
+                    <div class="menu-area">
+                      <div class="menu-area-tit">
+                        <svg width="16" height="16">
+                          <g fill="none" fill-rule="evenodd">
+                            <path d="M0 0h16v16H0z" />
+                            <path
+                                d="M3.281 5L8 2.304 12.719 5 8 7.696 3.281 5zM8 0L1 4v8l3.027 1.73a3.968 3.968 0 01.642-1.937L3 10.839V7.143L8 10l5-2.857v3.696l-3.416 1.953A1.989 1.989 0 008 12a2 2 0 000 4c.729 0 1.361-.395 1.71-.978L15 12V4L8 0z"
+                                fill="#888"
+                                fill-rule="nonzero"
+                            />
+                          </g>
+                        </svg>
+                        <span>{{ route.label }}</span>
+                      </div>
+                      <div class="menu-area-con">
+                        <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
+                          <span>{{ item.label }}</span>
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div class="menu-area-col" v-for="route in routes.cls" :key="route.value">
-                  <div class="menu-area">
-                    <div class="menu-area-tit">
-                      <svg width="16" height="16">
-                        <g fill="none" fill-rule="evenodd">
-                          <path d="M0 0h16v16H0z" />
-                          <path
-                            d="M3.281 5L8 2.304 12.719 5 8 7.696 3.281 5zM8 0L1 4v8l3.027 1.73a3.968 3.968 0 01.642-1.937L3 10.839V7.143L8 10l5-2.857v3.696l-3.416 1.953A1.989 1.989 0 008 12a2 2 0 000 4c.729 0 1.361-.395 1.71-.978L15 12V4L8 0z"
-                            fill="#888"
-                            fill-rule="nonzero"
-                          />
-                        </g>
-                      </svg>
-                      <span>{{ route.label }}</span>
-                    </div>
-                    <div class="menu-area-con">
-                      <a v-for="item in route.childs" :key="item.value" @click="handleJump(item)">
-                        <span>{{ item.label }}</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
+                </template>
               </div>
             </div>
           </div>
@@ -111,7 +69,7 @@
             </div>
           </pg-popper>
         </div>
-        <div class="pg-nav-item" v-for="(route, index) in routes.bsc" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
+        <div class="pg-nav-item" v-for="(route, index) in routes.sc" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
           <pg-popper auto-close trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
@@ -124,7 +82,33 @@
             </div>
           </pg-popper>
         </div>
-        <div class="pg-nav-item" v-for="(route, index) in routes.cls" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
+        <div class="pg-nav-item" v-for="(route, index) in routes.cls" :key="route.value" :class="index === 0 ? '' : ''">
+          <pg-popper auto-close trigger="hover" placement="bottom-start">
+            <a class="nav">
+              <span>{{ route.label }}</span>
+              <i class="icon-arrow-down12 text-light"></i>
+            </a>
+            <div class="pg-nav-subitem-panel" slot="content">
+              <div class="pg-nav-subitem-panel--inner">
+                <a v-for="item in route.childs" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+              </div>
+            </div>
+          </pg-popper>
+        </div>
+        <div class="pg-nav-item" v-for="(route, index) in routes.cw" :key="route.value" :class="index === 0 ? 'ml-20 pl-10 pg-nav-shortcut' : ''">
+          <pg-popper auto-close trigger="hover" placement="bottom-start">
+            <a class="nav">
+              <span>{{ route.label }}</span>
+              <i class="icon-arrow-down12 text-light"></i>
+            </a>
+            <div class="pg-nav-subitem-panel" slot="content">
+              <div class="pg-nav-subitem-panel--inner">
+                <a v-for="item in route.childs" @click="handleJump(item)" :key="item.value">{{ item.label }}</a>
+              </div>
+            </div>
+          </pg-popper>
+        </div>
+        <div class="pg-nav-item" v-for="(route, index) in routes.bsc" :key="route.value" :class="index === 0 ? '' : ''">
           <pg-popper auto-close trigger="hover" placement="bottom-start">
             <a class="nav">
               <span>{{ route.label }}</span>
@@ -220,7 +204,7 @@ export default {
   },
 
   created() {
-    const { auth, origin_yy, origin_gyl, origin_bsc, origin_sc, origin_cls, nav_router_api } = osConfig();
+    const { auth, origin_yy, origin_gyl, origin_bsc, origin_sc, origin_cw, origin_cls, nav_router_api } = osConfig();
     const authorization = (list, prefix) => {
       return list
         .map((item) => {
@@ -239,11 +223,12 @@ export default {
 
         const yy = authorization(routes.filter(item => item.client === 'yy'), origin_yy);
         const gyl = authorization(routes.filter(item => item.client === 'gyl'), origin_gyl);
-        const cls = authorization(routes.filter(item => item.client === 'cls'), origin_cls);
-        const bsc = authorization(routes.filter(item => item.client === 'bsc'), origin_bsc);
         const sc = authorization(routes.filter(item => item.client === 'sc'), origin_sc);
+        const cls = authorization(routes.filter(item => item.client === 'cls'), origin_cls);
+        const cw = authorization(routes.filter(item => item.client === 'cw'), origin_cw);
+        const bsc = authorization(routes.filter(item => item.client === 'bsc'), origin_bsc);
 
-        routes = { yy, gyl, bsc: [...bsc, ...sc], cls };
+        routes = { yy, gyl, sc, cls, cw, bsc };
         this.$data.routes = routes;
         this.$emit('created', routes);
       });

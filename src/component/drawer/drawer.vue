@@ -48,6 +48,7 @@
             // document.body.style.overflowY = "hidden";
             this.onOpen();
           } else {
+            // document.body.style.overflowY = "auto";
             this.onClose();
           }
         }

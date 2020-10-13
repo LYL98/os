@@ -30,7 +30,7 @@ const configuration = function (config) {
 };
 
 const _interce = axios.create({
-  timeout: 10000,
+  timeout: 30000,
   withCredentials: true,
   responseType: 'json',
   headers: {

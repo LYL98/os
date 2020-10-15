@@ -178,14 +178,7 @@
     },
     computed: {
       route_search_options() {
-        const { routes, auth, origin_yy, origin_bsc, origin_cls } = pgyos.osConfig();
-        return [
-          ...routes.bsc.map(d => d.items.map(item => ({ label: item.title, value: item.permission_code, url: origin_bsc + '/#' + item.url }))),
-          ...routes.cls.map(d => d.items.map(item => ({ label: item.title, value: item.permission_code, url: origin_cls + '/#' + item.url }))),
-          ...routes.yy.map(d => d.items.map(item => ({ label: item.title, value: item.permission_code, url: origin_yy + '/#' + item.url }))),
-        ].reduce((prev, current) => {
-          return [ ...prev, ...current ];
-        }, []).filter(item => auth.isAdmin || auth[item.value]);
+        return [];
       }
     },
 

@@ -5,11 +5,11 @@
       :username="userInfo.realname"
       @logout="handleLogout"
       @jump="handleJump"
-      @created="handleRoutes"
+      @notification="handleNotification"
     />
 
     <div class="page-content" v-if="complete">
-      <pg-sidebar title="零售中心" :current-path="currentPath" :routes="sidebar_routes"/>
+      <pg-sidebar :title="sidebar_routes.title" :current-path="currentPath" :routes="sidebar_routes.items"/>
       <router-view />
     </div>
 
@@ -23,7 +23,7 @@
 </template>
 <script>
 
-  import pgyos from '@/pgyos.entry';
+  import pgyos from './pgyos.entry';
   import {
     node_env,
     env,
@@ -49,6 +49,10 @@
         complete: false,
         windowHeight: 600,
         oauth_token_page: '',
+
+        notification: {
+          check: () => {}
+        }
       }
     },
     watch: {
@@ -60,6 +64,9 @@
       }
     },
     computed: {
+      cos_tenctent_path() {
+        return pgyos.osConfig().cos_tenctent_path;
+      },
       auth() {
         const userInfo = this.$data.userInfo;
 
@@ -74,38 +81,113 @@
         return d;
       },
       sidebar_routes() {
-        let d = [
-          {name: '商品库', icon: 'icon-file-text', code: 'ClsItemPitem', path: '/item/pitem'},
-          {name: '货架商品', icon: 'icon-bookmark4', code: 'ClsItemSubitem', path: '/item/subitem'},
-          {name: '商品库存', icon: 'icon-bookmark3', code: 'ClsItemStock', path: '/item/stock'},
-          {name: '门店现货商品', icon: 'icon-bookmarks', code: 'ClsItemStoreitem', path: '/item/storeitem'},
-          {name: '货架商品属性', icon: 'icon-color-sampler', code: 'ClsItemProperty', path: '/item/property'},
-          { group: true, title: '营销活动', codes: ['ClsActivitySeckill', 'ClsActivityCoupon'] },
-          {name: '秒杀/限时抢购', icon: 'icon-rocket', code: 'ClsActivitySeckill', path: '/activity/seckill'},
-          {name: '优惠券', icon: 'icon-cash2', code: 'ClsActivityCoupon', path: '/activity/coupon'},
-          { group: true, title: '用户管理', codes: ['ClsUserStore', 'ClsUserPromoter', 'ClsUserMember'] },
-          {name: '零售门店', icon: 'icon-home2', code: 'ClsUserStore', path: '/user/store'},
-          {name: '推广者', icon: 'icon-vcard', code: 'ClsUserPromoter', path: '/user/promoter'},
-          {name: '消费者', icon: 'icon-user', code: 'ClsUserMember', path: '/user/member'},
-          { group: true, title: '订单管理', codes: ['ClsOrderUser', 'ClsOrderStore'] },
-          {name: '用户订单', icon: 'icon-browser', code: 'ClsOrderUser', path: '/order/user'},
-          {name: '门店订单', icon: 'icon-windows2', code: 'ClsOrderStore', path: '/order/store'},
-          {name: '门店现货订单', icon: 'icon-store', code: 'ClsOrderStoresale', path: '/order/store-sale'},
-          {name: '售后单', icon: 'icon-stack', code: 'ClsOrderAftersale', path: '/order/after-sale'},
-          { group: true, title: '财务管理', codes: ['ClsFinancePromoterWithdraw'] },
-          {name: '推广者提现', icon: 'icon-coin-yen', code: 'ClsFinancePromoterWithdraw', path: '/finance/promoter-withdraw'},
-          {name: '门店提现', icon: 'icon-cash', code: 'ClsFinanceStoreWithdraw', path: '/finance/store-withdraw'},
-          { group: true, title: '设置', codes: ['ClsSettingBanner', 'ClsSettingOperation'] },
-          {name: '首页管理', icon: 'icon-width', code: 'ClsSettingBanner', path: '/setting/banner'},
-          {name: '区域运营设置', icon: 'icon-cog', code: 'ClsSettingOperation', path: '/setting/operation'},
+        let routes = [
+          {
+            title: '商城',
+            items: [
+              {name: '货架商品', icon: 'icon-cube3', code: 'ItemListMain', path: '/item/list'},
+              {name: '货架商品属性', icon: 'icon-cube2', code: 'ItemListPropertyMain', path: '/item/property'},
+              {name: '每日报价', icon: 'icon-dots', code: 'ItemPricing', path: '/item/pricing'},
+              {name: '客户提报', icon: 'icon-truck', code: 'AdvicedItemQuery', path: '/item/customer/advice'},
+
+              { group: true, title: '营销活动', codes: ['MarketingScopePromotionQuery', 'BscActivityCoupon', 'MarketingStrategyCity', 'MarketingStrategyStep', 'LiveManage'] },
+              {name: '全场营销', icon: 'icon-megaphone', code: 'MarketingScopePromotionQuery', path: '/activity/scope'},
+              {name: '优惠券', icon: 'icon-cash2', code: 'BscActivityCoupon', path: '/activity/coupon'},
+              {name: '县域定价', icon: 'icon-align-bottom', code: 'MarketingStrategyCity', path: '/activity/city-price'},
+              {name: '阶梯定价', icon: 'icon-equalizer', code: 'MarketingStrategyStep', path: '/activity/step-price'},
+              {name: '直播管理', icon: 'icon-play', code: 'LiveManage', path: '/activity/live'},
+
+              { group: true, title: '商户管理', codes: ['MerchantMain', 'MerchantLocation', 'MerchantPropertyMain', 'BscMerchantVip', 'BscMerchantBlacklist'] },
+              {name: '商户', icon: 'icon-home', code: 'MerchantMain', path: '/merchant'},
+              {name: '商户地图', icon: 'icon-map4', code: 'MerchantLocation', path: '/merchant/amap'},
+              {name: '商户属性', icon: 'icon-bookmarks', code: 'MerchantPropertyMain', path: '/merchant/property'},
+              {name: '会员等级', icon: 'icon-vcard', code: 'BscMerchantVip', path: '/merchant/vip'},
+              {name: '黑名单', icon: 'icon-user-lock', code: 'BscMerchantBlacklist', path: '/merchant/blacklist'},
+
+              { group: true, title: '订单管理', codes: ['OrderList', 'OrderAfterSale', 'OrderSaleBackQuery'] },
+              {name: '用户订单', icon: 'icon-browser', code: 'OrderList', path: '/order/user'},
+              {name: '售后单', icon: 'icon-stack', code: 'OrderAfterSale', path: '/order/after-sale'},
+              {name: '退货单', icon: 'icon-stack4', code: 'OrderSaleBackQuery', path: '/order/return'},
+
+              { group: true, title: '设置', codes: ['Banner', 'BscSettingOperation'] },
+              {name: 'Banner管理', icon: 'icon-width', code: 'Banner', path: '/setting/banner'},
+              {name: '运营设置', icon: 'icon-cog', code: 'BscSettingOperation', path: '/setting/operation'},
+            ]
+          },
+          {
+            title: '财务',
+            items: [
+              {name: '客户财务管理', icon: 'icon-clapboard', code: 'FinanceBalanceQuery', path: '/finance/balance'},
+              {name: '财务审核', icon: 'icon-design', code: 'FinanceApproveQuery', path: '/finance/approve'},
+              {name: '供应商流水', icon: 'icon-quill2', code: 'FinanceSBDetail', path: '/finance/sup-bdetail'},
+              {name: '供应商对账单', icon: 'icon-newspaper', code: 'FinanceSStatement', path: '/finance/sup-bill'},
+            ]
+          },
+
         ];
-        if (this.auth.isAdmin) return d;
-        return d.filter(item => {
-          if (item.group) {
-            return Array.isArray(item.codes) && item.codes.some(code => this.auth[code]);
+        let data = routes[0];
+
+        for (let i = 1; i < routes.length; i++) {
+          if (routes[i] && routes[i].items.some(item => item.path === this.currentPath)) {
+            data = routes[i];
           }
-          return this.auth[item.code]
-        });
+        }
+
+        if (this.auth.isAdmin) return data;
+        return {
+          title: data.title,
+          items: data.items.filter(item => {
+            if (item.group) {
+              return Array.isArray(item.codes) && item.codes.some(code => this.auth[code]);
+            }
+            return this.auth[item.code]
+          })
+        };
+
+        // let d = [
+        //   // { group: true, title: '商品', codes: ['ItemListMain', 'ItemListPropertyMain','ItemPricing','AdvicedItemQuery'] },
+        //   {name: '货架商品', icon: 'icon-cube3', code: 'ItemListMain', path: '/item/list'},
+        //   {name: '货架商品属性', icon: 'icon-cube2', code: 'ItemListPropertyMain', path: '/item/property'},
+        //   {name: '每日报价', icon: 'icon-dots', code: 'ItemPricing', path: '/item/pricing'},
+        //   {name: '客户提报', icon: 'icon-truck', code: 'AdvicedItemQuery', path: '/item/customer/advice'},
+        //
+        //   { group: true, title: '营销活动', codes: ['MarketingScopePromotionQuery', 'BscActivityCoupon', 'MarketingStrategyCity', 'MarketingStrategyStep', 'LiveManage'] },
+        //   {name: '全场营销', icon: 'icon-megaphone', code: 'MarketingScopePromotionQuery', path: '/activity/scope'},
+        //   {name: '优惠券', icon: 'icon-cash2', code: 'BscActivityCoupon', path: '/activity/coupon'},
+        //   {name: '县域定价', icon: 'icon-align-bottom', code: 'MarketingStrategyCity', path: '/activity/city-price'},
+        //   {name: '阶梯定价', icon: 'icon-equalizer', code: 'MarketingStrategyStep', path: '/activity/step-price'},
+        //   {name: '直播管理', icon: 'icon-play', code: 'LiveManage', path: '/activity/live'},
+        //
+        //   { group: true, title: '商户管理', codes: ['MerchantMain', 'MerchantPropertyMain', 'BscMerchantVip', 'BscMerchantBlacklist'] },
+        //   {name: '商户', icon: 'icon-home', code: 'MerchantMain', path: '/merchant'},
+        //   {name: '商户属性', icon: 'icon-bookmarks', code: 'MerchantPropertyMain', path: '/merchant/property'},
+        //   {name: '会员等级', icon: 'icon-vcard', code: 'BscMerchantVip', path: '/merchant/vip'},
+        //   {name: '黑名单', icon: 'icon-user-lock', code: 'BscMerchantBlacklist', path: '/merchant/blacklist'},
+        //
+        //   { group: true, title: '订单管理', codes: ['OrderList', 'OrderAfterSale', 'OrderSaleBackQuery'] },
+        //   {name: '用户订单', icon: 'icon-browser', code: 'OrderList', path: '/order/user'},
+        //   {name: '售后单', icon: 'icon-stack', code: 'OrderAfterSale', path: '/order/after-sale'},
+        //   {name: '退货单', icon: 'icon-stack4', code: 'OrderSaleBackQuery', path: '/order/return'},
+        //
+        //   { group: true, title: '财务管理', codes: ['FinanceBalanceQuery', 'FinanceApproveQuery', 'FinanceSBDetail', 'FinanceSStatement'] },
+        //   {name: '客户财务管理', icon: 'icon-clapboard', code: 'FinanceBalanceQuery', path: '/finance/balance'},
+        //   {name: '财务审核', icon: 'icon-design', code: 'FinanceApproveQuery', path: '/finance/approve'},
+        //   {name: '供应商流水', icon: 'icon-quill2', code: 'FinanceSBDetail', path: '/finance/sup-bdetail'},
+        //   {name: '供应商对账单', icon: 'icon-newspaper', code: 'FinanceSStatement', path: '/finance/sup-bill'},
+        //
+        //   { group: true, title: '设置', codes: ['Banner', 'BscSettingOperation'] },
+        //   {name: 'Banner管理', icon: 'icon-width', code: 'Banner', path: '/setting/banner'},
+        //   {name: '运营设置', icon: 'icon-cog', code: 'BscSettingOperation', path: '/setting/operation'},
+        //
+        // ];
+        // if (this.auth.isAdmin) return d;
+        // return d.filter(item => {
+        //   if (item.group) {
+        //     return Array.isArray(item.codes) && item.codes.some(code => this.auth[code]);
+        //   }
+        //   return this.auth[item.code]
+        // });
+
       }
     },
     created() {
@@ -185,13 +267,14 @@
         );
       },
 
-      handleRoutes(routes) {
-        console.log('routes: ', routes);
-      },
-
       handleJump(item) {
         window.location.href = item.url;
-      }
+      },
+
+      handleNotification(notification) {
+        this.$data.notification = notification;
+      },
+
     },
   };
 </script>

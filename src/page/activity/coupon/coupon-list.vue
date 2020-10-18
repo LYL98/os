@@ -1,11 +1,13 @@
 <template>
   <div class="p-20">
     <div class="d-flex">
-      <pg-button-group v-model="query.coupon_type" :options="{ '全部': '', '满减': 'reduce', '满折': 'discount' }" @change="changeQuery"></pg-button-group>
+      <pg-button-group basis-auto v-model="query.coupon_type" :options="{ '全部': '', '商品券': 'goods', '运费券': 'delivery' }" @change="changeQuery"></pg-button-group>
+      <pg-button-group class="ml-20" v-model="query.discount_type" :options="{ '全部': '', '满减': 'reduce', '满折': 'discount', '满赠': 'gift' }" @change="changeQuery"></pg-button-group>
       <pg-search class="w-25 ml-20" placeholder="优惠券名称" v-model="query.condition" clearable @change="changeQuery" />
       <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
 
-      <pg-button class="ml-auto" color="primary" v-if="app.auth.isAdmin || app.auth.ClsActivityCouponAdd" @click="handleAddItem">新增</pg-button>
+      <pg-button class="ml-auto" color="primary" v-if="app.auth.isAdmin || app.auth.BscActivityCouponAdd" @click="handleAddItem('goods')">新增商品券</pg-button>
+      <pg-button class="ml-20" color="primary" v-if="app.auth.isAdmin || app.auth.BscActivityCouponAdd" @click="handleAddItem('delivery')">新增运费券</pg-button>
     </div>
     <div class="card mt-10">
       <div class="card-header font-weight-bolder">
@@ -25,46 +27,56 @@
           <template v-slot:expand-row="{row}">
             <div class="p-15">
               <div class="row">
-                <div class="col-2">
+                <div class="col-3">
                   优惠券编号：{{ row.code }}
                 </div>
                 <div class="col-3">
                   优惠券名称：{{ row.title }}
                 </div>
-                <div class="col-4">
-                  优惠内容：
-                  {{ !row.threshold_amount ? '无门槛' : `满${Handle.returnPrice(row.threshold_amount)}元` }}
-                  <span v-if="row.coupon_type === 'reduce'">减{{ Handle.returnPrice(row.reduce_amount) }}元</span>
-                  <span v-else-if="row.coupon_type === 'discount'">{{ Handle.returnDiscount(row.discount) }}折{{ row.max_dis_amt ? ` 减免上限${Handle.returnPrice(row.max_dis_amt)}元` : '' }}</span>
-                  <span v-else>-</span>
-                </div>
                 <div class="col-3">
                   创建时间：{{row.created || '-'}}
                 </div>
+                <div class="col-3">
+                  优惠内容：
+                  <span v-if="row.use_type === 'any'">无门槛</span>
+                  <span v-else-if="row.use_type === 'amount'">{{ `满${Handle.returnPrice(row.threshold)}元` }}</span>
+                  <span v-else-if="row.use_type === 'num'">{{ `满${row.threshold}件` }}</span>
+                  <span v-else-if="row.use_type === 'delivery_fee'">{{ `满${Handle.returnPrice(row.threshold)}元` }}</span>
+                  <span v-else>-</span>
+                  <span v-if="row.discount_type === 'reduce'">减{{ Handle.returnPrice(row.benefit) }}元</span>
+                  <span v-else-if="row.discount_type === 'discount'">{{ Handle.returnDiscount(row.benefit) }}折{{ row.max_dis_amt ? ` 减免上限${Handle.returnPrice(row.max_dis_amt)}元` : '' }}</span>
+                  <span v-else-if="row.discount_type === 'gift'">送赠品</span>
+                  <span v-else>-</span>
+                </div>
               </div>
               <div class="row mt-10">
-                <div class="col-2">
+                <div class="col-3">
                   审核人：{{row.auditor || '-'}}
                 </div>
                 <div class="col-3">
                   审核时间：{{row.audit_time || '-'}}
                 </div>
-                <div class="col-7">
+                <div class="col-6">
                   发放编号：{{Array.isArray(row.activity_codes) && row.activity_codes.length > 0 ? row.activity_codes.join(',') : '-'}}
                 </div>
               </div>
             </div>
           </template>
-          <pg-column prop="title" title="优惠券编号/名称" width="170px">
+          <pg-column prop="title" title="优惠券名称" width="170px">
             <template v-slot="{row}">
-              <a class="text-dark" @click="handleDetailItem(row)">{{ row.code }} / {{ row.title }}</a>
+              <a class="text-dark" @click="handleDetailItem(row)">{{ row.title }}</a>
             </template>
           </pg-column>
           <pg-column prop="coupon_type" title="优惠内容" width="180px">
             <template v-slot="{row}">
-              {{ !row.threshold_amount ? '无门槛' : `满${Handle.returnPrice(row.threshold_amount)}元` }}
-              <span v-if="row.coupon_type === 'reduce'">减{{ Handle.returnPrice(row.reduce_amount) }}元</span>
-              <span v-else-if="row.coupon_type === 'discount'">{{ Handle.returnDiscount(row.discount) }}折{{ row.max_dis_amt ? ` 减免上限${Handle.returnPrice(row.max_dis_amt)}元` : '' }}</span>
+              <span v-if="row.use_type === 'any'">无门槛</span>
+              <span v-else-if="row.use_type === 'amount'">{{ `满${Handle.returnPrice(row.threshold)}元` }}</span>
+              <span v-else-if="row.use_type === 'num'">{{ `满${row.threshold}件` }}</span>
+              <span v-else-if="row.use_type === 'delivery_fee'">{{ `满${Handle.returnPrice(row.threshold)}元` }}</span>
+              <span v-else>-</span>
+              <span v-if="row.discount_type === 'reduce'">减{{ Handle.returnPrice(row.benefit) }}元</span>
+              <span v-else-if="row.discount_type === 'discount'">{{ Handle.returnDiscount(row.benefit) }}折{{ row.max_dis_amt ? ` 减免上限${Handle.returnPrice(row.max_dis_amt)}元` : '' }}</span>
+              <span v-else-if="row.discount_type === 'gift'">送赠品</span>
               <span v-else>-</span>
             </template>
           </pg-column>
@@ -73,7 +85,7 @@
               <span v-if="row.date_type === 'fixed' && row.effective_date && row.expire_date">
                 {{row.effective_date}} ~ {{row.expire_date}}
               </span>
-              <span v-else-if="row.date_type === 'custom' && row.expire_days">
+              <span v-else-if="row.date_type === 'offset' && row.expire_days">
                 {{!!row.effective_days ? `领券${row.effective_days}天后生效` : '领券后立即生效' }}, 有效期{{row.expire_days}}天
               </span>
               <span v-else>-</span>
@@ -97,41 +109,41 @@
               <a
                 class="text-decoration-none mr-10"
                 @click="handleModifyItem(row)"
-                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponModify)"
+                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponModify)"
               >修改</a>
               <pg-confirm
                 help-text="确认审核通过该优惠券"
-                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponAudit)"
+                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponAudit)"
                 @confirm="handleAuditItem(row)"
               >
                 <a class="text-decoration-none mr-10">审核</a>
               </pg-confirm>
               <pg-confirm
                 help-text="确认删除该优惠券"
-                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponDelete)"
+                v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponDelete)"
                 @confirm="handleDeleteItem(row)"
               >
                 <a class="text-decoration-none mr-10">删除</a>
               </pg-confirm>
 
               <a class="text-decoration-none mr-10"
-                 v-if="row.status === 'effective' && (app.auth.isAdmin || app.auth.ClsActivityCouponIncreaseTotal)"
+                 v-if="row.status === 'effective' && (app.auth.isAdmin || app.auth.BscActivityCouponIncreaseTotal)"
                  @click="handleIncreaseItem(row)"
               >增加总量</a>
 
               <a class="text-decoration-none mr-10"
-                v-if="row.status === 'effective' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantAdd)"
+                v-if="row.status === 'effective' && (app.auth.isAdmin || app.auth.BscActivityCouponGrantAdd)"
                 @click="handleGrantItem(row)"
               >发放</a>
               <pg-confirm
                 help-text="确认作废该优惠券"
-                v-if="row.status === 'effective' && row.status !== '' && (app.auth.isAdmin || app.auth.ClsActivityCouponStop)"
+                v-if="row.status === 'effective' && row.status !== '' && (app.auth.isAdmin || app.auth.BscActivityCouponStop)"
                 @confirm="handleStopItem(row)"
               >
                 <a class="text-decoration-none mr-10">作废</a>
               </pg-confirm>
               <a class="text-decoration-none"
-                v-if="row.status !== 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponRecord)"
+                v-if="row.status !== 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponRecord)"
                 @click="handleRecordItem(row)"
               >领用明细</a>
             </template>
@@ -143,9 +155,27 @@
       </div>
     </div>
 
-    <pg-dialog v-model="dialog.visible" v-if="dialog.type === 'add' || dialog.type === 'modify'" :title="`${dialog.type === 'add' ? '新增' : '修改'}优惠券`">
-      <coupon-list-edit
-        v-if="dialog.visible"
+    <pg-dialog
+      v-model="dialog.visible"
+      v-if="dialog.coupon_type === 'goods' && (dialog.type === 'add' || dialog.type === 'modify')"
+      :title="`${dialog.type === 'add' ? '新增' : '修改'} 商品优惠券`"
+    >
+      <coupon-list-goods-edit
+        v-if="dialog.visible && dialog.coupon_type === 'goods'"
+        :type="dialog.type"
+        :item="dialog.item"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+    </pg-dialog>
+
+    <pg-dialog
+      v-model="dialog.visible"
+      v-if="dialog.coupon_type === 'delivery' && (dialog.type === 'add' || dialog.type === 'modify')"
+      :title="`${dialog.type === 'add' ? '新增' : '修改'} 运费优惠券`"
+    >
+      <coupon-list-delivery-edit
+        v-if="dialog.visible && dialog.coupon_type === 'delivery'"
         :type="dialog.type"
         :item="dialog.item"
         @submit="handleSubmit"
@@ -174,9 +204,22 @@
       />
     </pg-dialog>
 
-    <pg-drawer v-model="drawer.visible" v-if="drawer.type === 'detail'" :title="`${drawer.item.title} 详情`" width="730px">
-      <coupon-list-edit
-        v-if="drawer.visible"
+    <pg-drawer v-model="drawer.visible" v-if="drawer.type === 'detail'" :title="`${drawer.item.title} 详情`" width="800px">
+      <template slot="header">
+        <div class="d-flex align-items-center">
+          <h3 class="mb-0">{{ drawer.item.title }}</h3>
+          <div v-if="drawer.item" :class="`badge badge-sm badge-primary badge-outline ml-20`"
+          >{{ drawer.item.coupon_type === 'goods' ? '商品优惠券' : '运费优惠券' }}</div>
+        </div>
+      </template>
+
+      <coupon-list-goods-edit
+        v-if="drawer.visible && drawer.item.coupon_type === 'goods'"
+        :type="drawer.type"
+        :item="drawer.item"
+      />
+      <coupon-list-delivery-edit
+        v-if="drawer.visible && drawer.item.coupon_type === 'delivery'"
         :type="drawer.type"
         :item="drawer.item"
       />
@@ -194,14 +237,15 @@
 
   import { Http, Api, Handle, Constant } from '@/util';
 
-  import couponListEdit from './coupon-list-edit';
+  import couponListGoodsEdit from './coupon-list-goods-edit';
+  import couponListDeliveryEdit from './coupon-list-delivery-edit';
   import couponListRecord from './coupon-list-record';
   import couponGrantEdit from './coupon-grant-edit';
   import couponListIncreaseTotal from './coupon-list-increase-total';
 
   export default {
     name: 'coupon-list',
-    components: { couponListEdit, couponListRecord, couponGrantEdit, couponListIncreaseTotal },
+    components: { couponListGoodsEdit, couponListDeliveryEdit, couponListRecord, couponGrantEdit, couponListIncreaseTotal },
     inject: ['app'],
     data() {
       return {
@@ -210,6 +254,7 @@
           items: []
         },
         dialog: {
+          coupon_type: 'goods', // goods 商品券 | delivery 运费全
           visible: false,
           type: 'add',
           item: {}
@@ -243,6 +288,7 @@
         this.$data.query = {
           province_code: this.app.userInfo.province_code, // 省份
           coupon_type: '',
+          discount_type: '',
           status: '',
           condition: '',
           page: 1,
@@ -267,8 +313,8 @@
           });
       },
 
-      handleAddItem() {
-        this.$data.dialog = { visible: true, type: 'add', item: {} };
+      handleAddItem(coupon_type) {
+        this.$data.dialog = { coupon_type: coupon_type, visible: true, type: 'add', item: {} };
       },
 
       handleDetailItem(item) {
@@ -281,7 +327,7 @@
       handleModifyItem(item) {
         Http.get(Api.activityCouponDetail, { id: item.id})
           .then(res => {
-            this.$data.dialog = { visible: true, type: 'modify', item: res.data || {} };
+            this.$data.dialog = { coupon_type: item.coupon_type, visible: true, type: 'modify', item: res.data || {} };
           });
       },
 
@@ -302,7 +348,7 @@
       },
 
       handleIncreaseItem(item) {
-        this.$data.dialog = { visible: true, type: 'increase', item: item };
+        this.$data.dialog = { coupon_type: 'goods', visible: true, type: 'increase', item: item };
       },
 
       handleStopItem(item) {
@@ -314,7 +360,7 @@
       },
 
       handleGrantItem(item) {
-        this.$data.dialog = { visible: true, type: 'grant', item: item };
+        this.$data.dialog = { coupon_type: 'goods', visible: true, type: 'grant', item: item };
       },
 
       handleRecordItem(item) {
@@ -327,7 +373,7 @@
       },
 
       handleCancel() {
-        this.$data.dialog = { visible: false, type: 'add', item: {} };
+        this.$data.dialog = { coupon_type: 'goods', visible: false, type: 'add', item: {} };
       },
     }
 

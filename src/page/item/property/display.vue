@@ -1,34 +1,83 @@
 <template>
   <div>
 
-    <div class="d-flex mx-20 mt-20 mb-10">
-      <pg-button-group v-model="tree_expend" :options="{ '全部折叠': false, '全部展开': true }"></pg-button-group>
-      <div class="ml-auto">
-        <pg-button class="ml-20" color="primary" @click="handleAddTop" v-if="app.auth.isAdmin || app.auth.ClsItemPropertyDisplayAdd">新增一级分类</pg-button>
+    <div class="card mx-20 mb-10 mt-20">
+      <div class="card-header border-bottom-solid d-flex">
+          <div class="ml-auto my-10 mr-10" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassAdd">
+              <pg-button class="ml-20" color="primary" @click="handleAddItem(null)">新增一级展示分类</pg-button>
+          </div>
       </div>
-    </div>
-
-    <div class="card mx-20 py-20">
       <div class="card-body">
-        <pg-tree
-          :checkable="false"
-          :options="tree"
-          :expend="tree_expend"
+        <pg-table
+          fixed-header
+          :data="list"
+          primary-key="id"
+          borderless
+          expandAll
         >
-          <template v-slot="{node, level}">
-            <div class="pl-10">
-              <a class="ml-10" @click="handleAddItem(node)" v-if="level === 1 && (app.auth.isAdmin || app.auth.ClsItemPropertyDisplayAdd)">添加子类</a>
-              <a class="ml-10" @click="handleModifyItem(node)" v-if="app.auth.isAdmin || app.auth.ClsItemPropertyDisplayModify">编辑</a>
-              <a class="ml-10" @click="handleDeleteItem(node)" v-if="app.auth.isAdmin || app.auth.ClsItemPropertyDisplayDelete">删除</a>
-            </div>
+          <pg-column prop="title" title="名称" width="200"></pg-column>
+          <pg-column prop="rank" title="排序" width="150"></pg-column>
+          <pg-column prop="remark" title="备注" width="150">
+            <template v-slot="{row}">
+              <div class="pre">
+                {{row.remark || '-'}}
+              </div>
+            </template>
+          </pg-column>
+          <pg-column prop="created" title="创建时间" width="150"></pg-column>
+          <pg-column prop="" title="操作" width="140px">
+            <template v-slot="{row}">
+              <a class="mr-10 text-decoration-none" @click="handleAddItem(row)" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassAdd">添加子分类</a>
+              <a class="mr-10 text-decoration-none" @click="handleModifyItem(row)" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassEdit">修改</a>
+              <pg-confirm @confirm="handleDeleteItem(row)" help-text="确认删除该展示分类" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassDelete">
+                <a class="mr-10 text-decoration-none">删除</a>
+              </pg-confirm>
+            </template>
+          </pg-column>
+          <template v-slot:expand-row="{row}">
+            <pg-table
+                class=" p-15"
+                :data="row.childs"
+                primary-key="id"
+                borderless
+                :highlight-row="false"
+              >
+              <pg-column prop="title" title="名称" width="200"></pg-column>
+              <pg-column prop="rank" title="排序" width="150"></pg-column>
+              <pg-column prop="remark" title="备注" width="150">
+                <template v-slot="{row}">
+                  <div class="pre">
+                    {{row.remark || '-'}}
+                  </div>
+                </template>
+              </pg-column>
+              <pg-column prop="created" title="创建时间" width="150"></pg-column>
+              <pg-column prop="" title="" width="140px">
+                <template v-slot="{row}">
+                  <a class="mr-10 text-decoration-none" @click="handleModifyItem(row)" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassEdit">修改</a>
+                  <pg-confirm @confirm="handleShowDelete(row)" help-text="确认删除该展示分类" v-if="app.auth.isAdmin || app.auth.ItemDisplayClassDelete">
+                    <a class="mr-10 text-decoration-none">删除</a>
+                  </pg-confirm>
+                </template>
+              </pg-column>
+            </pg-table>
           </template>
-        </pg-tree>
+        </pg-table>
+      </div>
+      <div class="card-footer">
       </div>
     </div>
 
-    <pg-dialog :title="`${dialog.type === 'add' ? '新增' : '修改'}展示分类`" v-model="dialog.visible" width="600px">
-      <display-edit
-        v-if="dialog.visible"
+    <pg-dialog :title="dialog.title" v-model="dialog.visible" :width="dialog.type === 'delete' ? '700px' : '550px'">
+      <display-add-edit
+        v-if="dialog.visible && dialog.type !== 'delete'"
+        :type="dialog.type"
+        :item="dialog.item"
+        @submit="handleSubmit"
+        @cancel="handleCancel"
+      />
+      <display-delete
+        v-if="dialog.visible && dialog.type === 'delete'"
         :type="dialog.type"
         :item="dialog.item"
         @submit="handleSubmit"
@@ -42,26 +91,23 @@
 <script>
 
   import { Http, Api, Handle } from '@/util';
-  import displayEdit from './display-edit';
+  import displayAddEdit from './display-add-edit';
+  import displayDelete from './display-delete';
+
 
   export default {
     name: 'display',
-    components: {displayEdit},
+    components: {displayAddEdit,displayDelete},
     inject: ['app'],
     data() {
       return {
         query: {},
-        list: {
-          items: [],
-        },
-
-        tree: { childs: [] },
-        tree_expend: false,
-
+        list: [],
         dialog: {
-          type: 'top',
+          type: 'add',
           visible: false,
           item: {},
+          title:''
         },
       }
     },
@@ -78,7 +124,7 @@
     created() {
       this.Handle = Handle;
       this.initQuery();
-      this.displayClassTree();
+      this.basicdataDisplayClassList();
     },
 
     methods: {
@@ -89,51 +135,57 @@
       },
 
       changeQuery() {
-        this.displayClassTree();
+        this.$data.query.page = 1;
+        this.basicdataDisplayClassList();
       },
 
       resetQuery() {
         this.initQuery();
-        this.displayClassTree();
+        this.basicdataDisplayClassList();
       },
 
-      displayClassTree() {
-        Http.get(Api.displayClassTree, this.$data.query)
+      basicdataDisplayClassList() {
+        Http.get(Api.basicdataDisplayClassList, this.$data.query)
           .then(res => {
-
-            this.$data.tree = { childs: res.data || [] };
+            this.$data.list = res.data || []
           });
       },
 
-      handleAddTop() {
-        this.$data.dialog = { type: 'top', visible: true, item: {} };
-      },
-
-      handleAddItem(item) {
-        console.log('item', item);
-        this.$data.dialog = { type: 'add', visible: true, item: item };
+      handleAddItem(item={}) {
+        this.$data.dialog = { type: 'add', visible: true, item: item || {}, title: '新增展示分类' };
       },
 
       handleModifyItem(item) {
-        this.$data.dialog = { type: 'modify', visible: true, item: item };
+        this.$data.dialog = { type: 'modify', visible: true, item: item ,title: '修改展示分类'};
       },
-
+      //删除一级分类
       handleDeleteItem(item) {
-        if (!window.confirm("确定删除该展示分类?")) return;
-        Http.post(Api.displayClassDelete, { id: item.id })
+        Http.post(Api.basicdataDisplayClassDelete, { id: item.id })
           .then(() => {
             this.$toast({ type: 'success', message: '展示分类删除成功' });
-            this.displayClassTree();
+            this.basicdataDisplayClassList();
           });
+      },
+      //删除二级分类
+      handleShowDelete(item){
+        if(item.is_bind_item === false){
+          Http.post(Api.basicdataDisplayClassDelete, { id: item.id })
+          .then(() => {
+            this.$toast({ type: 'success', message: '展示分类删除成功' });
+            this.basicdataDisplayClassList();
+          });
+        }else{
+            this.$data.dialog = { type: 'delete', visible: true, item: item ,title: `删除 "${item.title}" 分类`};
+        }
       },
 
       handleSubmit() {
         this.handleCancel();
-        this.displayClassTree();
+        this.basicdataDisplayClassList();
       },
 
       handleCancel() {
-        this.$data.dialog = { type: 'top', visible: false, item: {} };
+        this.$data.dialog = { type: 'add', visible: false, item: {}, title:'' };
       },
 
     }
@@ -142,5 +194,13 @@
 </script>
 
 <style lang="scss" scoped>
-
+  .pre {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+.border-bottom-solid{
+    border-bottom: 1px solid #ddd;
+}
 </style>

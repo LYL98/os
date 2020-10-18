@@ -5666,6 +5666,15 @@ template {
     background-color: rgba(124, 135, 142, 0.5); }
   .pg-nav-item.item-list {
     min-width: 880px; }
+  .pg-nav-item .notification {
+    position: absolute;
+    right: 8px;
+    font-size: 12px;
+    background-color: #e54545;
+    color: #dddddd;
+    border-radius: 9999px;
+    padding: 0 5px;
+    line-height: 1.2; }
 
 .pg-nav-shortcut::before {
   content: "";

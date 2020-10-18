@@ -2,10 +2,7 @@
   <div class="p-20">
     <div class="d-flex">
       <pg-datepicker style="width: 450px;" v-model="query" quickable range clearable @change="changeQuery" />
-
-      <pg-button-group class="ml-20" v-model="query.act_type" :options="{ '全部': '', '秒杀': 'seckill', '限时抢购': 'flash' }" @change="changeQuery"></pg-button-group>
-
-      <pg-search class="ml-20" placeholder="活动名称" v-model="query.condition" clearable @change="changeQuery" />
+      <pg-search class="w-25 ml-20" placeholder="活动名称" v-model="query.condition" clearable @change="changeQuery" />
       <pg-button class="ml-10" flat @click="resetQuery">重置筛选条件</pg-button>
 
       <pg-button class="ml-auto" color="primary" v-if="app.auth.isAdmin || app.auth.ClsActivitySeckillAdd" @click="handleAddItem">新增</pg-button>
@@ -46,12 +43,6 @@
           <pg-column prop="title" title="活动名称" width="140px">
             <template v-slot="{row}">
               <a class="text-dark" @click="handleDetailItem(row)">{{ row.title || '-' }}</a>
-            </template>
-          </pg-column>
-          <pg-column prop="title" title="活动类型" width="140px">
-            <template v-slot="{row}">
-              <span v-if="row.act_type === 'flash'">限时抢购</span>
-              <span v-if="row.act_type === 'seckill'">秒杀</span>
             </template>
           </pg-column>
           <pg-column prop="act_date" title="活动日期" width="90px"></pg-column>
@@ -113,7 +104,7 @@
       </div>
     </div>
 
-    <pg-dialog v-model="dialog.visible" :title="`${dialog.type === 'add' ? '新增' : '修改'}活动`">
+    <pg-dialog v-model="dialog.visible" :title="`${dialog.type === 'add' ? '新增' : '修改'}秒杀活动`">
       <seckill-edit
         v-if="dialog.visible"
         :type="dialog.type"
@@ -165,11 +156,7 @@
           visible: false,
           type: 'detail',
           item: {}
-        },
-        actTypeList:[
-          {id: '限时抢购',value: 'flash'},
-          {id: '秒杀',value: 'seckill'},
-        ]
+        }
       }
     },
 

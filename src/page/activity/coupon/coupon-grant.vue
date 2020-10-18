@@ -25,7 +25,10 @@
           <template v-slot:expand-row="{row}">
             <div class="p-15">
               <div class="row">
-                <div class="col-2">
+                <div class="col-3">
+                  创建时间：{{row.created || '-'}}
+                </div>
+                <div class="col-3">
                   审核人：{{row.auditor || '-'}}
                 </div>
                 <div class="col-3">
@@ -34,12 +37,17 @@
               </div>
             </div>
           </template>
-          <pg-column prop="code" title="发放编号" width="90px">
+          <pg-column prop="coupon_title" title="优惠券名称" width="140px">
+            <template v-slot="{row}"> {{ row.coupon_title || '-' }} </template>
+          </pg-column>
+          <pg-column prop="code" title="发放编号" width="125px">
             <template v-slot="{row}">
               <a class="text-dark" @click="handleDetailItem(row)">{{row.code}}</a>
             </template>
           </pg-column>
-          <pg-column prop="title" title="优惠券名称" width="140px"></pg-column>
+          <pg-column prop="title" title="发放活动名称" width="150px">
+            <template v-slot="{row}"> {{ row.title || '-' }} </template>
+          </pg-column>
           <pg-column title="发放时限" width="160px">
             <template v-slot="{row}">
               <span v-if="row.begin_date && row.end_date">
@@ -48,12 +56,12 @@
               <span v-else>-</span>
             </template>
           </pg-column>
-          <pg-column prop="grant_way" title="发放类型" width="90px">
+          <pg-column prop="grant_way" title="发放类型" width="70px">
             <template v-slot="{row}">
               {{ Constant.ACTIVITY_COUPON_GRANT_TYPE('enum')[row.grant_way] || row.grant_way || '-' }}
             </template>
           </pg-column>
-          <pg-column title="发放状态" width="90px" text-align="center">
+          <pg-column title="发放状态" width="80px" text-align="center">
             <template v-slot="{row}">
               <div class="d-flex justify-content-center align-items-center overflow-ellipsis">
                 <span :class="`status-dot mr-5 bg-${Constant.ACTIVITY_COUPON_GRANT_STATUS('color')[row.status]}`"></span>
@@ -63,12 +71,11 @@
           </pg-column>
           <pg-column prop="condition" title="发放条件" width="90px">
             <template v-slot="{row}">
-              <span v-if="row.grant_way === 'manual'">-</span>
-              <span v-else>{{ Constant.ACTIVITY_COUPON_GRANT_CONDITION('enum')[row.condition] || row.condition || '-' }}</span>
+              <span v-if="row.grant_way === 'auto'">
+                {{ Constant.ACTIVITY_COUPON_GRANT_CONDITION('enum')[row.condition] || row.condition || '-' }}
+              </span>
+              <span v-else>-</span>
             </template>
-          </pg-column>
-          <pg-column prop="created" title="创建时间" width="130px">
-            <template v-slot="{row}">{{ row.created || '-' }}</template>
           </pg-column>
           <pg-column title="操作" width="130px">
             <template v-slot="{row}">
@@ -76,35 +83,27 @@
               <!--  手动发放的类型 -->
               <div v-if="row.grant_way === 'manual'">
                 <pg-confirm
-                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantFirst)"
+                  help-text="确认该发放活动"
+                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponManualGrantFirst)"
                   @confirm="handleManualGrantFirst(row)"
                 >
-                  <template v-slot:help-text>
-                    <div>手动发放有一定耗时！在发放</div>
-                    <div>成功后一段时间，才能看到发放记录</div>
-                  </template>
                   <a class="text-decoration-none mr-10">确认发放</a>
                 </pg-confirm>
                 <pg-confirm
                   help-text="确认删除该发放活动"
-                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantDelete)"
+                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponGrantDelete)"
                   @confirm="handleDeleteItem(row)"
                 >
                   <a class="text-decoration-none mr-10">删除</a>
                 </pg-confirm>
-                <pg-confirm
-                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponManualGrantAgain)"
-                  @confirm="handleManualGrantAgain(row)"
-                >
-                  <template v-slot:help-text>
-                    <div>手动发放有一定耗时！在发放</div>
-                    <div>成功后一段时间，才能看到发放记录</div>
-                  </template>
-                  <a class="text-decoration-none mr-10">再次发放</a>
-                </pg-confirm>
+                <a
+                  class="text-decoration-none mr-10"
+                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.BscActivityCouponManualGrantAgain)"
+                  @click="handleManualGrantAgain(row)"
+                >再次发放</a>
                 <pg-confirm
                   help-text="确认作废该发放活动"
-                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantStop)"
+                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.BscActivityCouponGrantStop)"
                   @confirm="handleStopItem(row)"
                 >
                   <a class="text-decoration-none">作废</a>
@@ -115,35 +114,35 @@
               <div v-else>
                 <pg-confirm
                   help-text="确认审核通过该发放活动"
-                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantAudit)"
+                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponGrantAudit)"
                   @confirm="handleAuditItem(row)"
                 >
                   <a class="text-decoration-none mr-10">审核</a>
                 </pg-confirm>
                 <pg-confirm
                   help-text="确认删除该发放活动"
-                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantDelete)"
+                  v-if="row.status === 'wait_audit' && (app.auth.isAdmin || app.auth.BscActivityCouponGrantDelete)"
                   @confirm="handleDeleteItem(row)"
                 >
                   <a class="text-decoration-none mr-10">删除</a>
                 </pg-confirm>
                 <pg-confirm
                   help-text="确认启动该发放活动"
-                  v-if="row.status === 'no_grant' && row.is_active && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantActive)"
+                  v-if="row.status === 'no_grant' && row.is_active && (app.auth.isAdmin || app.auth.BscActivityCouponGrantActive)"
                   @confirm="handleActiveItem(row)"
                 >
                   <a class="text-decoration-none mr-10">启动发放</a>
                 </pg-confirm>
                 <pg-confirm
                   help-text="确认暂停该发放活动"
-                  v-if="row.status === 'granting' && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantPause)"
+                  v-if="row.status === 'granting' && (app.auth.isAdmin || app.auth.BscActivityCouponGrantPause)"
                   @confirm="handlePauseItem(row)"
                 >
                   <a class="text-decoration-none mr-10">暂停发放</a>
                 </pg-confirm>
                 <pg-confirm
                   help-text="确认作废该发放活动"
-                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.ClsActivityCouponGrantStop)"
+                  v-if="(row.status === 'no_grant' || row.status === 'granting') && (app.auth.isAdmin || app.auth.BscActivityCouponGrantStop)"
                   @confirm="handleStopItem(row)"
                 >
                   <a class="text-decoration-none">作废</a>
@@ -159,7 +158,7 @@
       </div>
     </div>
 
-    <pg-drawer v-model="drawer.visible" :title="`${drawer.item.code} / ${drawer.item.title} 发放详情`" width="550px">
+    <pg-drawer v-model="drawer.visible" :title="`${drawer.item.code} / ${drawer.item.title} 发放详情`" width="600px">
       <template slot="header">
         <div class="d-flex align-items-center">
           <h3 class="mb-0">{{`${drawer.item.code} / ${drawer.item.title} 发放详情`}}</h3>
@@ -178,8 +177,8 @@
       />
     </pg-drawer>
 
-    <pg-dialog v-model="dialog.visible" v-if="dialog.type === 'manual_again'" :title="`${dialog.item.title} 再次发放`" width="550px">
-      <coupon-grant-again
+    <pg-dialog v-model="dialog.visible" v-if="dialog.type === 'manual_again'" :title="`${dialog.item.title} 再次发放`" width="680px">
+      <coupon-grant-form-manual
         v-if="dialog.visible"
         :type="dialog.type"
         :item="dialog.item"
@@ -193,11 +192,11 @@
 
   import { Http, Api, Constant } from '@/util';
   import couponGrantDetail from './coupon-grant-detail';
-  import couponGrantAgain from './coupon-grant-again';
+  import couponGrantFormManual from './coupon-grant-form-manual';
 
   export default {
     name: 'coupon-grant',
-    components: {couponGrantDetail, couponGrantAgain},
+    components: {couponGrantDetail, couponGrantFormManual},
     inject: ['app'],
     data() {
       return {

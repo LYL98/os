@@ -123,9 +123,9 @@
         </div>
       </div>
 
-      <div class="pg-nav-item ml-auto text-right">
-        <pg-popper auto-close trigger="hover" placement="bottom-end">
-          <div class="d-flex align-items-center justify-content-end mr-20" style="min-width: 150px">
+      <div class="pg-nav-item ml-auto">
+        <pg-popper auto-close trigger="hover">
+          <div class="d-flex align-items-center justify-content-end mr-10">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="-1 -1 22 22" id="user-avatar" x="164" y="119">
               <defs>
                 <circle id="dba" cx="10" cy="10" r="10" />
@@ -152,13 +152,18 @@
                 </g>
               </g>
             </svg>
-            <a class="nav overflow-ellipsis d-inline-block">
+            <a class="nav overflow-ellipsis d-inline-block position-relative">
               <span>{{ username }}</span>
               <i class="icon-arrow-down12 ml-5 text-white"></i>
+              <div class="notification" style="top: 15px;" v-if="finished_task > 0">{{ finished_task }}</div>
             </a>
           </div>
-          <div class="pg-nav-subitem-panel" slot="content">
+          <div class="pg-nav-subitem-panel position-relative" slot="content">
             <div class="pg-nav-subitem-panel--inner pg-panel-animation">
+              <a @click="drawer.visible = true" class="position-relative">
+                <i class="icon-file-excel text-light mr-5"></i> 导出管理
+                <div class="notification" v-if="finished_task > 0">{{ finished_task }}</div>
+              </a>
               <a @click="dialog.visible = true"> <i class="icon-lock text-light mr-5"></i> 修改密码</a>
               <span class="divider-line"></span>
               <a @click="handleLogout"> <i class="icon-switch2 text-light mr-5"></i> 退出登录</a>
@@ -167,22 +172,45 @@
         </pg-popper>
       </div>
 
-      <pg-dialog title="修改密码" v-model="dialog.visible">
-        <modify-pwd v-if="dialog.visible" @submit="dialog.visible = false" @cancel="dialog.visible = false" />
-      </pg-dialog>
+<!--      <div class="pg-nav-item" style="min-width: 100px;">-->
+<!--        <a class="nav" @click="drawer.visible = true"><span>导出管理</span></a>-->
+<!--        <div class="notification" v-if="finished_task > 0">{{ finished_task }}</div>-->
+<!--      </div>-->
+
     </div>
+
+    <pg-dialog title="修改密码" v-model="dialog.visible">
+      <modify-pwd v-if="dialog.visible" @submit="dialog.visible = false" @cancel="dialog.visible = false" />
+    </pg-dialog>
+
+    <pg-drawer title="导出管理" v-model="drawer.visible" width="600px" @closed="notificationCheck">
+      <notification
+          v-if="drawer.visible"
+          :notification_api="notification_api"
+          :list="notification_export_list"
+          :notificationCheck="notificationCheck"
+      />
+    </pg-drawer>
+
   </div>
 </template>
 
 <script>
-import modifyPwd from './modify-pwd';
 import { osConfig } from './../../pgyos.config';
 import Http from './../../http/http';
+
+import pgDialog from '../dialog/dialog';
+import pgDrawer from '../drawer/drawer';
+import modifyPwd from './modify-pwd';
+import notification from './notification';
 
 export default {
   name: 'pg-navbar',
   components: {
+    pgDialog,
+    pgDrawer,
     modifyPwd,
+    notification
   },
   props: {
     username: { type: String, default: '' },
@@ -190,6 +218,9 @@ export default {
   data() {
     return {
       dialog: {
+        visible: false,
+      },
+      drawer: {
         visible: false,
       },
       routes: {
@@ -202,42 +233,64 @@ export default {
       },
       origin_yy: '',
       adminMode: false,
+
+      notification_api: {},
+
+      notification_export_list: {
+        items: []
+      },
+
     };
+  },
+
+  computed: {
+    finished_task() {
+      return this.$data.notification_export_list.items.filter(item => item.status === 'finished').length;
+    }
   },
 
   created() {
-    const { auth, origin_yy, origin_gyl, origin_sc, origin_cls, origin_cw, origin_tj, nav_router_api } = osConfig();
-    const authorization = (list, prefix) => {
-      return list
-        .map((item) => {
-          let childs = item.childs.map((d) => ({ label: d.title, value: d.code, url: prefix + '/#' + d.nav_router })).filter((d) => auth.isAdmin || auth[d.value]);
-          return { label: item.title, value: item.code, url: prefix + '/#' + item.nav_router, childs: childs };
-        })
-        .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.childs) && item.childs.length > 0);
-    };
+    this.initRouter();
+    this.initNotification();
+    this.notificationCheck();
+  },
 
-    this.$data.origin_yy = origin_yy;
-    this.$data.adminMode = !!auth.isAdmin;
-
-    Http.get(nav_router_api, { is_nav_router: 1 })
-      .then(res => {
-        let routes = res.data || [];
-
-        const yy = authorization(routes.filter(item => item.client === 'yy'), origin_yy);
-        const gyl = authorization(routes.filter(item => item.client === 'gyl'), origin_gyl);
-        const sc = authorization(routes.filter(item => item.client === 'sc'), origin_sc);
-        const cls = authorization(routes.filter(item => item.client === 'cls'), origin_cls);
-        const cw = authorization(routes.filter(item => item.client === 'cw'), origin_cw);
-        const tj = authorization(routes.filter(item => item.client === 'tj'), origin_tj);
-
-        routes = { yy, gyl, sc, cls, cw, tj };
-        this.$data.routes = routes;
-        this.$emit('created', routes);
-      });
-
+  beforeDestory() {
+    this.notificationClearInterval();
   },
 
   methods: {
+
+    initRouter() {
+      const { auth, origin_yy, origin_gyl, origin_sc, origin_cls, origin_cw, origin_tj, nav_router_api } = osConfig();
+      const authorization = (list, prefix) => {
+        return list
+            .map((item) => {
+              let childs = item.childs.map((d) => ({ label: d.title, value: d.code, url: prefix + '/#' + d.nav_router })).filter((d) => auth.isAdmin || auth[d.value]);
+              return { label: item.title, value: item.code, url: prefix + '/#' + item.nav_router, childs: childs };
+            })
+            .filter((item) => (auth.isAdmin || auth[item.value]) && Array.isArray(item.childs) && item.childs.length > 0);
+      };
+
+      this.$data.origin_yy = origin_yy;
+      this.$data.adminMode = !!auth.isAdmin;
+
+      Http.get(nav_router_api, { is_nav_router: 1 })
+          .then(res => {
+            let routes = res.data || [];
+
+            const yy = authorization(routes.filter(item => item.client === 'yy'), origin_yy);
+            const gyl = authorization(routes.filter(item => item.client === 'gyl'), origin_gyl);
+            const sc = authorization(routes.filter(item => item.client === 'sc'), origin_sc);
+            const cls = authorization(routes.filter(item => item.client === 'cls'), origin_cls);
+            const cw = authorization(routes.filter(item => item.client === 'cw'), origin_cw);
+            const tj = authorization(routes.filter(item => item.client === 'tj'), origin_tj);
+
+            routes = { yy, gyl, sc, cls, cw, tj };
+            this.$data.routes = routes;
+            this.$emit('created', routes);
+          });
+    },
 
     handleLogout() {
       Http.get(osConfig().logout_api).then(() => {
@@ -247,6 +300,117 @@ export default {
 
     handleJump(item) {
       this.$emit('jump', item);
+    },
+
+    initNotification() {
+      const { env } = osConfig();
+      const api_prefix = `https://vesta${env === 'pro' ? '' : env}.pgyscm.com`;
+      this.$data.notification_api = {
+        exportStatus: api_prefix + '/m/export/status',
+        exportQuery: api_prefix + '/m/export/query',
+        exportDownload: api_prefix + '/m/export/download',
+        exportDelete: api_prefix + '/m/export/delete',
+        exportClear: api_prefix + '/m/export/clear',  // 清空所有记录
+        exportNotifyModify: api_prefix + '/m/export/notify/modify', // 设置为已读，参数 ids
+      }
+
+      this.$data.query = { status: '', page: 1, page_size: 30 };
+
+      this.$emit('notification', {
+        check: this.notificationCheck
+      });
+    },
+
+    /**
+     *
+     * 检查时机：
+     * 1、每次刷新页面时
+     * 2、外部导出成功后
+     *
+     * 检查方式：
+     * 1、如果没有进行中任务，则不做处理
+     * 2、如果有进行中任务，则进行轮询处理
+     * 3、重新开始检查时，则清除之前的轮询任务，再检查
+     *
+     * 销毁轮询：
+     * 1、组件卸载时
+     * 2、进行中任务完成时
+     *
+     */
+    notificationCheck(type = 'status', query = {}) {
+      this.notificationClearInterval();
+
+      const { exportStatus, exportQuery } = this.$data.notification_api;
+
+      Http.get(type === 'status' ? exportStatus : exportQuery, query)
+          .then((res) => {
+
+            const rd = res.data;
+
+            if (type === 'status') {
+              if (!rd || !Array.isArray(rd.finished_task) || !Array.isArray(rd.processing_task)) return;
+              this.$data.notification_export_list = {
+                num: rd.finished_task.length + rd.processing_task.length,
+                items: [...rd.finished_task, ...rd.processing_task]
+              };
+
+            } else if (type === 'list') {
+
+              if (!rd || !Array.isArray(rd.items)) return;
+              this.$data.notification_export_list = rd;
+            }
+
+            this.$data.notification_export_list.items.some(item => item.status === 'processing') && this.notificationInterval(type, query);
+
+          });
+
+    },
+
+    notificationInterval(type = 'status', query = {}) {
+      this.notification_interval_times = 1;
+      this.notification_interval = setInterval(() => {
+        this.exportStatus(type, query);
+        this.notification_interval_times = this.notification_interval_times + 1;
+        this.notification_interval_times >= 30 && this.notificationClearInterval();
+
+      }, 1000 * 20);
+    },
+
+    notificationClearInterval() {
+      this.notification_interval && clearInterval(this.notification_interval);
+      this.notification_interval_times = 1;
+    },
+
+    exportStatus(type = 'status', query = {}) {
+
+      const { exportStatus, exportQuery } = this.$data.notification_api;
+
+      Http.get(type === 'status' ? exportStatus : exportQuery, query)
+          .then((res) => {
+
+            const rd = res.data;
+
+            if (type === 'status') {
+              if (!rd || !Array.isArray(rd.finished_task) || !Array.isArray(rd.processing_task)) {
+                this.notificationClearInterval();
+                return;
+              }
+              this.$data.notification_export_list = {
+                num: rd.finished_task.length + rd.processing_task.length,
+                items: [...rd.finished_task, ...rd.processing_task]
+              };
+
+            } else if (type === 'list') {
+
+              if (!rd || !Array.isArray(rd.items)) {
+                this.notificationClearInterval();
+                return;
+              }
+              this.$data.notification_export_list = rd;
+            }
+
+            this.$data.notification_export_list.items.every(item => item.status !== 'processing') && this.notificationClearInterval();
+          });
     },
   },
 };

@@ -66,23 +66,32 @@ export default {
     let v = data * 10;
     return Math.round(v);
   },
+  //返回百分比
+  returnPercentage(item_num, sun){
+    let d = item_num / sun * 100;
+    d = d.toFixed(2);
+    if(d.substring(d.length - 3, d.length) === '.00'){
+      return d.substring(0, d.length - 3);
+    }
+    if(d.substring(d.length - 1, d.length) === '0'){
+      return d.substring(0, d.length - 1);
+    }
+    return d;
+  },
   //返回计算百分比
   returnPercent(data){
     if(!data) return 0;
-    let v = data / 100;
-    let p = v.toFixed(2);
-    if(p.substring(p.length - 3, p.length) === '.00'){
-      return p.substring(0, p.length - 3);
-    }
-    if(p.substring(p.length - 1, p.length) === '0'){
-      return p.substring(0, p.length - 1);
+    let v = data / 10;
+    let p = v.toFixed(1);
+    if(p.substring(p.length - 2, p.length) === '.0'){
+      return p.substring(0, p.length - 2);
     }
     return p;
   },
   //处理百分比
   handlePercent(data){
     if(!data) return 0;
-    let v = data * 100;
+    let v = data * 10;
     return Math.round(v);
   },
   //数字前面自动补零(num传入的数字，n需要的字符长度)
@@ -144,5 +153,42 @@ export default {
     for (var k in o)
       if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
+  },
+
+  //返回date字符串
+  returnDateStr(dateObj) {
+    var t = this;
+    var myDate = dateObj || (new Date());
+    return (myDate.getFullYear() + ("-")
+      + (t.prefixInteger(myDate.getMonth() + 1, 2)) + ("-")
+      + (t.prefixInteger(myDate.getDate(), 2)) + " "
+      + (t.prefixInteger(myDate.getHours(), 2)) + ":"
+      + (t.prefixInteger(myDate.getMinutes(), 2)) + ":"
+      + (t.prefixInteger(myDate.getSeconds(), 2)));
+  },
+
+  //日期时间计算相差 type day, hours, 
+  dateTimeCalc(begintime, endtime, type) {
+    var begintime_ms = new Date(begintime.replace(/-/g, "/")); //begintime 为开始时间
+    var endtime_ms = new Date(endtime.replace(/-/g, "/"));   // endtime 为结束时间
+    var difference = endtime_ms.getTime() - begintime_ms.getTime();//时间差的毫秒数
+    //计算出相差小时数
+    if(type === 'hours'){
+      var hours = Math.floor(difference / (3600 * 1000));
+      return hours;
+    }
+    
+    //计算出相差天数
+    var days = Math.floor(difference / (24 * 3600 * 1000));
+    return days;
+  },
+
+  //返回List里的某个key的list (key, list)
+  returnListKeyList(key, list){
+    let data = [];
+    list.forEach(item => {
+      data.push(item[key]);
+    });
+    return data;
   },
 };

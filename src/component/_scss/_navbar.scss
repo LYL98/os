@@ -78,6 +78,17 @@
   &.item-list {
     min-width: 880px;
   }
+
+  .notification {
+    position: absolute;
+    right: 8px;
+    font-size: $font-size-sm;
+    background-color: $danger;
+    color: $light;
+    border-radius: $rounded-round;
+    padding: 0 5px;
+    line-height: 1.2;
+  }
 }
 
 .pg-nav-shortcut::before {
@@ -121,12 +132,6 @@
     margin-bottom: 10px;
   }
 }
-
-
-
-
-
-
 
 
 .pg-panel-animation {

@@ -3,13 +3,6 @@
 
     <h3 class="mb-20">基础信息</h3>
     <div class="row no-gutters">
-      <pg-form-item label="活动类型" :rules="{required: true}">
-        <pg-button-group v-model="formData.act_type" :options="{ '限时抢购': 'flash','秒杀': 'seckill'  }" @change="changeQuery"></pg-button-group>
-      </pg-form-item>
-    </div>
-
-    
-    <div class="row no-gutters">
       <div class="col-6">
         <pg-form-item label="活动名称" rules="required|max_length:15" help-text="活动名称长度不超过15个字符，新增成功后不可再次编辑">
           <pg-input placeholder="请输入活动名称" v-model="formData.title"></pg-input>
@@ -60,14 +53,14 @@
           {{row.item_code}}/{{row.item_title}}
         </template>
       </pg-column>
-      <pg-column title="销售价" width="70px">
+      <pg-column title="原价" width="70px">
         <template v-slot="{row}">
-          ¥{{row.price_sale}}
+          ¥{{row.price_origin}}
         </template>
       </pg-column>
       <pg-column title="活动价">
         <template v-slot="{row}">
-          <pg-form-item item-width="80px" :rules="{required: true, 'min_value:0.01': true}" class="pb-0">
+          <pg-form-item item-width="80px" rules="required" class="pb-0">
             <pg-input size="sm" suffix="元" type="decimal" v-model="row.act_price"></pg-input>
           </pg-form-item>
         </template>
@@ -94,7 +87,7 @@
             item-width="90px"
             :label="`客户限购数${row.item_id}`"
             :show-label="false"
-            :rules="{[`logic:${row.item_id}`]: act_stock_validator}"
+            :rules="{[`logic:${row.item_id}`]: purchase_limit_validator}"
           >
             <pg-input size="sm" suffix="件/人" type="number" v-model="row.purchase_limit"></pg-input>
           </pg-form-item>
@@ -137,7 +130,7 @@
         today: today,
 
         formData: {
-          act_type: 'flash',
+          act_type: 'seckill',
           title: '',
           act_date: '',
           begin_time: '',
@@ -205,7 +198,6 @@
             item_code: item.code,
             item_title: item.title,
             price_origin: Handle.returnPrice(item.price_origin),
-            price_sale: Handle.returnPrice(item.price_sale),
             act_price: Handle.returnPrice(item.act_price),
             cash_back: Handle.returnPrice(item.cash_back),
             stock: item.stock,
@@ -251,7 +243,7 @@
           const type = this.$props.type;
           Http.post(type === 'add' ? Api.activitySeckillAdd : Api.activitySeckillModify, formData)
             .then(() => {
-              this.$toast({ type: 'success', message: `活动${type === 'add' ? '新增' : '修改'}成功` });
+              this.$toast({ type: 'success', message: `秒杀活动${type === 'add' ? '新增' : '修改'}成功` });
               this.$data.loading = false;
               this.$emit('submit');
             })
@@ -270,9 +262,8 @@
             item_code: item.code,
             item_title: item.title,
             price_origin: Handle.returnPrice(item.price_origin),
-            price_sale: Handle.returnPrice(item.price_sale),
             act_price: '',
-            cash_back: Handle.returnPrice(item.price_divide),
+            cash_back: '',
             stock: item.stock,
             act_stock: '',
             purchase_limit: ''
@@ -292,11 +283,8 @@
           is_deleted: 0,
         })
           .then(res => {
-            console.log(res);
             this.$data.itemList = (res.data || [])
-              .map(item => ( { ...item, value: item.id, label: item.code + ' / ' + item.title })).filter((item)=>{
-                return(item.item_type === 'operation' && !item.is_presale)
-              });
+              .map(item => ({ ...item, value: item.id, label: item.code + ' / ' + item.title }));
           })
       },
 

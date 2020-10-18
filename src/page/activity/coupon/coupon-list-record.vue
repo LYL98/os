@@ -24,15 +24,15 @@
       <pg-column prop="created" title="领取时间" width="140px">
         <template v-slot="{row}">{{ row.created || '-' }}</template>
       </pg-column>
-      <pg-column prop="login_phone" title="领取人" width="110px">
-        <template v-slot="{row}">{{ row.login_phone || '-' }}</template>
+      <pg-column prop="login_phone" title="领取门店" width="200px">
+        <template v-slot="{row}">{{ row.store_title || '-' }}</template>
       </pg-column>
-      <pg-column prop="grant_way" title="发放类型" width="80px">
+      <pg-column prop="grant_way" title="发放类型" width="70px">
         <template v-slot="{row}">
           {{ Constant.ACTIVITY_COUPON_GRANT_TYPE('enum')[row.grant_way] || row.grant_way || '-' }}
         </template>
       </pg-column>
-      <pg-column title="领用状态" width="90px" text-align="center">
+      <pg-column title="领用状态" width="80px" text-align="center">
         <template v-slot="{row}">
           <div class="d-flex justify-content-center align-items-center overflow-ellipsis">
             <span :class="`status-dot mr-5 bg-${Constant.ACTIVITY_COUPON_RECORD_STATUS('color')[row.status]}`"></span>
@@ -47,11 +47,11 @@
         <template v-slot="{row}">{{ row.order_code || '-' }}</template>
       </pg-column>
 
-      <pg-column title="操作" width="90px">
+      <pg-column title="操作" width="80px">
         <template v-slot="{row}">
           <pg-confirm
             help-text="确认取消发放该优惠券"
-            v-if="row.status === 'wait_use' && (app.auth.isAdmin || app.auth.ClsActivityCouponRecordStop)"
+            v-if="row.status === 'wait_use' && (app.auth.isAdmin || app.auth.BscActivityCouponRecordStop)"
             @confirm="handleStopItem(row)"
           >
             <a class="text-decoration-none">取消发放</a>

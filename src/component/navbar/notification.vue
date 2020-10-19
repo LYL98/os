@@ -18,12 +18,20 @@
         borderless
         :serialable="false"
     >
-      <pg-column title="任务名称" prop="title" width="160px"></pg-column>
-      <pg-column title="开始时间" prop="created" width="140px"></pg-column>
+      <pg-column title="任务名称" prop="title" width="160px">
+        <template v-slot="{row}">
+          <span :class="row.status === 'finished' && !row.is_notify ? 'font-weight-bolder' : ''">{{ row.title }}</span>
+        </template>
+      </pg-column>
+      <pg-column title="开始时间" prop="created" width="140px">
+        <template v-slot="{row}">
+          <span :class="row.status === 'finished' && !row.is_notify ? 'font-weight-bolder' : ''">{{ row.created }}</span>
+        </template>
+      </pg-column>
       <pg-column title="状态" prop="status" width="100px">
         <template v-slot="{row}">
-          <span v-if="row.status === 'finished'">已完成</span>
-          <span v-else-if="row.status === 'processing'">进行中...</span>
+          <span v-if="row.status === 'finished'" :class="row.is_notify ? '' : 'font-weight-bolder'">已完成</span>
+          <div v-else-if="row.status === 'processing'" class="growth">进行中 ...</div>
           <span v-else>{{ row.status || '-' }}</span>
         </template>
       </pg-column>
@@ -121,9 +129,25 @@ export default {
 
     // 修改为已读
     handleModifyItem(item) {
-      Http.post(this.$props.notification_api.exportNotifyModify, { ids: [item.id] });
+      Http.post(this.$props.notification_api.exportNotifyModify, { ids: [item.id] })
+        .then(() => {
+          item.is_notify = true;
+        });
     },
   }
 
 }
 </script>
+
+<style scoped>
+  .growth {
+    overflow: hidden;
+    animation: growthWidth 2s infinite;
+  }
+
+  @keyframes growthWidth
+  {
+    from { width: 38px; }
+    to { width: 50px; }
+  }
+</style>

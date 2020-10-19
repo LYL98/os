@@ -5,7 +5,7 @@
         <div class="pg-drawer right" :class="{drawing}" :style="`width: ${width || 'auto'}; right: -${drawing ? width : 0}`">
           <div class="header">
             <slot name="header"><h3 class="title">{{title}}</h3></slot>
-            <pg-button class="icon" square flat @click="onClose"><i class="icon-cross2"></i></pg-button>
+            <pg-button class="icon" square flat @click.stop="onClose"><i class="icon-cross2"></i></pg-button>
           </div>
           <div class="body">
             <slot></slot>
@@ -43,19 +43,17 @@
     watch: {
       visible: {
         immediate: true,
-        handler(v) {
-          if (v) {
+        handler(next) {
+          if (next) {
             // document.body.style.overflowY = "hidden";
             this.onOpen();
-          } else {
-            // document.body.style.overflowY = "auto";
-            this.onClose();
           }
         }
       }
     },
     methods: {
       onMaskClick() {
+        console.log('onMaskClick');
         if (this.$props.maskCloseable) {
           this.onClose();
         }

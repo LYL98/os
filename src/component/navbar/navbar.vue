@@ -245,7 +245,7 @@ export default {
 
   computed: {
     finished_task() {
-      return this.$data.notification_export_list.items.filter(item => item.status === 'finished').length;
+      return this.$data.notification_export_list.items.filter(item => item.status === 'finished' && !item.is_notify).length;
     }
   },
 
@@ -338,11 +338,12 @@ export default {
      *
      */
     notificationCheck(type = 'status', query = {}) {
+
       this.notificationClearInterval();
 
       const { exportStatus, exportQuery } = this.$data.notification_api;
 
-      Http.get(type === 'status' ? exportStatus : exportQuery, query)
+      Http.get(type === 'status' ? exportStatus : exportQuery, query, { handleError: false })
           .then((res) => {
 
             const rd = res.data;
@@ -371,9 +372,9 @@ export default {
       this.notification_interval = setInterval(() => {
         this.exportStatus(type, query);
         this.notification_interval_times = this.notification_interval_times + 1;
-        this.notification_interval_times >= 30 && this.notificationClearInterval();
+        this.notification_interval_times >= 60 && this.notificationClearInterval();
 
-      }, 1000 * 20);
+      }, 1000 * 10);
     },
 
     notificationClearInterval() {
@@ -388,7 +389,7 @@ export default {
       Http.get(type === 'status' ? exportStatus : exportQuery, query)
           .then((res) => {
 
-            const rd = res.data;
+            const rd = res.data || {};
 
             if (type === 'status') {
               if (!rd || !Array.isArray(rd.finished_task) || !Array.isArray(rd.processing_task)) {

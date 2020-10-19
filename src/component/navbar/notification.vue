@@ -3,7 +3,9 @@
     <div class="d-flex">
       <pg-button-group :options="{ '全部': '', '进行中': 'processing', '已完成': 'finished' }" v-model="query.status" @change="changeQuery"></pg-button-group>
 
-      <pg-button flat class="ml-auto" @click="handleClearItems"> <i class="icon-bin"></i> 清空所有记录</pg-button>
+      <pg-confirm @confirm="handleClearItems" help-text="确认清空所有记录？" class="ml-auto">
+        <pg-button flat :disabled="list.num <= 0">清空所有记录</pg-button>
+      </pg-confirm>
     </div>
 
     <pg-table
@@ -81,8 +83,7 @@ export default {
     },
 
     changePage() {
-      const notificationCheck = this.$props.notificationCheck;
-      typeof notificationCheck === 'function' && notificationCheck('list', this.$data.query);
+      this.exportQuery();
     },
 
     exportQuery() {
@@ -92,10 +93,10 @@ export default {
 
     handleDownloadItem(item) {
       this.$loading.show();
-      Http.download(this.$props.notification_api.exportDownload, { filename: item.title + '.xls' })
+      Http.download(this.$props.notification_api.exportDownload, { id: item.id },{ filename: item.title + '.xls' })
         .then(() => {
           this.$loading.hide();
-          this.handleModifyItem(item);
+          !item.is_notify && this.handleModifyItem(item);
         })
         .catch(() => {
           this.$loading.hide();
@@ -106,14 +107,6 @@ export default {
       Http.post(this.$props.notification_api.exportDelete, { id: item.id })
           .then(() => {
             this.$toast({ type: 'success', message: '导出任务删除成功' });
-            this.handleModifyItem(item);
-          });
-    },
-
-    // 修改为已读
-    handleModifyItem(item) {
-      Http.post(this.$props.notification_api.exportNotifyModify, { ids: [item.id] })
-          .then(() => {
             this.exportQuery();
           });
     },
@@ -124,7 +117,12 @@ export default {
           this.$toast({ type: 'success', message: '导出记录已清空' });
           this.exportQuery();
         });
-    }
+    },
+
+    // 修改为已读
+    handleModifyItem(item) {
+      Http.post(this.$props.notification_api.exportNotifyModify, { ids: [item.id] });
+    },
   }
 
 }

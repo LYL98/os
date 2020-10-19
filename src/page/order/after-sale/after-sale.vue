@@ -687,39 +687,29 @@ export default {
     },
 
     handleExport() {
-      this.$loading.show()
-      Http.get(Api.orderAftersaleListExportCheck, this.$data.query)
-        .then(() => {
-          return Http.download(Api.orderAftersaleListExport, this.$data.query, {
-            filename: '导出售后汇总表.xls',
+      this.$loading.show();
+      Http.get(Api.orderAftersaleListExport, this.$data.query)
+          .then(() => {
+            this.$toast({ type: 'success', message: '导出任务创建成功，请在 我的账号 -> 导出管理 中查看导出进度。' });
+            this.app.notification.check();
+            this.$loading.hide();
           })
-        })
-        .then(() => {
-          this.$loading.hide()
-        })
-        .catch(() => {
-          this.$loading.hide()
-        })
+          .catch(() => {
+            this.$loading.hide();
+          });
     },
 
     handleExportItems() {
-      this.$loading.show()
-      Http.get(Api.orderAftersaleRespListExportCheck, this.$data.query)
-        .then(() => {
-          return Http.download(
-            Api.orderAftersaleRespListExport,
-            this.$data.query,
-            {
-              filename: '导出售后追责表.xls',
-            }
-          )
-        })
-        .then(() => {
-          this.$loading.hide()
-        })
-        .catch(() => {
-          this.$loading.hide()
-        })
+      this.$loading.show();
+      Http.get(Api.orderAftersaleRespListExport, this.$data.query)
+          .then(() => {
+            this.$toast({ type: 'success', message: '导出任务创建成功，请在 我的账号 -> 导出管理 中查看导出进度。' });
+            this.app.notification.check();
+            this.$loading.hide();
+          })
+          .catch(() => {
+            this.$loading.hide();
+          });
     },
 
     commonProvinceListAuth() {

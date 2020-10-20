@@ -43,17 +43,18 @@
     watch: {
       visible: {
         immediate: true,
-        handler(next) {
+        handler(next, prev) {
           if (next) {
             // document.body.style.overflowY = "hidden";
             this.onOpen();
+          } else if (prev && this.$data.isShow) { // 由外部控制 显示 -> 关闭时  触发
+            this.onClose(false);
           }
         }
       }
     },
     methods: {
       onMaskClick() {
-        console.log('onMaskClick');
         if (this.$props.maskCloseable) {
           this.onClose();
         }
@@ -66,12 +67,12 @@
           clearTimeout(timer);
         }, 0);
       },
-      onClose() {
+      onClose(emit = true) {
         this.$data.drawing = true;
         let timer = setTimeout(() => {
           this.$data.drawing = false;
           this.$data.isShow = false;
-          this.$emit('closed');
+          emit && this.$emit('closed');
           clearTimeout(timer);
         }, 0);
       },

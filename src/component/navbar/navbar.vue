@@ -352,7 +352,7 @@ export default {
               if (!rd || !Array.isArray(rd.finished_task) || !Array.isArray(rd.processing_task)) return;
               this.$data.notification_export_list = {
                 num: rd.finished_task.length + rd.processing_task.length,
-                items: [...rd.finished_task, ...rd.processing_task]
+                items: [...rd.finished_task, ...rd.processing_task].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
               };
 
             } else if (type === 'list') {
@@ -398,7 +398,7 @@ export default {
               }
               this.$data.notification_export_list = {
                 num: rd.finished_task.length + rd.processing_task.length,
-                items: [...rd.finished_task, ...rd.processing_task]
+                items: [...rd.finished_task, ...rd.processing_task].sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
               };
 
             } else if (type === 'list') {
@@ -411,6 +411,9 @@ export default {
             }
 
             this.$data.notification_export_list.items.every(item => item.status !== 'processing') && this.notificationClearInterval();
+          })
+          .catch(() => {
+            this.notificationClearInterval();
           });
     },
   },
